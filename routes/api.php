@@ -1,10 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\BeritaController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::get('/user', function () {
-    return view('selamat datang');
-});
+Route::apiResource('berita', BeritaController::class);
