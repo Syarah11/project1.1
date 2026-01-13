@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SuperAdminController;
+//use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\fe\DashboardController;
 use App\Http\Controllers\fe\BlogController;
 use App\Http\Controllers\fe\KategoriController;
@@ -11,7 +11,7 @@ use App\Http\Controllers\fe\AdminController;
 use App\Http\Controllers\fe\AuthController;
 
 
-Route::get('/super-admin', [SuperAdminController::class, 'index'])->name('super.admin');
+//Route::get('/super-admin', [SuperAdminController::class, 'index'])->name('super.admin');
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 Route::get('/blog/tambah', [BlogController::class, 'create'])->name('blog.tambah');
 Route::get('/blog/list', [BlogController::class, 'index'])->name('blog.list');
