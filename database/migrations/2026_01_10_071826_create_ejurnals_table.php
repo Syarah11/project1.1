@@ -6,20 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('ejurnals', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->uuid('id_ejurnal')->primary();
+            $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
+            $table->string('judul', 500);
+            $table->text('deskripsi')->nullable();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('update_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('ejurnals');

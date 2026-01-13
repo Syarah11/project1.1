@@ -6,20 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('berita_kategoris', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->uuid('id_berita_kategori')->primary();
+            $table->uuid('id_berita');
+            $table->uuid('id_kategori');
+            
+            $table->foreign('id_berita')->references('id_berita')->on('beritas')->onDelete('cascade');
+            $table->foreign('id_kategori')->references('id_kategori')->on('kategoris')->onDelete('cascade');
+            
+            $table->unique(['id_berita', 'id_kategori']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('berita_kategoris');
