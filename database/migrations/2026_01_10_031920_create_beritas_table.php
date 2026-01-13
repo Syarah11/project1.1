@@ -9,20 +9,17 @@ return new class extends Migration {
     {
         Schema::create('beritas', function (Blueprint $table) {
             $table->uuid('id_berita')->primary();
-            $table->uuid('id_user');
+
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
 
             $table->string('judul');
-            $table->text('slug');
+            $table->string('slug');
             $table->text('deskripsi');
-            $table->text('thumbnail')->nullable();
+            $table->string('thumbnail')->nullable();
             $table->enum('status', ['draft', 'publish'])->default('draft');
             $table->integer('view_count')->default(0);
 
             $table->timestamps();
-
-            $table->foreign('id_user')
-                ->references('id_user')->on('users')
-                ->cascadeOnDelete();
         });
     }
 
@@ -31,4 +28,3 @@ return new class extends Migration {
         Schema::dropIfExists('beritas');
     }
 };
-
