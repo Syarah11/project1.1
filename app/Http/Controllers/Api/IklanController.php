@@ -3,53 +3,58 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Kategori\StoreKategoriRequest;
-use App\Http\Requests\Kategori\UpdateKategoriRequest;
-use App\Services\KategoriService;
+use App\Http\Requests\Iklan\StoreIklanRequest;
+use App\Http\Requests\Iklan\UpdateIklanRequest;
+use App\Services\IklanService;
 use Illuminate\Http\Request;
 
-class KategoriController extends Controller
+class IklanController extends Controller
 {
-    protected $kategoriService;
+    protected $iklanService;
 
-    public function __construct(KategoriService $kategoriService)
+    public function __construct(IklanService $iklanService)
     {
-        $this->kategoriService = $kategoriService;
+        $this->iklanService = $iklanService;
     }
 
     public function index(Request $request)
     {
         try {
             $perPage = $request->input('per_page', 10);
-            $kategoris = $this->kategoriService->getAllKategoris($perPage);
+            $filters = [
+                'status' => $request->input('status'),
+                'posisi' => $request->input('posisi'),
+            ];
+
+            $iklans = $this->iklanService->getAllIklans($perPage, $filters);
 
             return response()->json([
                 'success' => true,
-                'data' => $kategoris
+                'data' => $iklans
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to fetch categories',
+                'message' => 'Failed to fetch ads',
                 'error' => $e->getMessage()
             ], 500);
         }
     }
 
-    public function store(StoreKategoriRequest $request)
+    public function store(StoreIklanRequest $request)
     {
         try {
-            $kategori = $this->kategoriService->createKategori($request->validated());
+            $iklan = $this->iklanService->createIklan($request->validated());
 
             return response()->json([
                 'success' => true,
-                'message' => 'Category created successfully',
-                'data' => $kategori
+                'message' => 'Ad created successfully',
+                'data' => $iklan
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to create category',
+                'message' => 'Failed to create ad',
                 'error' => $e->getMessage()
             ], 500);
         }
@@ -58,35 +63,35 @@ class KategoriController extends Controller
     public function show($id)
     {
         try {
-            $kategori = $this->kategoriService->getKategoriById($id);
+            $iklan = $this->iklanService->getIklanById($id);
 
             return response()->json([
                 'success' => true,
-                'data' => $kategori
+                'data' => $iklan
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Category not found',
+                'message' => 'Ad not found',
                 'error' => $e->getMessage()
             ], 404);
         }
     }
 
-    public function update(UpdateKategoriRequest $request, $id)
+    public function update(UpdateIklanRequest $request, $id)
     {
         try {
-            $kategori = $this->kategoriService->updateKategori($id, $request->validated());
+            $iklan = $this->iklanService->updateIklan($id, $request->validated());
 
             return response()->json([
                 'success' => true,
-                'message' => 'Category updated successfully',
-                'data' => $kategori
+                'message' => 'Ad updated successfully',
+                'data' => $iklan
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to update category',
+                'message' => 'Failed to update ad',
                 'error' => $e->getMessage()
             ], 500);
         }
@@ -95,36 +100,37 @@ class KategoriController extends Controller
     public function destroy($id)
     {
         try {
-            $this->kategoriService->deleteKategori($id);
+            $this->iklanService->deleteIklan($id);
 
             return response()->json([
                 'success' => true,
-                'message' => 'Category deleted successfully'
+                'message' => 'Ad deleted successfully'
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to delete category',
+                'message' => 'Failed to delete ad',
                 'error' => $e->getMessage()
             ], 500);
         }
     }
 
-    public function withBeritas($id)
+    public function active(Request $request)
     {
         try {
-            $kategori = $this->kategoriService->getKategoriWithBeritas($id);
+            $posisi = $request->input('posisi');
+            $iklans = $this->iklanService->getActiveIklans($posisi);
 
             return response()->json([
                 'success' => true,
-                'data' => $kategori
+                'data' => $iklans
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Category not found',
+                'message' => 'Failed to fetch active ads',
                 'error' => $e->getMessage()
-            ], 404);
+            ], 500);
         }
     }
 }

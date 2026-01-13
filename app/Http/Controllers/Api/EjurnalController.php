@@ -3,53 +3,53 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Kategori\StoreKategoriRequest;
-use App\Http\Requests\Kategori\UpdateKategoriRequest;
-use App\Services\KategoriService;
+use App\Http\Requests\Ejurnal\StoreEjurnalRequest;
+use App\Http\Requests\Ejurnal\UpdateEjurnalRequest;
+use App\Services\EjurnalService;
 use Illuminate\Http\Request;
 
-class KategoriController extends Controller
+class EjurnalController extends Controller
 {
-    protected $kategoriService;
+    protected $ejurnalService;
 
-    public function __construct(KategoriService $kategoriService)
+    public function __construct(EjurnalService $ejurnalService)
     {
-        $this->kategoriService = $kategoriService;
+        $this->ejurnalService = $ejurnalService;
     }
 
     public function index(Request $request)
     {
         try {
             $perPage = $request->input('per_page', 10);
-            $kategoris = $this->kategoriService->getAllKategoris($perPage);
+            $ejurnals = $this->ejurnalService->getAllEjurnals($perPage);
 
             return response()->json([
                 'success' => true,
-                'data' => $kategoris
+                'data' => $ejurnals
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to fetch categories',
+                'message' => 'Failed to fetch e-journals',
                 'error' => $e->getMessage()
             ], 500);
         }
     }
 
-    public function store(StoreKategoriRequest $request)
+    public function store(StoreEjurnalRequest $request)
     {
         try {
-            $kategori = $this->kategoriService->createKategori($request->validated());
+            $ejurnal = $this->ejurnalService->createEjurnal($request->validated());
 
             return response()->json([
                 'success' => true,
-                'message' => 'Category created successfully',
-                'data' => $kategori
+                'message' => 'E-journal created successfully',
+                'data' => $ejurnal
             ], 201);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to create category',
+                'message' => 'Failed to create e-journal',
                 'error' => $e->getMessage()
             ], 500);
         }
@@ -58,35 +58,35 @@ class KategoriController extends Controller
     public function show($id)
     {
         try {
-            $kategori = $this->kategoriService->getKategoriById($id);
+            $ejurnal = $this->ejurnalService->getEjurnalById($id);
 
             return response()->json([
                 'success' => true,
-                'data' => $kategori
+                'data' => $ejurnal
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Category not found',
+                'message' => 'E-journal not found',
                 'error' => $e->getMessage()
             ], 404);
         }
     }
 
-    public function update(UpdateKategoriRequest $request, $id)
+    public function update(UpdateEjurnalRequest $request, $id)
     {
         try {
-            $kategori = $this->kategoriService->updateKategori($id, $request->validated());
+            $ejurnal = $this->ejurnalService->updateEjurnal($id, $request->validated());
 
             return response()->json([
                 'success' => true,
-                'message' => 'Category updated successfully',
-                'data' => $kategori
+                'message' => 'E-journal updated successfully',
+                'data' => $ejurnal
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to update category',
+                'message' => 'Failed to update e-journal',
                 'error' => $e->getMessage()
             ], 500);
         }
@@ -95,36 +95,36 @@ class KategoriController extends Controller
     public function destroy($id)
     {
         try {
-            $this->kategoriService->deleteKategori($id);
+            $this->ejurnalService->deleteEjurnal($id);
 
             return response()->json([
                 'success' => true,
-                'message' => 'Category deleted successfully'
+                'message' => 'E-journal deleted successfully'
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to delete category',
+                'message' => 'Failed to delete e-journal',
                 'error' => $e->getMessage()
             ], 500);
         }
     }
 
-    public function withBeritas($id)
+    public function deleteGambar($id)
     {
         try {
-            $kategori = $this->kategoriService->getKategoriWithBeritas($id);
+            $this->ejurnalService->deleteGambarEjurnal($id);
 
             return response()->json([
                 'success' => true,
-                'data' => $kategori
+                'message' => 'Image deleted successfully'
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Category not found',
+                'message' => 'Failed to delete image',
                 'error' => $e->getMessage()
-            ], 404);
+            ], 500);
         }
     }
 }
