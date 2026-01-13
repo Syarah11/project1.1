@@ -3,9 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Berita extends Model
 {
+    use HasFactory;
+
     protected $table = 'beritas';
     protected $primaryKey = 'id_berita';
     public $incrementing = false;
@@ -21,6 +25,21 @@ class Berita extends Model
         'status',
         'view_count'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (! $model->id_berita) {
+                $model->id_berita = (string) Str::uuid();
+            }
+
+            if (! $model->slug) {
+                $model->slug = Str::slug($model->judul);
+            }
+        });
+    }
 
     public function user()
     {

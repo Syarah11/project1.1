@@ -13,8 +13,8 @@ return new class extends Migration
             $table->string('nama_tag', 255);
             $table->string('slug', 255)->unique();
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
-            $table->timestamp('create_at')->useCurrent();
-            $table->timestamp('update_at')->useCurrent()->useCurrentOnUpdate();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
 

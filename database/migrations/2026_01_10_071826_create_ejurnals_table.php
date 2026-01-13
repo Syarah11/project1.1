@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('judul', 500);
             $table->text('deskripsi')->nullable();
             $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('update_at')->useCurrent()->useCurrentOnUpdate();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
 

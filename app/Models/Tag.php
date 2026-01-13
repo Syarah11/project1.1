@@ -3,9 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
 
 class Tag extends Model
 {
+    use HasFactory;
+
     protected $table = 'tags';
     protected $primaryKey = 'id_tag';
     public $incrementing = false;
@@ -15,16 +19,21 @@ class Tag extends Model
         'id_tag',
         'nama_tag',
         'slug',
-        'created_by'
+        'created_by',
     ];
 
-    public function beritas()
+    protected static function boot()
     {
-        return $this->belongsToMany(
-            Berita::class,
-            'berita_tags',
-            'id_tag',
-            'id_berita'
-        );
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (! $model->id_tag) {
+                $model->id_tag = (string) Str::uuid();
+            }
+
+            if (! $model->slug) {
+                $model->slug = Str::slug($model->nama_tag);
+            }
+        });
     }
 }
