@@ -1,157 +1,208 @@
 @extends('layouts.app')
 
-@section('title', 'Iklan - Portal Blog')
+@section('title', 'Admin - Portal Blog')
 
 @section('content')
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kelola Kategori</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-            background-color: #f5f5f5;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background-color: #fef0f0;
-            border: 1px solid #e5d4d4;
-            border-radius: 8px;
-            padding: 24px;
-        }
-
-        h1 {
-            font-size: 18px;
-            margin-bottom: 20px;
-            color: #333;
-            font-weight: 600;
-        }
-
-        .row {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
         .card {
-            background-color: #d3d3d3;
-            border-radius: 8px;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            position: relative;
+            background-color: #d1d5db;
+            transition: all 0.3s ease;
         }
 
-        .card.left {
-            flex: 0 0 40%;
-            min-height: 140px;
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
-        .card.right {
-            flex: 1;
-            min-height: 140px;
+        .card-active {
+            background-color: #e5e7eb;
+            border: 3px solid #a855f7;
+            box-shadow: 0 4px 20px rgba(168, 85, 247, 0.2);
         }
 
-        .card-title {
-            font-size: 14px;
-            color: #333;
-            margin-bottom: 12px;
-            font-weight: 500;
+        .card-active:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(168, 85, 247, 0.3);
         }
 
-        .card-body {
-            flex: 1;
-            display: flex;
-            align-items: flex-end;
-            justify-content: flex-end;
+        .btn-simpan {
+            background-color: transparent;
+            border: 1px solid #4b5563;
+            transition: all 0.3s ease;
         }
 
-        .simpan-btn {
-            background-color: white;
-            border: 1px solid #bbb;
-            padding: 7px 22px;
-            border-radius: 5px;
-            font-size: 13px;
-            cursor: pointer;
-            color: #333;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-
-        .simpan-btn:hover {
-            background-color: #f8f8f8;
-            border-color: #999;
-        }
-
-        .simpan-btn:active {
-            transform: scale(0.98);
-        }
-
-        @media (max-width: 768px) {
-            .row {
-                flex-direction: column;
-            }
-
-            .card.left,
-            .card.right {
-                flex: 1;
-            }
+        .btn-simpan:hover {
+            background-color: #4b5563;
+            color: white;
+            transform: scale(1.05);
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1>Kelola Kategori</h1>
-        
-        <!-- Baris Pertama: Tambah Kategori & Tabel Kategori -->
-        <div class="row">
-            <div class="card left">
-                <div class="card-title">Tambah Kategori</div>
-                <div class="card-body">
-                    <button class="simpan-btn" onclick="simpanData('Kategori')">Simpan</button>
+<body class="bg-gray-50 p-6">
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <h1 class="text-2xl font-bold mb-6">Kelola Kategori</h1>
+
+        <!-- Grid 2x2 Layout -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- Tambah Kategori (Kiri Atas) -->
+            <div class="card rounded-lg p-6 min-h-[250px] flex flex-col justify-between">
+                <div>
+                    <h2 class="text-sm text-gray-700 mb-4">Tambah Kategori</h2>
+                    <div class="space-y-4">
+                        <input type="text" 
+                               placeholder="Nama Kategori" 
+                               class="w-full px-4 py-2 bg-white border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-400">
+                        <textarea placeholder="Deskripsi" 
+                                  rows="3" 
+                                  class="w-full px-4 py-2 bg-white border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-400 resize-none"></textarea>
+                    </div>
+                </div>
+                <div class="flex justify-center mt-4">
+                    <button class="btn-simpan px-8 py-2 rounded font-medium">
+                        Simpan
+                    </button>
                 </div>
             </div>
 
-            <div class="card right">
-                <div class="card-title">Tabel Kategori</div>
-                <div class="card-body"></div>
-            </div>
-        </div>
-
-        <!-- Baris Kedua: Tambah Tag & Tabel Tag -->
-        <div class="row">
-            <div class="card left">
-                <div class="card-title">Tambah Tag</div>
-                <div class="card-body">
-                    <button class="simpan-btn" onclick="simpanData('Tag')">Simpan</button>
+            <!-- Tabel Kategori (Kanan Atas) - Active with Purple Border -->
+            <div class="card card-active rounded-lg p-6 min-h-[250px]">
+                <h2 class="text-sm text-gray-700 mb-4">Tabel Kategori</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-gray-400">
+                                <th class="text-left py-2 px-2 font-semibold">No</th>
+                                <th class="text-left py-2 px-2 font-semibold">Nama</th>
+                                <th class="text-left py-2 px-2 font-semibold">Slug</th>
+                                <th class="text-center py-2 px-2 font-semibold">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-300">
+                                <td class="py-2 px-2">1</td>
+                                <td class="py-2 px-2">Teknologi</td>
+                                <td class="py-2 px-2 text-gray-600">teknologi</td>
+                                <td class="py-2 px-2 text-center">
+                                    <button class="text-blue-600 hover:text-blue-800 mx-1">✏️</button>
+                                    <button class="text-red-600 hover:text-red-800 mx-1">🗑️</button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-300">
+                                <td class="py-2 px-2">2</td>
+                                <td class="py-2 px-2">Bisnis</td>
+                                <td class="py-2 px-2 text-gray-600">bisnis</td>
+                                <td class="py-2 px-2 text-center">
+                                    <button class="text-blue-600 hover:text-blue-800 mx-1">✏️</button>
+                                    <button class="text-red-600 hover:text-red-800 mx-1">🗑️</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
-            <div class="card right">
-                <div class="card-title">Tabel Tag</div>
-                <div class="card-body"></div>
+            <!-- Tambah Tag (Kiri Bawah) -->
+            <div class="card rounded-lg p-6 min-h-[250px] flex flex-col justify-between">
+                <div>
+                    <h2 class="text-sm text-gray-700 mb-4">Tambah Tag</h2>
+                    <div class="space-y-4">
+                        <input type="text" 
+                               placeholder="Nama Tag" 
+                               class="w-full px-4 py-2 bg-white border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-400">
+                        <div>
+                            <label class="block text-xs text-gray-600 mb-2">Warna Tag</label>
+                            <input type="color" 
+                                   value="#a855f7" 
+                                   class="w-full h-10 border border-gray-300 rounded cursor-pointer">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-center mt-4">
+                    <button class="btn-simpan px-8 py-2 rounded font-medium">
+                        Simpan
+                    </button>
+                </div>
             </div>
+
+            <!-- Tabel Tag (Kanan Bawah) -->
+            <div class="card rounded-lg p-6 min-h-[250px]">
+                <h2 class="text-sm text-gray-700 mb-4">Tabel Tag</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-gray-400">
+                                <th class="text-left py-2 px-2 font-semibold">No</th>
+                                <th class="text-left py-2 px-2 font-semibold">Nama</th>
+                                <th class="text-left py-2 px-2 font-semibold">Warna</th>
+                                <th class="text-center py-2 px-2 font-semibold">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-300">
+                                <td class="py-2 px-2">1</td>
+                                <td class="py-2 px-2">
+                                    <span class="inline-block px-3 py-1 rounded-full text-white text-xs" style="background-color: #a855f7">
+                                        Programming
+                                    </span>
+                                </td>
+                                <td class="py-2 px-2">
+                                    <span class="inline-block w-8 h-8 rounded border" style="background-color: #a855f7"></span>
+                                </td>
+                                <td class="py-2 px-2 text-center">
+                                    <button class="text-blue-600 hover:text-blue-800 mx-1">✏️</button>
+                                    <button class="text-red-600 hover:text-red-800 mx-1">🗑️</button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-300">
+                                <td class="py-2 px-2">2</td>
+                                <td class="py-2 px-2">
+                                    <span class="inline-block px-3 py-1 rounded-full text-white text-xs" style="background-color: #3b82f6">
+                                        Design
+                                    </span>
+                                </td>
+                                <td class="py-2 px-2">
+                                    <span class="inline-block w-8 h-8 rounded border" style="background-color: #3b82f6"></span>
+                                </td>
+                                <td class="py-2 px-2 text-center">
+                                    <button class="text-blue-600 hover:text-blue-800 mx-1">✏️</button>
+                                    <button class="text-red-600 hover:text-red-800 mx-1">🗑️</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
     </div>
 
     <script>
-        function simpanData(type) {
-            alert(`Data ${type} berhasil disimpan!`);
-            console.log(`Menyimpan ${type}...`);
-            // Tambahkan logika penyimpanan data Anda di sini
-        }
+        // Add click handlers for buttons
+        document.querySelectorAll('.btn-simpan').forEach(btn => {
+            btn.addEventListener('click', function() {
+                alert('Data akan disimpan!');
+            });
+        });
+
+        // Add hover effect to table rows
+        document.querySelectorAll('tbody tr').forEach(row => {
+            row.addEventListener('mouseenter', function() {
+                this.style.backgroundColor = 'rgba(168, 85, 247, 0.05)';
+            });
+            row.addEventListener('mouseleave', function() {
+                this.style.backgroundColor = 'transparent';
+            });
+        });
     </script>
 </body>
 </html>
+@endsection
