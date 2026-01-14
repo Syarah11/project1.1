@@ -10,11 +10,12 @@ return new class extends Migration
     {
         Schema::create('ejurnals', function (Blueprint $table) {
             $table->uuid('id_ejurnal')->primary();
-            $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
-            $table->string('judul', 500);
-            $table->text('deskripsi')->nullable();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+            $table->uuid('id_user');
+            $table->string('judul');
+            $table->text('deskripsi');
+            $table->timestamps();
+
+            $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');
         });
     }
 

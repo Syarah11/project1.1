@@ -10,11 +10,12 @@ return new class extends Migration
     {
         Schema::create('tags', function (Blueprint $table) {
             $table->uuid('id_tag')->primary();
-            $table->string('nama_tag', 255);
-            $table->string('slug', 255)->unique();
-            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+            $table->string('nama_tag');
+            $table->string('slug')->unique();
+            $table->uuid('created_by')->nullable();
+            $table->timestamps();
+
+            $table->foreign('created_by')->references('id_user')->on('users')->onDelete('set null');
         });
     }
 
