@@ -22,19 +22,18 @@ class AuthService
         ];
     }
 
-    public function login(array $credentials)
+    public function login(array $data)
     {
-        if (!Auth::attempt($credentials)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
-        }
+        // if (!Auth::attempt($credentials)) {
+        //     throw ValidationException::withMessages([
+        //         'email' => ['The provided credentials are incorrect.'],
+        //     ]);
+        // }
 
-        $user = User::where('email', $credentials['email'])->first();
+        $user = User::where('email', $data['email'])->first();
 
         return [
             'user' => $user,
-            'token' => $user->createToken('auth_token')->plainTextToken
         ];
     }
 

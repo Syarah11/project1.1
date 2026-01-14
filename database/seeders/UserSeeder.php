@@ -13,23 +13,23 @@ class UserSeeder extends Seeder
         // Admin User
         User::create([
             'name' => 'Admin User',
-            'email' => 'admin@example.com',
+            'email' => 'admin@ex.com',
             'password' => Hash::make('password123'),
             'role' => 'admin',
         ]);
 
         // Regular User
         User::create([
-            'name' => 'John Doe',
-            'email' => 'user@example.com',
+            'name' => 'faefae',
+            'email' => 'user@ex.com',
             'password' => Hash::make('password123'),
             'role' => 'user',
         ]);
 
         // Author User
         User::create([
-            'name' => 'Jane Smith',
-            'email' => 'author@example.com',
+            'name' => 'faun',
+            'email' => 'author@ex.com',
             'password' => Hash::make('password123'),
             'role' => 'user',
         ]);

@@ -2,38 +2,43 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
 
 class Tag extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUuids;
 
-    protected $table = 'tags';
     protected $primaryKey = 'id_tag';
     public $incrementing = false;
     protected $keyType = 'string';
 
     protected $fillable = [
-        'id_tag',
         'nama_tag',
         'slug',
         'created_by',
     ];
 
-    protected static function boot()
+    public function creator()
     {
-        parent::boot();
+        return $this->belongsTo(User::class, 'created_by', 'id_user');
+    }
 
-        static::creating(function ($model) {
-            if (! $model->id_tag) {
-                $model->id_tag = (string) Str::uuid();
-            }
+    public function beritas()
+    {
+        return $this->belongsToMany(
+            Berita::class,
+            'berita_tags',
+            'id_tag',
+            'id_berita',
+            'id_tag',
+            'id_berita'
+        );
+    }
 
-            if (! $model->slug) {
-                $model->slug = Str::slug($model->nama_tag);
-            }
-        });
+    public function beritaTags()
+    {
+        return $this->hasMany(BeritaTag::class, 'id_tag', 'id_tag');
     }
 }

@@ -1,22 +1,19 @@
 <?php
-
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Ejurnal extends Model
 {
-    protected $table = 'ejurnals';
+    use HasFactory, HasUuids;
+
     protected $primaryKey = 'id_ejurnal';
     public $incrementing = false;
     protected $keyType = 'string';
 
-    protected $fillable = [
-        'id_ejurnal',
-        'id_user',
-        'judul',
-        'deskripsi'
-    ];
+    protected $fillable = ['id_user', 'judul', 'deskripsi'];
 
     public function user()
     {

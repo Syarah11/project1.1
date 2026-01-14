@@ -8,7 +8,7 @@ use App\Http\Requests\Ejurnal\UpdateEjurnalRequest;
 use App\Services\EjurnalService;
 use Illuminate\Http\Request;
 
-class EjurnalController extends Controller
+class EJurnalController extends Controller
 {
     protected $ejurnalService;
 
