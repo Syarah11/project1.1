@@ -10,7 +10,6 @@ use App\Http\Controllers\fe\EJurnalController;
 use App\Http\Controllers\fe\AdminController;
 use App\Http\Controllers\fe\AuthController;
 
-
 Route::get('/super-admin', [SuperAdminController::class, 'index'])->name('super.admin');
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 Route::get('/blog/tambah', [BlogController::class, 'create'])->name('blog.tambah');
