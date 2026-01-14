@@ -4,12 +4,12 @@
 
 @section('content')
 <!DOCTYPE html>
+<div class="ejurnal">
+    <h1 style="font-size: 32px; margin-bottom: 20px; color: #333;">E-Jurnal</h1>
 <html>
-<head>
-    <title>E-Jurnal</title>
+
 </head>
 <body>
-    <h1>Halaman E-Jurnal</h1>
     <p>Ini adalah halaman e-jurnal.</p>
 </body>
 </html>

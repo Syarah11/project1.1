@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\fe\SuperAdminController;
 use App\Http\Controllers\fe\DashboardController;
 use App\Http\Controllers\fe\BlogController;
 use App\Http\Controllers\fe\KategoriController;
