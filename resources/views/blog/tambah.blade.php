@@ -1,3 +1,9 @@
+@extends('layouts.app')
+
+@section('title', 'Tambah - Portal Blog')
+
+@section('content')
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,3 +14,4 @@
     <p>Ini adalah halaman tambah blog.</p>
 </body>
 </html>
+@endsection

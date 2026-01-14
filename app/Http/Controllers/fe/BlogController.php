@@ -12,6 +12,7 @@ class BlogController extends Controller
         return view('blog.list');
     }
 
+    
     public function create()
     {
         return view('blog.tambah');

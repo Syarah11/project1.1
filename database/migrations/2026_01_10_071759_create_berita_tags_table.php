@@ -12,12 +12,12 @@ return new class extends Migration
             $table->uuid('id_berita_tag')->primary();
             $table->uuid('id_berita');
             $table->uuid('id_tag');
-            
+            $table->timestamps();
+
             $table->foreign('id_berita')->references('id_berita')->on('beritas')->onDelete('cascade');
             $table->foreign('id_tag')->references('id_tag')->on('tags')->onDelete('cascade');
             
             $table->unique(['id_berita', 'id_tag']);
-            
         });
     }
 

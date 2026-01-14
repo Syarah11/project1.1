@@ -10,11 +10,10 @@ return new class extends Migration
     {
         Schema::create('kategoris', function (Blueprint $table) {
             $table->uuid('id_kategori')->primary();
-            $table->string('nama_kategori', 255);
-            $table->string('slug', 255)->unique();
+            $table->string('nama_kategori');
+            $table->string('slug')->unique();
             $table->text('deskripsi')->nullable();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+            $table->timestamps();
         });
     }
 

@@ -11,12 +11,12 @@ return new class extends Migration
         Schema::create('gambar_ejurnals', function (Blueprint $table) {
             $table->uuid('id_gambar_ejurnal')->primary();
             $table->uuid('id_ejurnal');
-            $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
-            $table->string('gambar', 255);
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('update_at')->useCurrent()->useCurrentOnUpdate();
-            
+            $table->uuid('id_user');
+            $table->string('gambar');
+            $table->timestamps();
+
             $table->foreign('id_ejurnal')->references('id_ejurnal')->on('ejurnals')->onDelete('cascade');
+            $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');
         });
     }
 

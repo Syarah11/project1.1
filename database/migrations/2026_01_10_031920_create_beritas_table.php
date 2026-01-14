@@ -10,18 +10,16 @@ return new class extends Migration
     {
         Schema::create('beritas', function (Blueprint $table) {
             $table->uuid('id_berita')->primary();
-            $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
-            $table->string('judul', 500);
-            $table->string('slug', 500)->unique();
-            $table->text('deskripsi')->nullable();
-            $table->string('thumbnail', 255)->nullable();
+            $table->uuid('id_user');
+            $table->string('judul');
+            $table->string('slug')->unique();
+            $table->text('deskripsi');
+            $table->string('thumbnail');
             $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
             $table->integer('view_count')->default(0);
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
-            
-            $table->index('status');
-            $table->index('created_at');
+            $table->timestamps();
+
+            $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');
         });
     }
 
