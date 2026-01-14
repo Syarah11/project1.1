@@ -4,21 +4,19 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-// Migration untuk berita_kategoris
 return new class extends Migration
 {
     public function up(): void
     {
         Schema::create('berita_kategoris', function (Blueprint $table) {
-            $table->uuid('id_berita_kategori')->primary();
-            $table->uuid('id_berita');
-            $table->uuid('id_kategori');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('berita_id')            // ← Dari 'id_berita'
+                  ->constrained('beritas')
+                  ->onDelete('cascade');
+            $table->foreignUuid('kategori_id')          // ← Dari 'id_kategori'
+                  ->constrained('kategoris')
+                  ->onDelete('cascade');
             $table->timestamps();
-
-            $table->foreign('id_berita')->references('id_berita')->on('beritas')->onDelete('cascade');
-            $table->foreign('id_kategori')->references('id_kategori')->on('kategoris')->onDelete('cascade');
-            
-            $table->unique(['id_berita', 'id_kategori']);
         });
     }
 

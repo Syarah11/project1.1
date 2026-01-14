@@ -3,128 +3,82 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Kategori\StoreKategoriRequest;
-use App\Http\Requests\Kategori\UpdateKategoriRequest;
-use App\Services\KategoriService;
+use App\Models\Kategori;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class KategoriController extends Controller
 {
-    protected $kategoriService;
-
-    public function __construct(KategoriService $kategoriService)
+    public function index()
     {
-        $this->kategoriService = $kategoriService;
+        $kategoris = Kategori::all();
+        
+        return response()->json([
+            'success' => true,
+            'data' => $kategoris
+        ]);
     }
 
-    public function index(Request $request)
+    public function store(Request $request)
     {
-        try {
-            $perPage = $request->input('per_page', 10);
-            $kategoris = $this->kategoriService->getAllKategoris($perPage);
+        $validated = $request->validate([
+            'name' => 'required|string',           // ← Dari 'nama_kategori'
+            'description' => 'nullable|string',    // ← Dari 'deskripsi'
+        ]);
 
-            return response()->json([
-                'success' => true,
-                'data' => $kategoris
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to fetch categories',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
+        $kategori = Kategori::create([
+            'name' => $validated['name'],
+            'slug' => Str::slug($validated['name']),
+            'description' => $validated['description'] ?? null,
+        ]);
 
-    public function store(StoreKategoriRequest $request)
-    {
-        try {
-            $kategori = $this->kategoriService->createKategori($request->validated());
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Category created successfully',
-                'data' => $kategori
-            ], 201);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to create category',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Kategori berhasil ditambahkan',
+            'data' => $kategori
+        ], 201);
     }
 
     public function show($id)
     {
-        try {
-            $kategori = $this->kategoriService->getKategoriById($id);
-
-            return response()->json([
-                'success' => true,
-                'data' => $kategori
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Category not found',
-                'error' => $e->getMessage()
-            ], 404);
-        }
+        $kategori = Kategori::with('beritas')->findOrFail($id);
+        
+        return response()->json([
+            'success' => true,
+            'data' => $kategori
+        ]);
     }
 
-    public function update(UpdateKategoriRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        try {
-            $kategori = $this->kategoriService->updateKategori($id, $request->validated());
+        $kategori = Kategori::findOrFail($id);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Category updated successfully',
-                'data' => $kategori
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to update category',
-                'error' => $e->getMessage()
-            ], 500);
+        $validated = $request->validate([
+            'name' => 'sometimes|string',
+            'description' => 'nullable|string',
+        ]);
+
+        if (isset($validated['name'])) {
+            $validated['slug'] = Str::slug($validated['name']);
         }
+
+        $kategori->update($validated);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Kategori berhasil diupdate',
+            'data' => $kategori
+        ]);
     }
 
     public function destroy($id)
     {
-        try {
-            $this->kategoriService->deleteKategori($id);
+        $kategori = Kategori::findOrFail($id);
+        $kategori->delete();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Category deleted successfully'
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to delete category',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    public function withBeritas($id)
-    {
-        try {
-            $kategori = $this->kategoriService->getKategoriWithBeritas($id);
-
-            return response()->json([
-                'success' => true,
-                'data' => $kategori
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Category not found',
-                'error' => $e->getMessage()
-            ], 404);
-        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Kategori berhasil dihapus'
+        ]);
     }
 }

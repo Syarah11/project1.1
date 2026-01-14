@@ -3,128 +3,80 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Tag\StoreTagRequest;
-use App\Http\Requests\Tag\UpdateTagRequest;
-use App\Services\TagService;
+use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class TagController extends Controller
 {
-    protected $tagService;
-
-    public function __construct(TagService $tagService)
+    public function index()
     {
-        $this->tagService = $tagService;
+        $tags = Tag::with('creator')->get();
+        
+        return response()->json([
+            'success' => true,
+            'data' => $tags
+        ]);
     }
 
-    public function index(Request $request)
+    public function store(Request $request)
     {
-        try {
-            $perPage = $request->input('per_page', 10);
-            $tags = $this->tagService->getAllTags($perPage);
+        $validated = $request->validate([
+            'name' => 'required|string',    // ← Dari 'nama_tag'
+        ]);
 
-            return response()->json([
-                'success' => true,
-                'data' => $tags
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to fetch tags',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
+        $tag = Tag::create([
+            'name' => $validated['name'],
+            'slug' => Str::slug($validated['name']),
+            'created_by' => auth()->id(),
+        ]);
 
-    public function store(StoreTagRequest $request)
-    {
-        try {
-            $tag = $this->tagService->createTag($request->validated());
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Tag created successfully',
-                'data' => $tag
-            ], 201);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to create tag',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Tag berhasil ditambahkan',
+            'data' => $tag
+        ], 201);
     }
 
     public function show($id)
     {
-        try {
-            $tag = $this->tagService->getTagById($id);
-
-            return response()->json([
-                'success' => true,
-                'data' => $tag
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Tag not found',
-                'error' => $e->getMessage()
-            ], 404);
-        }
+        $tag = Tag::with(['beritas', 'creator'])->findOrFail($id);
+        
+        return response()->json([
+            'success' => true,
+            'data' => $tag
+        ]);
     }
 
-    public function update(UpdateTagRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        try {
-            $tag = $this->tagService->updateTag($id, $request->validated());
+        $tag = Tag::findOrFail($id);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Tag updated successfully',
-                'data' => $tag
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to update tag',
-                'error' => $e->getMessage()
-            ], 500);
+        $validated = $request->validate([
+            'name' => 'sometimes|string',
+        ]);
+
+        if (isset($validated['name'])) {
+            $validated['slug'] = Str::slug($validated['name']);
         }
+
+        $tag->update($validated);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Tag berhasil diupdate',
+            'data' => $tag
+        ]);
     }
 
     public function destroy($id)
     {
-        try {
-            $this->tagService->deleteTag($id);
+        $tag = Tag::findOrFail($id);
+        $tag->delete();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Tag deleted successfully'
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to delete tag',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    public function withBeritas($id)
-    {
-        try {
-            $tag = $this->tagService->getTagWithBeritas($id);
-
-            return response()->json([
-                'success' => true,
-                'data' => $tag
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Tag not found',
-                'error' => $e->getMessage()
-            ], 404);
-        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Tag berhasil dihapus'
+        ]);
     }
 }

@@ -9,15 +9,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('berita_tags', function (Blueprint $table) {
-            $table->uuid('id_berita_tag')->primary();
-            $table->uuid('id_berita');
-            $table->uuid('id_tag');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('berita_id')
+                  ->constrained('beritas')
+                  ->onDelete('cascade');
+            $table->foreignUuid('tag_id')
+                  ->constrained('tags')
+                  ->onDelete('cascade');
             $table->timestamps();
-
-            $table->foreign('id_berita')->references('id_berita')->on('beritas')->onDelete('cascade');
-            $table->foreign('id_tag')->references('id_tag')->on('tags')->onDelete('cascade');
-            
-            $table->unique(['id_berita', 'id_tag']);
         });
     }
 

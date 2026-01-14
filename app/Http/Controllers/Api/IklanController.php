@@ -3,134 +3,93 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Iklan\StoreIklanRequest;
-use App\Http\Requests\Iklan\UpdateIklanRequest;
-use App\Services\IklanService;
+use App\Models\Iklan;
 use Illuminate\Http\Request;
 
 class IklanController extends Controller
 {
-    protected $iklanService;
-
-    public function __construct(IklanService $iklanService)
+    public function index()
     {
-        $this->iklanService = $iklanService;
+        $iklans = Iklan::with('user')->orderBy('priority')->get();
+        
+        return response()->json([
+            'success' => true,
+            'data' => $iklans
+        ]);
     }
 
-    public function index(Request $request)
+    public function store(Request $request)
     {
-        try {
-            $perPage = $request->input('per_page', 10);
-            $filters = [
-                'status' => $request->input('status'),
-                'posisi' => $request->input('posisi'),
-            ];
+        $validated = $request->validate([
+            'name' => 'required|string',                    // ← Dari 'nama'
+            'thumbnail' => 'nullable|image',
+            'link' => 'nullable|url',
+            'position' => 'required|in:top,bottom,sidebar', // ← Dari 'posisi'
+            'priority' => 'required|integer',               // ← Dari 'urutan'
+            'status' => 'required|in:active,inactive',
+        ]);
 
-            $iklans = $this->iklanService->getAllIklans($perPage, $filters);
+        $iklan = Iklan::create([
+            'user_id' => auth()->id(),
+            'name' => $validated['name'],
+            'thumbnail' => $request->file('thumbnail')?->store('iklans', 'public'),
+            'link' => $validated['link'] ?? null,
+            'position' => $validated['position'],
+            'priority' => $validated['priority'],
+            'status' => $validated['status'],
+        ]);
 
-            return response()->json([
-                'success' => true,
-                'data' => $iklans
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to fetch ads',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    public function store(StoreIklanRequest $request)
-    {
-        try {
-            $iklan = $this->iklanService->createIklan($request->validated());
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Ad created successfully',
-                'data' => $iklan
-            ], 201);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to create ad',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Iklan berhasil ditambahkan',
+            'data' => $iklan
+        ], 201);
     }
 
     public function show($id)
     {
-        try {
-            $iklan = $this->iklanService->getIklanById($id);
-
-            return response()->json([
-                'success' => true,
-                'data' => $iklan
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Ad not found',
-                'error' => $e->getMessage()
-            ], 404);
-        }
+        $iklan = Iklan::with('user')->findOrFail($id);
+        
+        return response()->json([
+            'success' => true,
+            'data' => $iklan
+        ]);
     }
 
-    public function update(UpdateIklanRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        try {
-            $iklan = $this->iklanService->updateIklan($id, $request->validated());
+        $iklan = Iklan::findOrFail($id);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Ad updated successfully',
-                'data' => $iklan
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to update ad',
-                'error' => $e->getMessage()
-            ], 500);
+        $validated = $request->validate([
+            'name' => 'sometimes|string',
+            'thumbnail' => 'nullable|image',
+            'link' => 'nullable|url',
+            'position' => 'sometimes|in:top,bottom,sidebar',
+            'priority' => 'sometimes|integer',
+            'status' => 'sometimes|in:active,inactive',
+        ]);
+
+        if ($request->hasFile('thumbnail')) {
+            $validated['thumbnail'] = $request->file('thumbnail')->store('iklans', 'public');
         }
+
+        $iklan->update($validated);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Iklan berhasil diupdate',
+            'data' => $iklan
+        ]);
     }
 
     public function destroy($id)
     {
-        try {
-            $this->iklanService->deleteIklan($id);
+        $iklan = Iklan::findOrFail($id);
+        $iklan->delete();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Ad deleted successfully'
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to delete ad',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    public function active(Request $request)
-    {
-        try {
-            $posisi = $request->input('posisi');
-            $iklans = $this->iklanService->getActiveIklans($posisi);
-
-            return response()->json([
-                'success' => true,
-                'data' => $iklans
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to fetch active ads',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Iklan berhasil dihapus'
+        ]);
     }
 }

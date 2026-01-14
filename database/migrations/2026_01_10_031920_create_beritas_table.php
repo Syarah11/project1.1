@@ -9,17 +9,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('beritas', function (Blueprint $table) {
-            $table->uuid('id_berita')->primary();
-            $table->uuid('id_user');
-            $table->string('judul');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('user_id')              // ← Dari 'id_user'
+                  ->constrained('users')
+                  ->onDelete('cascade');
+            $table->string('title');                    // ← Dari 'judul'
             $table->string('slug')->unique();
-            $table->text('deskripsi');
-            $table->string('thumbnail');
-            $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
+            $table->text('description');                // ← Dari 'deskripsi'
+            $table->string('thumbnail')->nullable();
+            $table->enum('status', ['published', 'draft'])->default('draft');
             $table->integer('view_count')->default(0);
             $table->timestamps();
-
-            $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');
         });
     }
 

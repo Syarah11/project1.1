@@ -3,171 +3,96 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Berita\StoreBeritaRequest;
-use App\Http\Requests\Berita\UpdateBeritaRequest;
-use App\Services\BeritaService;
+use App\Models\Berita;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class BeritaController extends Controller
 {
-    protected $beritaService;
-
-    public function __construct(BeritaService $beritaService)
+    public function index()
     {
-        $this->beritaService = $beritaService;
+        $beritas = Berita::with(['user', 'kategoris', 'tags'])->get();
+        
+        return response()->json([
+            'success' => true,
+            'data' => $beritas
+        ]);
     }
 
-    public function index(Request $request)
+    public function store(Request $request)
     {
-        try {
-            $perPage = $request->input('per_page', 10);
-            $filters = [
-                'status' => $request->input('status'),
-                'search' => $request->input('search'),
-            ];
+        $validated = $request->validate([
+            'title' => 'required|string',          // ← Dari 'judul'
+            'description' => 'required|string',    // ← Dari 'deskripsi'
+            'thumbnail' => 'nullable|image',
+            'status' => 'required|in:published,draft',
+        ]);
 
-            $beritas = $this->beritaService->getAllBeritas($perPage, $filters);
+        $berita = Berita::create([
+            'user_id' => auth()->id(),
+            'title' => $validated['title'],
+            'slug' => Str::slug($validated['title']),
+            'description' => $validated['description'],
+            'thumbnail' => $request->file('thumbnail')?->store('beritas', 'public'),
+            'status' => $validated['status'],
+        ]);
 
-            return response()->json([
-                'success' => true,
-                'data' => $beritas
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to fetch news',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    public function store(StoreBeritaRequest $request)
-    {
-        try {
-            $berita = $this->beritaService->createBerita($request->validated());
-
-            return response()->json([
-                'success' => true,
-                'message' => 'News created successfully',
-                'data' => $berita
-            ], 201);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to create news',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Berita berhasil ditambahkan',
+            'data' => $berita
+        ], 201);
     }
 
     public function show($id)
     {
-        try {
-            $berita = $this->beritaService->getBeritaById($id);
+        $berita = Berita::with(['user', 'kategoris', 'tags'])->findOrFail($id);
+        
+        // Increment view count
+        $berita->increment('view_count');
 
-            return response()->json([
-                'success' => true,
-                'data' => $berita
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'News not found',
-                'error' => $e->getMessage()
-            ], 404);
-        }
+        return response()->json([
+            'success' => true,
+            'data' => $berita
+        ]);
     }
 
-    public function showBySlug($slug)
+    public function update(Request $request, $id)
     {
-        try {
-            $berita = $this->beritaService->getBeritaBySlug($slug);
+        $berita = Berita::findOrFail($id);
 
-            return response()->json([
-                'success' => true,
-                'data' => $berita
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'News not found',
-                'error' => $e->getMessage()
-            ], 404);
+        $validated = $request->validate([
+            'title' => 'sometimes|string',
+            'description' => 'sometimes|string',
+            'thumbnail' => 'nullable|image',
+            'status' => 'sometimes|in:published,draft',
+        ]);
+
+        if (isset($validated['title'])) {
+            $validated['slug'] = Str::slug($validated['title']);
         }
-    }
 
-    public function update(UpdateBeritaRequest $request, $id)
-    {
-        try {
-            $berita = $this->beritaService->updateBerita($id, $request->validated());
-
-            return response()->json([
-                'success' => true,
-                'message' => 'News updated successfully',
-                'data' => $berita
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to update news',
-                'error' => $e->getMessage()
-            ], 500);
+        if ($request->hasFile('thumbnail')) {
+            $validated['thumbnail'] = $request->file('thumbnail')->store('beritas', 'public');
         }
+
+        $berita->update($validated);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Berita berhasil diupdate',
+            'data' => $berita
+        ]);
     }
 
     public function destroy($id)
     {
-        try {
-            $this->beritaService->deleteBerita($id);
+        $berita = Berita::findOrFail($id);
+        $berita->delete();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'News deleted successfully'
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to delete news',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    public function published(Request $request)
-    {
-        try {
-            $perPage = $request->input('per_page', 10);
-            $beritas = $this->beritaService->getPublishedBeritas($perPage);
-
-            return response()->json([
-                'success' => true,
-                'data' => $beritas
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to fetch published news',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    public function popular(Request $request)
-    {
-        try {
-            $limit = $request->input('limit', 5);
-            $beritas = $this->beritaService->getPopularBeritas($limit);
-
-            return response()->json([
-                'success' => true,
-                'data' => $beritas
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to fetch popular news',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Berita berhasil dihapus'
+        ]);
     }
 }

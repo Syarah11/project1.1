@@ -13,23 +13,28 @@ class KategoriSeeder extends Seeder
         $kategoris = [
             [
                 'nama_kategori' => 'Politik',
+                'slug' => 'politik',
                 'deskripsi' => 'Berita seputar politik nasional dan internasional',
             ],
             [
                 'nama_kategori' => 'Ekonomi',
-                'deskripsi' => 'Berita ekonomi dan bisnis',
+                'slug' => 'ekonomi',
+                'deskripsi' => 'Berita seputar ekonomi dan bisnis',
             ],
             [
                 'nama_kategori' => 'Teknologi',
-                'deskripsi' => 'Berita teknologi dan inovasi',
+                'slug' => 'teknologi',
+                'deskripsi' => 'Berita seputar perkembangan teknologi',
             ],
             [
                 'nama_kategori' => 'Olahraga',
-                'deskripsi' => 'Berita olahraga dan kompetisi',
+                'slug' => 'olahraga',
+                'deskripsi' => 'Berita seputar dunia olahraga',
             ],
             [
-                'nama_kategori' => 'Entertainment',
-                'deskripsi' => 'Berita hiburan dan selebriti',
+                'nama_kategori' => 'Hiburan',
+                'slug' => 'hiburan',
+                'deskripsi' => 'Berita seputar dunia hiburan',
             ],
         ];
 

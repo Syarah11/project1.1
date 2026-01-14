@@ -10,23 +10,18 @@ class Iklan extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $primaryKey = 'id_iklan';
-    public $incrementing = false;
-    protected $keyType = 'string';
-
     protected $fillable = [
-        'id_user', 'nama', 'thumbnail', 'link', 'status', 'posisi', 'urutan'
+        'user_id',
+        'name',          // ← Dari 'nama'
+        'thumbnail',
+        'status',
+        'link',
+        'position',      // ← Dari 'posisi'
+        'priority',      // ← Dari 'urutan'
     ];
-
-    protected $casts = ['urutan' => 'integer'];
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id_user', 'id_user');
-    }
-
-    public function scopeActive($query)
-    {
-        return $query->where('status', 'active');
+        return $this->belongsTo(User::class);
     }
 }

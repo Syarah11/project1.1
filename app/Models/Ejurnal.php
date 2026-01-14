@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -9,19 +10,19 @@ class Ejurnal extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $primaryKey = 'id_ejurnal';
-    public $incrementing = false;
-    protected $keyType = 'string';
-
-    protected $fillable = ['id_user', 'judul', 'deskripsi'];
+    protected $fillable = [
+        'user_id',
+        'title',         // ← Dari 'judul'
+        'description',   // ← Dari 'deskripsi'
+    ];
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id_user', 'id_user');
+        return $this->belongsTo(User::class);
     }
 
     public function gambarEjurnals()
     {
-        return $this->hasMany(GambarEjurnal::class, 'id_ejurnal', 'id_ejurnal');
+        return $this->hasMany(GambarEjurnal::class);
     }
 }

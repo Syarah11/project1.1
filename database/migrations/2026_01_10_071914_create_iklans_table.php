@@ -9,17 +9,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('iklans', function (Blueprint $table) {
-            $table->uuid('id_iklan')->primary();
-            $table->uuid('id_user');
-            $table->string('nama');
-            $table->string('thumbnail');
-            $table->string('link');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('user_id')
+                  ->constrained('users')
+                  ->onDelete('cascade');
+            $table->string('name');                     // ← Dari 'nama'
+            $table->string('thumbnail')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
-            $table->enum('posisi', ['top', 'sidebar', 'bottom', 'popup'])->default('sidebar');
-            $table->integer('urutan')->default(0);
+            $table->string('link')->nullable();
+            $table->enum('position', ['top', 'bottom', 'sidebar'])->default('top'); // ← Dari 'posisi'
+            $table->integer('priority')->default(0);    // ← Dari 'urutan'
             $table->timestamps();
-
-            $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');
         });
     }
 

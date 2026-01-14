@@ -12,12 +12,8 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens, HasUuids;
 
-    protected $primaryKey = 'id_user';
-    public $incrementing = false;
-    protected $keyType = 'string';
-
     protected $fillable = [
-        'nama',
+        'name',        // ← Dari 'nama'
         'email',
         'password',
         'role',
@@ -40,26 +36,26 @@ class User extends Authenticatable
     // Relationships
     public function beritas()
     {
-        return $this->hasMany(Berita::class, 'id_user', 'id_user');
+        return $this->hasMany(Berita::class);
     }
 
     public function ejurnals()
     {
-        return $this->hasMany(Ejurnal::class, 'id_user', 'id_user');
+        return $this->hasMany(Ejurnal::class);
     }
 
     public function gambarEjurnals()
     {
-        return $this->hasMany(GambarEjurnal::class, 'id_user', 'id_user');
+        return $this->hasMany(GambarEjurnal::class);
     }
 
     public function iklans()
     {
-        return $this->hasMany(Iklan::class, 'id_user', 'id_user');
+        return $this->hasMany(Iklan::class);
     }
 
     public function tags()
     {
-        return $this->hasMany(Tag::class, 'created_by', 'id_user');
+        return $this->hasMany(Tag::class, 'created_by');
     }
 }

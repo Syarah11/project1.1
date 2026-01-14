@@ -10,23 +10,29 @@ class TagSeeder extends Seeder
 {
     public function run(): void
     {
-        $admin = User::where('role', 'admin')->first();
+        // Ambil user admin
+        $admin = User::where('email', 'admin@ex.com')->first();
+
+        // Jika admin tidak ada, skip
+        if (!$admin) {
+            $this->command->warn('Admin user tidak ditemukan. Tag seeder dilewati.');
+            return;
+        }
 
         $tags = [
             'Breaking News',
             'Trending',
             'Viral',
-            'Update',
-            'Eksklusif',
-            'Terkini',
-            'Hot News',
             'Investigasi',
+            'Opini',
+            'Eksklusif',
         ];
 
         foreach ($tags as $tagName) {
             Tag::create([
                 'nama_tag' => $tagName,
-                'created_by' => $admin->id,
+                'slug' => \Illuminate\Support\Str::slug($tagName),
+                'created_by' => $admin->id_user,
             ]);
         }
     }

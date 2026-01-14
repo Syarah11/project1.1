@@ -22,20 +22,23 @@ class AuthService
         ];
     }
 
-    public function login(array $data)
-    {
-        // if (!Auth::attempt($credentials)) {
-        //     throw ValidationException::withMessages([
-        //         'email' => ['The provided credentials are incorrect.'],
-        //     ]);
-        // }
-
-        $user = User::where('email', $data['email'])->first();
-
-        return [
-            'user' => $user,
-        ];
+public function login(array $data)
+{
+    // Auth::attempt sudah handle cek email dan password
+    if (!Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
+        throw ValidationException::withMessages([
+            'email' => ['Email atau password salah.'],
+        ]);
     }
+
+    $user = Auth::user();
+    $token = $user->createToken('auth_token')->plainTextToken;
+
+    return [
+        'user' => $user,
+        'token' => $token
+    ];
+}
 
     public function logout($user)
     {

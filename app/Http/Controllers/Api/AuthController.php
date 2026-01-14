@@ -3,104 +3,63 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Requests\Auth\RegisterRequest;
-use App\Http\Requests\Auth\UpdateProfileRequest;
-use App\Services\AuthService;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    protected $authService;
-
-    public function __construct(AuthService $authService)
+    public function login(Request $request)
     {
-        $this->authService = $authService;
+         // ⛔ Paksa hanya JSON (cegah HTML / redirect web)
+    if (!$request->expectsJson()) {
+        return response()->json([
+            'message' => 'API only'
+        ], 406);
     }
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-    public function register(RegisterRequest $request)
-    {
-        try {
-            $result = $this->authService->register($request->validated());
+        $user = User::where('email', $request->email)->first();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'User registered successfully',
-                'data' => $result
-            ], 201);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Registration failed',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    public function login(LoginRequest $request)
-    {
-        try {
-            $result = $this->authService->login($request->validated());
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Login successful',
-                'data' => $result
-            ], 200);
-        } catch (\Exception $e) {
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Login failed',
-                'error' => $e->getMessage()
             ], 401);
         }
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'success' => true,
+            'token' => $token,
+            'user' => [
+                'id' => $user->id,           // ← Dari 'id_user'
+                'name' => $user->name,       // ← Dari 'nama'
+                'email' => $user->email,
+                'role' => $user->role,
+            ]
+        ]);
     }
 
     public function logout(Request $request)
     {
-        try {
-            $this->authService->logout($request->user());
+        $request->user()->currentAccessToken()->delete();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Logout successful'
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Logout failed',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Logout berhasil'
+        ]);
     }
 
-    public function profile(Request $request)
+    public function me(Request $request)
     {
         return response()->json([
             'success' => true,
-            'data' => $request->user()
-        ], 200);
-    }
-
-    public function updateProfile(UpdateProfileRequest $request)
-    {
-        try {
-            $user = $this->authService->updateProfile(
-                $request->user(),
-                $request->validated()
-            );
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Profile updated successfully',
-                'data' => $user
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Update failed',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+            'user' => $request->user()
+        ]);
     }
 }

@@ -9,13 +9,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ejurnals', function (Blueprint $table) {
-            $table->uuid('id_ejurnal')->primary();
-            $table->uuid('id_user');
-            $table->string('judul');
-            $table->text('deskripsi');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('user_id')
+                  ->constrained('users')
+                  ->onDelete('cascade');
+            $table->string('title');                    // ← Dari 'judul'
+            $table->text('description');                // ← Dari 'deskripsi'
             $table->timestamps();
-
-            $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');
         });
     }
 

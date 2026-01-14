@@ -12,26 +12,26 @@ class UserSeeder extends Seeder
     {
         // Admin User
         User::create([
-            'name' => 'Admin User',
+            'nama' => 'Admin User',  // ← Ubah 'name' ke 'nama'
             'email' => 'admin@ex.com',
             'password' => Hash::make('password123'),
-            'role' => 'admin',
+            // 'role' => 'admin',  // ← Hapus ini atau sesuaikan dengan ENUM database
         ]);
 
         // Regular User
         User::create([
-            'name' => 'faefae',
+            'nama' => 'Faefae',  // ← Ubah 'name' ke 'nama'
             'email' => 'user@ex.com',
             'password' => Hash::make('password123'),
-            'role' => 'user',
+            // 'role' => 'user',  // ← Hapus atau sesuaikan
         ]);
 
         // Author User
         User::create([
-            'name' => 'faun',
+            'nama' => 'Faun',  // ← Ubah 'name' ke 'nama'
             'email' => 'author@ex.com',
             'password' => Hash::make('password123'),
-            'role' => 'user',
+            // 'role' => 'user',  // ← Hapus atau sesuaikan
         ]);
     }
 }
