@@ -6,17 +6,65 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
+    // ============================================
+    // METHOD REGISTER 
+    // ============================================
+    public function register(Request $request)
+    {
+        // Paksa hanya JSON
+        if (!$request->expectsJson() && !$request->is('api/*')) {
+            return response()->json([
+                'message' => 'API only'
+            ], 406);
+        }
+
+        // Validasi input
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => ['required', 'confirmed', Password::min(8)],
+            'role' => 'nullable|in:admin,user',
+        ]);
+
+        // Buat user baru
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => $request->role ?? 'user',
+        ]);
+
+        // Buat token
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'success' => true,
+            'message' => 'User registered successfully',
+            'token' => $token,
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->role,
+            ]
+        ], 201);
+    }
+
+    // ============================================
+    // METHOD LOGIN 
+    // ============================================
     public function login(Request $request)
     {
-         // ⛔ Paksa hanya JSON (cegah HTML / redirect web)
-    if (!$request->expectsJson()) {
-        return response()->json([
-            'message' => 'API only'
-        ], 406);
-    }
+        if (!$request->expectsJson() && !$request->is('api/*')) {
+            return response()->json([
+                'message' => 'API only'
+            ], 406);
+        }
+
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
@@ -37,14 +85,17 @@ class AuthController extends Controller
             'success' => true,
             'token' => $token,
             'user' => [
-                'id' => $user->id,           // ← Dari 'id_user'
-                'name' => $user->name,       // ← Dari 'nama'
+                'id' => $user->id,
+                'name' => $user->name,
                 'email' => $user->email,
                 'role' => $user->role,
             ]
         ]);
     }
 
+    // ============================================
+    // METHOD LOGOUT 
+    // ============================================
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
@@ -55,6 +106,9 @@ class AuthController extends Controller
         ]);
     }
 
+    // ============================================
+    // METHOD ME
+    // ============================================
     public function me(Request $request)
     {
         return response()->json([
