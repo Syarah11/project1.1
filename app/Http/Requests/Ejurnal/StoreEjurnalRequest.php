@@ -14,7 +14,7 @@ class StoreEjurnalRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id_user' => 'required|exists:users,id',
+            'user_id' => 'required|exists:users,id',
             'judul' => 'required|string|max:500',
             'deskripsi' => 'nullable|string',
             'gambars' => 'nullable|array',
