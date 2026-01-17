@@ -142,7 +142,7 @@
                 <ul class="space-y-1">
                     <!-- Dashboard -->
                     <li>
-                        <a href="#dashboard" class="menu-item active flex items-center px-6 py-2.5 text-sm">
+                        <a href="/" class="menu-item active flex items-center px-6 py-2.5 text-sm">
                             <i class="fas fa-home w-5 text-lg"></i>
                             <span class="ml-3 menu-text">Dashboard</span>
                         </a>
@@ -159,13 +159,13 @@
                         </button>
                         <ul id="blogSubmenu" class="hidden space-y-1 mt-1">
                             <li>
-                                <a href="#tambah-blog" class="submenu-item flex items-center py-2 text-xs text-gray-600 hover:text-gray-900">
+                                <a href="/blog/tambah" class="submenu-item flex items-center py-2 text-xs text-gray-600 hover:text-gray-900">
                                     <i class="fas fa-file-circle-plus w-4 text-sm"></i>
                                     <span class="ml-2">Tambah Blog</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#list-blog" class="submenu-item flex items-center py-2 text-xs text-gray-600 hover:text-gray-900">
+                                <a href="/blog/list" class="submenu-item flex items-center py-2 text-xs text-gray-600 hover:text-gray-900">
                                     <i class="fas fa-list-ul w-4 text-sm"></i>
                                     <span class="ml-2">List Blog</span>
                                 </a>
@@ -175,7 +175,7 @@
 
                     <!-- Kategori -->
                     <li>
-                        <a href="#kategori" class="menu-item flex items-center px-6 py-2.5 text-sm text-gray-700 hover:text-gray-900">
+                        <a href="/kategori" class="menu-item flex items-center px-6 py-2.5 text-sm text-gray-700 hover:text-gray-900">
                             <i class="fas fa-tags w-5 text-lg"></i>
                             <span class="ml-3 menu-text">Kategori</span>
                         </a>
@@ -183,7 +183,7 @@
 
                     <!-- Iklan -->
                     <li>
-                        <a href="#iklan" class="menu-item flex items-center px-6 py-2.5 text-sm text-gray-700 hover:text-gray-900">
+                        <a href="/iklan" class="menu-item flex items-center px-6 py-2.5 text-sm text-gray-700 hover:text-gray-900">
                             <i class="fas fa-rectangle-ad w-5 text-lg"></i>
                             <span class="ml-3 menu-text">Iklan</span>
                         </a>
@@ -191,7 +191,7 @@
 
                     <!-- E-Jurnal -->
                     <li>
-                        <a href="#ejurnal" class="menu-item flex items-center px-6 py-2.5 text-sm text-gray-700 hover:text-gray-900">
+                        <a href="/ejurnal" class="menu-item flex items-center px-6 py-2.5 text-sm text-gray-700 hover:text-gray-900">
                             <i class="fas fa-book-bookmark w-5 text-lg"></i>
                             <span class="ml-3 menu-text">E-Jurnal</span>
                         </a>
@@ -199,7 +199,7 @@
 
                     <!-- Admin -->
                     <li>
-                        <a href="#admin" class="menu-item flex items-center px-6 py-2.5 text-sm text-gray-700 hover:text-gray-900">
+                        <a href="/admin" class="menu-item flex items-center px-6 py-2.5 text-sm text-gray-700 hover:text-gray-900">
                             <i class="fas fa-user-gear w-5 text-lg"></i>
                             <span class="ml-3 menu-text">Admin</span>
                         </a>
@@ -217,114 +217,7 @@
         </aside>
 
         <!-- Main Content Area -->
-        <main class="flex-1 p-8 bg-gray-100">
-            <!-- Dashboard Content -->
-            <div id="dashboard-content" class="content-page">
-                <div class="bg-white rounded-lg shadow-sm p-6">
-                    <h1 class="text-3xl font-bold text-gray-800 mb-4 flex items-center gap-3">
-                        <i class="fas fa-home text-purple-600"></i>
-                        Dashboard
-                    </h1>
-                    <p class="text-gray-600 mb-6">Selamat datang di Portal Blog Admin Dashboard</p>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg p-6 text-white shadow-lg">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-blue-100 text-sm">Total Blog</p>
-                                    <h3 class="text-3xl font-bold mt-2">248</h3>
-                                </div>
-                                <i class="fas fa-newspaper text-5xl opacity-30"></i>
-                            </div>
-                        </div>
-                        <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-lg p-6 text-white shadow-lg">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-green-100 text-sm">Kategori</p>
-                                    <h3 class="text-3xl font-bold mt-2">12</h3>
-                                </div>
-                                <i class="fas fa-tags text-5xl opacity-30"></i>
-                            </div>
-                        </div>
-                        <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg p-6 text-white shadow-lg">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <p class="text-purple-100 text-sm">E-Jurnal</p>
-                                    <h3 class="text-3xl font-bold mt-2">87</h3>
-                                </div>
-                                <i class="fas fa-book-bookmark text-5xl opacity-30"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Tambah Blog Content -->
-            <div id="tambah-blog-content" class="content-page hidden">
-                <div class="bg-white rounded-lg shadow-sm p-6">
-                    <h1 class="text-3xl font-bold text-gray-800 mb-4 flex items-center gap-3">
-                        <i class="fas fa-file-circle-plus text-green-600"></i>
-                        Tambah Blog
-                    </h1>
-                    <p class="text-gray-600">Form untuk menambahkan blog baru akan ditampilkan di sini.</p>
-                </div>
-            </div>
-
-            <!-- List Blog Content -->
-            <div id="list-blog-content" class="content-page hidden">
-                <div class="bg-white rounded-lg shadow-sm p-6">
-                    <h1 class="text-3xl font-bold text-gray-800 mb-4 flex items-center gap-3">
-                        <i class="fas fa-list-ul text-blue-600"></i>
-                        List Blog
-                    </h1>
-                    <p class="text-gray-600">Daftar semua blog akan ditampilkan di sini.</p>
-                </div>
-            </div>
-
-            <!-- Kategori Content -->
-            <div id="kategori-content" class="content-page hidden">
-                <div class="bg-white rounded-lg shadow-sm p-6">
-                    <h1 class="text-3xl font-bold text-gray-800 mb-4 flex items-center gap-3">
-                        <i class="fas fa-tags text-yellow-600"></i>
-                        Kelola Kategori
-                    </h1>
-                    <p class="text-gray-600">Halaman manajemen kategori dan tag akan ditampilkan di sini.</p>
-                </div>
-            </div>
-
-            <!-- Iklan Content -->
-            <div id="iklan-content" class="content-page hidden">
-                <div class="bg-white rounded-lg shadow-sm p-6">
-                    <h1 class="text-3xl font-bold text-gray-800 mb-4 flex items-center gap-3">
-                        <i class="fas fa-rectangle-ad text-red-600"></i>
-                        Kelola Iklan
-                    </h1>
-                    <p class="text-gray-600">Halaman manajemen iklan akan ditampilkan di sini.</p>
-                </div>
-            </div>
-
-            <!-- E-Jurnal Content -->
-            <div id="ejurnal-content" class="content-page hidden">
-                <div class="bg-white rounded-lg shadow-sm p-6">
-                    <h1 class="text-3xl font-bold text-gray-800 mb-4 flex items-center gap-3">
-                        <i class="fas fa-book-bookmark text-indigo-600"></i>
-                        Kelola E-Jurnal
-                    </h1>
-                    <p class="text-gray-600">Halaman manajemen e-jurnal akan ditampilkan di sini.</p>
-                </div>
-            </div>
-
-            <!-- Admin Content -->
-            <div id="admin-content" class="content-page hidden">
-                <div class="bg-white rounded-lg shadow-sm p-6">
-                    <h1 class="text-3xl font-bold text-gray-800 mb-4 flex items-center gap-3">
-                        <i class="fas fa-user-gear text-purple-600"></i>
-                        Kelola Admin
-                    </h1>
-                    <p class="text-gray-600">Halaman manajemen admin akan ditampilkan di sini.</p>
-                </div>
-            </div>
-        </main>
     </div>
 
     <script>
@@ -386,55 +279,6 @@
                 icon.classList.remove('rotate-90');
             }
         }
-
-        // Active Menu
-        document.querySelectorAll('.menu-item, .submenu-item').forEach(item => {
-            item.addEventListener('click', function(e) {
-                // Get the href or data attribute
-                const href = this.getAttribute('href');
-                
-                if (href && href !== '#') {
-                    e.preventDefault();
-                    
-                    // Extract page id from href
-                    const pageId = href.replace('#', '');
-                    
-                    // Show the corresponding page
-                    showPage(pageId);
-                    
-                    // Remove active class from all menu items
-                    document.querySelectorAll('.menu-item').forEach(el => {
-                        if (!el.classList.contains('justify-between')) {
-                            el.classList.remove('active');
-                        }
-                    });
-                    
-                    // Add active class to clicked item
-                    if (!this.classList.contains('justify-between')) {
-                        this.classList.add('active');
-                    }
-                }
-            });
-        });
-
-        // Load page based on URL hash on page load
-        window.addEventListener('load', function() {
-            const hash = window.location.hash.replace('#', '');
-            if (hash) {
-                showPage(hash);
-                
-                // Set active menu based on hash
-                const menuLink = document.querySelector(`a[href="#${hash}"]`);
-                if (menuLink) {
-                    document.querySelectorAll('.menu-item').forEach(el => {
-                        if (!el.classList.contains('justify-between')) {
-                            el.classList.remove('active');
-                        }
-                    });
-                    menuLink.classList.add('active');
-                }
-            }
-        });
 
         // Logout
         function logout() {
