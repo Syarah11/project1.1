@@ -13,7 +13,7 @@ class GambarEjurnal extends Model
     protected $fillable = [
         'ejurnal_id',
         'user_id',
-        'image',         // ← Dari 'gambar'
+        'image',
     ];
 
     public function ejurnal()

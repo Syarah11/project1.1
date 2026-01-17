@@ -1,27 +1,26 @@
 <?php
+
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class BeritaTag extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory;
 
-    protected $primaryKey = 'id_berita_tag';
-    public $incrementing = false;
-    protected $keyType = 'string';
+    protected $table = 'berita_tags';
+    public $timestamps = false;
 
-    protected $fillable = ['id_berita', 'id_tag'];
+    protected $fillable = ['berita_id', 'tag_id'];
 
     public function berita()
     {
-        return $this->belongsTo(Berita::class, 'id_berita', 'id_berita');
+        return $this->belongsTo(Berita::class, 'berita_id');
     }
 
     public function tag()
     {
-        return $this->belongsTo(Tag::class, 'id_tag', 'id_tag');
+        return $this->belongsTo(Tag::class, 'tag_id');
     }
 }

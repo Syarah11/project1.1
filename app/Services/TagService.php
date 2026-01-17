@@ -19,7 +19,7 @@ class TagService
 
     public function createTag(array $data)
     {
-        $data['slug'] = Str::slug($data['nama_tag']);
+        $data['slug'] = Str::slug($data['name']);
         return Tag::create($data);
     }
 
@@ -27,8 +27,8 @@ class TagService
     {
         $tag = Tag::findOrFail($id);
         
-        if (isset($data['nama_tag'])) {
-            $data['slug'] = Str::slug($data['nama_tag']);
+        if (isset($data['name'])) {
+            $data['slug'] = Str::slug($data['name']);
         }
         
         $tag->update($data);

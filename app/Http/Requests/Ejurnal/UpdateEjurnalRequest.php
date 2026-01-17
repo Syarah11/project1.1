@@ -14,8 +14,8 @@ class UpdateEjurnalRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'judul' => 'sometimes|string|max:500',
-            'deskripsi' => 'nullable|string',
+            'title' => 'sometimes|string|max:500',
+            'description' => 'nullable|string',
             'gambars' => 'nullable|array',
             'gambars.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ];

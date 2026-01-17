@@ -8,7 +8,6 @@ use App\Models\Tag;
 use App\Models\Berita;
 use App\Models\Iklan;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
@@ -19,7 +18,7 @@ class DatabaseSeeder extends Seeder
         $admin = User::create([
             'name' => 'Admin',
             'email' => 'admin@ex.com',
-             'password' => Hash::make('password123'),
+            'password' => 'password123',
             'role' => 'admin',
         ]);
 
@@ -27,7 +26,7 @@ class DatabaseSeeder extends Seeder
         $user = User::create([
             'name' => 'User Test',
             'email' => 'user@ex.com',
-             'password' => Hash::make('password123'),
+            'password' => 'password123',
             'role' => 'user',
         ]);
 
@@ -158,6 +157,6 @@ class DatabaseSeeder extends Seeder
             'status' => 'inactive',
         ]);
 
-        $this->command->info('Database seeded successfully!');
+        $this->command->info('✅ Database seeded successfully!');
     }
 }

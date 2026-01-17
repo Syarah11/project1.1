@@ -15,8 +15,8 @@ class StoreEjurnalRequest extends FormRequest
     {
         return [
             'user_id' => 'required|exists:users,id',
-            'judul' => 'required|string|max:500',
-            'deskripsi' => 'nullable|string',
+            'title' => 'required|string|max:500',
+            'description' => 'nullable|string',
             'gambars' => 'nullable|array',
             'gambars.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
@@ -25,7 +25,7 @@ class StoreEjurnalRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'judul.required' => 'Judul e-jurnal wajib diisi',
+            'title.required' => 'Judul e-jurnal wajib diisi',
             'gambars.*.image' => 'File harus berupa gambar',
         ];
     }
