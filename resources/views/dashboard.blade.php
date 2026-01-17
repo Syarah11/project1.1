@@ -17,7 +17,7 @@
                                       flex: 1;
                                       text-align: center;">
             <div style="font-size: 14px; color: #666; margin-bottom: 8px;">Jumlah Berita</div>
-            <div style="font-size: 32px; font-weight: bold; color: #333;">{{ $jumlahBerita ?? 156 }}</div>
+            <div style="font-size: 32px; font-weight: bold; color: #333;">{{ $jumlahBerita ?? 120 }}</div>
         </div>
         
         <div class="stat-card" style="padding: 20px 30px; 
@@ -26,7 +26,7 @@
                                       flex: 1;
                                       text-align: center;">
             <div style="font-size: 14px; color: #666; margin-bottom: 8px;">Statistik</div>
-            <div style="font-size: 32px; font-weight: bold; color: #333;">{{ $totalViews ?? '12.5k' }}</div>
+            <div style="font-size: 32px; font-weight: bold; color: #333;">{{ $totalViews ?? '15' }}</div>
         </div>
     </div>
     
@@ -58,15 +58,15 @@
                 <ul id="beritaTerbaruList" style="list-style: none; padding: 0; margin: 0;">
                     <li style="padding: 10px 0; border-bottom: 1px solid #ddd;">
                         <strong>Judul Berita 1</strong><br>
-                        <small style="color: #666;">2 jam yang lalu • 1.2k views</small>
+                        <small style="color: #666;">2 jam yang lalu • 1k views</small>
                     </li>
                     <li style="padding: 10px 0; border-bottom: 1px solid #ddd;">
                         <strong>Judul Berita 2</strong><br>
-                        <small style="color: #666;">5 jam yang lalu • 890 views</small>
+                        <small style="color: #666;">5 jam yang lalu • 590 views</small>
                     </li>
                     <li style="padding: 10px 0;">
                         <strong>Judul Berita 3</strong><br>
-                        <small style="color: #666;">1 hari yang lalu • 650 views</small>
+                        <small style="color: #666;">1 hari yang lalu • 950 views</small>
                     </li>
                 </ul>
             </div>

@@ -7,7 +7,6 @@
 <div class="list-blog-container" style="padding: 20px; font-family: Arial, sans-serif;">
     
     <!-- Title -->
-    <h1 style="font-size: 24px; margin-bottom: 20px; color: #333; font-weight: normal;">List</h1>
     
     <!-- Tambah Blog Button -->
     <div style="margin-bottom: 20px;">
@@ -253,12 +252,7 @@
             </tbody>
         </table>
         
-        <!-- Pagination -->
-        @if(isset($blogs))
-        <div style="margin-top: 20px; display: flex; justify-content: center;">
-            {{ $blogs->links() }}
-        </div>
-        @endif
+        
         
     </div>
     
