@@ -28,6 +28,7 @@ Route::get('/tags/{id}', [TagController::class, 'show']);
 // PROTECTED ROUTES (Butuh Token)
 // ========================================
 Route::middleware('auth:sanctum')->group(function () {
+//Route::group(function () { tanpa token
     // Auth
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
@@ -48,10 +49,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/tags/{id}', [TagController::class, 'destroy']);
 
     // Iklans - Full CRUD (Semua operasi butuh login)
-    Route::apiResource('iklans', IklanController::class);
+    Route::apiResource('/iklans', IklanController::class);
 
     // E-Jurnals - Full CRUD (Semua operasi butuh login)
-    Route::apiResource('ejurnals', EjurnalController::class);
+    Route::apiResource('/ejurnals', EjurnalController::class);
     
     // Delete gambar ejurnal
     Route::delete('/ejurnals/gambar/{id}', [EjurnalController::class, 'deleteGambar']);
