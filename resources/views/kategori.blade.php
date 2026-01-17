@@ -191,8 +191,8 @@
                         <tbody id="tagTableBody">
                             <tr class="border-b border-gray-300 table-row">
                                 <td class="py-2 px-2">
-                                    <span class="inline-block px-3 py-1 rounded-full text-white text-xs font-medium bg-purple-500">
-                                        <i class="fas fa-tag"></i> Programming
+                                    <span class="text-gray-700 text-xs font-medium">
+                                        <i class="fas fa-tag mr-1"></i> Programming
                                     </span>
                                 </td>
                                 <td class="py-2 px-2 text-center">
@@ -211,8 +211,8 @@
                             </tr>
                             <tr class="border-b border-gray-300 table-row">
                                 <td class="py-2 px-2">
-                                    <span class="inline-block px-3 py-1 rounded-full text-white text-xs font-medium bg-blue-500">
-                                        <i class="fas fa-tag"></i> Design
+                                    <span class="text-gray-700 text-xs font-medium">
+                                        <i class="fas fa-tag mr-1"></i> Design
                                     </span>
                                 </td>
                                 <td class="py-2 px-2 text-center">
@@ -231,8 +231,8 @@
                             </tr>
                             <tr class="border-b border-gray-300 table-row">
                                 <td class="py-2 px-2">
-                                    <span class="inline-block px-3 py-1 rounded-full text-white text-xs font-medium bg-green-500">
-                                        <i class="fas fa-tag"></i> Tutorial
+                                    <span class="text-gray-700 text-xs font-medium">
+                                        <i class="fas fa-tag mr-1"></i> Tutorial
                                     </span>
                                 </td>
                                 <td class="py-2 px-2 text-center">
@@ -417,16 +417,13 @@
                 return;
             }
 
-            const colors = ['bg-purple-500', 'bg-blue-500', 'bg-green-500', 'bg-red-500', 'bg-yellow-500', 'bg-pink-500'];
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-
             const tbody = document.getElementById('tagTableBody');
             const newRow = tbody.insertRow(0);
             newRow.className = 'border-b border-gray-300 table-row';
             newRow.innerHTML = `
                 <td class="py-2 px-2">
-                    <span class="inline-block px-3 py-1 rounded-full text-white text-xs font-medium ${randomColor}">
-                        <i class="fas fa-tag"></i> ${name}
+                    <span class="text-gray-700 text-xs font-medium">
+                        <i class="fas fa-tag mr-1"></i> ${name}
                     </span>
                 </td>
                 <td class="py-2 px-2 text-center">
@@ -476,7 +473,7 @@
 
             if (currentEditRow) {
                 const tagSpan = currentEditRow.cells[0].querySelector('span');
-                tagSpan.innerHTML = `<i class="fas fa-tag"></i> ${name}`;
+                tagSpan.innerHTML = `<i class="fas fa-tag mr-1"></i> ${name}`;
                 currentEditRow.cells[1].querySelector('span').textContent = count;
                 currentEditRow.cells[2].querySelector('button').setAttribute('onclick', `editTag('${name}', ${count})`);
             }

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\fe;
+namespace App\Http\Controllers\WEB;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class DashboardController extends Controller
+class AuthController extends Controller
 {
     public function index()
     {
-        return view('dashboard');
+        return view('SuperAdmin.index');
     }
 }

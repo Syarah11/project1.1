@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\fe;
+namespace App\Http\Controllers\WEB;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class EJurnalController extends Controller
+class AdminController extends Controller
 {
     public function index()
     {
-        return view('ejurnal');
+        return view('admin');
     }
 }
