@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 // ========================================
 // PUBLIC ROUTES
 // ========================================
-Route::post('/Api-login', [AuthController::class, 'login']);
+Route::post('/api-login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
 // Public - Lihat berita, kategori, tags (index & show saja)

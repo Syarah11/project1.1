@@ -16,7 +16,7 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         // Paksa hanya JSON
-        if (!$request->expectsJson() && !$request->is('api/*')) {
+        if (!$request->expectsJson()) {
             return response()->json([
                 'message' => 'API only'
             ], 406);
@@ -34,7 +34,7 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => $request->password,
             'role' => $request->role ?? 'user',
         ]);
 
@@ -59,11 +59,12 @@ class AuthController extends Controller
     // ============================================
     public function login(Request $request)
     {
-        if (!$request->expectsJson() && !$request->is('api/*')) {
-            return response()->json([
-                'message' => 'API only'
-            ], 406);
-        }
+       if (!$request->is('api/*')) {
+    return response()->json([
+        'message' => 'API only'
+    ], 406);
+}
+
 
         $request->validate([
             'email' => 'required|email',
