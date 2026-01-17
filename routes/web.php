@@ -1,14 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\fe\SuperAdminController;
-use App\Http\Controllers\fe\DashboardController;
-use App\Http\Controllers\fe\BlogController;
-use App\Http\Controllers\fe\KategoriController;
-use App\Http\Controllers\fe\IklanController;
-use App\Http\Controllers\fe\EJurnalController;
-use App\Http\Controllers\fe\AdminController;
-use App\Http\Controllers\fe\AuthController;
+use App\Http\Controllers\WEB\SuperAdminController;
+use App\Http\Controllers\WEB\DashboardController;
+use App\Http\Controllers\WEB\BlogController;
+use App\Http\Controllers\WEB\KategoriController;
+use App\Http\Controllers\WEB\IklanController;
+use App\Http\Controllers\WEB\EJurnalController;
+use App\Http\Controllers\WEB\AdminController;
+use App\Http\Controllers\WEB\AuthController;
 
 Route::get('/super-admin', [SuperAdminController::class, 'index'])->name('super.admin');
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
