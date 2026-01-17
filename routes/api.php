@@ -9,36 +9,50 @@ use App\Http\Controllers\Api\EjurnalController;
 use Illuminate\Support\Facades\Route;
 
 // ========================================
-// PUBLIC ROUTES
+// PUBLIC ROUTES (Tanpa Auth)
 // ========================================
-Route::post('/api-login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
-// Public - Lihat berita, kategori, tags (index & show saja)
-Route::apiResource('beritas', BeritaController::class)->only(['index', 'show']);
-Route::apiResource('kategoris', KategoriController::class)->only(['index', 'show']);
-Route::apiResource('tags', TagController::class)->only(['index', 'show']);
+// Public - Hanya bisa lihat (GET)
+Route::get('/beritas', [BeritaController::class, 'index']);
+Route::get('/beritas/{id}', [BeritaController::class, 'show']);
+
+Route::get('/kategoris', [KategoriController::class, 'index']);
+Route::get('/kategoris/{id}', [KategoriController::class, 'show']);
+
+Route::get('/tags', [TagController::class, 'index']);
+Route::get('/tags/{id}', [TagController::class, 'show']);
 
 // ========================================
-// PROTECTED ROUTES
+// PROTECTED ROUTES (Butuh Token)
 // ========================================
 Route::middleware('auth:sanctum')->group(function () {
     // Auth
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
 
-    // Beritas - store, update, destroy saja (index & show sudah di public)
-    Route::apiResource('beritas', BeritaController::class)->except(['index', 'show']);
+    // Beritas - CUD (Create, Update, Delete)
+    Route::post('/beritas', [BeritaController::class, 'store']);
+    Route::put('/beritas/{id}', [BeritaController::class, 'update']);
+    Route::delete('/beritas/{id}', [BeritaController::class, 'destroy']);
 
-    // Kategoris - store, update, destroy saja
-    Route::apiResource('kategoris', KategoriController::class)->except(['index', 'show']);
+    // Kategoris - CUD
+    Route::post('/kategoris', [KategoriController::class, 'store']);
+    Route::put('/kategoris/{id}', [KategoriController::class, 'update']);
+    Route::delete('/kategoris/{id}', [KategoriController::class, 'destroy']);
 
-    // Tags - store, update, destroy saja
-    Route::apiResource('tags', TagController::class)->except(['index', 'show']);
+    // Tags - CUD
+    Route::post('/tags', [TagController::class, 'store']);
+    Route::put('/tags/{id}', [TagController::class, 'update']);
+    Route::delete('/tags/{id}', [TagController::class, 'destroy']);
 
-    // Iklans - Full CRUD (harus login semua)
+    // Iklans - Full CRUD (Semua operasi butuh login)
     Route::apiResource('iklans', IklanController::class);
 
-    // E-Jurnals - Full CRUD (harus login semua)
+    // E-Jurnals - Full CRUD (Semua operasi butuh login)
     Route::apiResource('ejurnals', EjurnalController::class);
+    
+    // Delete gambar ejurnal
+    Route::delete('/ejurnals/gambar/{id}', [EjurnalController::class, 'deleteGambar']);
 });

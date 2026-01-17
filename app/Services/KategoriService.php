@@ -19,7 +19,7 @@ class KategoriService
 
     public function createKategori(array $data)
     {
-        $data['slug'] = Str::slug($data['nama_kategori']);
+        $data['slug'] = Str::slug($data['name']);
         return Kategori::create($data);
     }
 
@@ -27,8 +27,8 @@ class KategoriService
     {
         $kategori = $this->getKategoriById($id);
         
-        if (isset($data['nama_kategori'])) {
-            $data['slug'] = Str::slug($data['nama_kategori']);
+        if (isset($data['name'])) {
+            $data['slug'] = Str::slug($data['name']);
         }
         
         $kategori->update($data);

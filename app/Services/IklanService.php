@@ -15,11 +15,11 @@ class IklanService
             $query->where('status', $filters['status']);
         }
 
-        if (isset($filters['posisi'])) {
-            $query->where('posisi', $filters['posisi']);
+        if (isset($filters['position'])) {
+            $query->where('position', $filters['position']);
         }
 
-        return $query->orderBy('urutan', 'asc')->paginate($perPage);
+        return $query->orderBy('priority', 'asc')->paginate($perPage);
     }
 
     public function getIklanById($id)
@@ -62,14 +62,14 @@ class IklanService
         return $iklan->delete();
     }
 
-    public function getActiveIklans($posisi = null)
+    public function getActiveIklans($position = null)
     {
         $query = Iklan::where('status', 'active');
 
-        if ($posisi) {
-            $query->where('posisi', $posisi);
+        if ($position) {
+            $query->where('position', $position);
         }
 
-        return $query->orderBy('urutan', 'asc')->get();
+        return $query->orderBy('priority', 'asc')->get();
     }
 }

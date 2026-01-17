@@ -22,11 +22,10 @@ class EjurnalService
     public function createEjurnal(array $data)
     {
         return DB::transaction(function () use ($data) {
-
             $ejurnal = Ejurnal::create([
-                'user_id'     => $data['user_id'],
-                'title'       => $data['judul'],        // ✅ FIX
-                'description' => $data['deskripsi'],    // ✅ FIX
+                'user_id' => $data['user_id'],
+                'title' => $data['title'],
+                'description' => $data['description'] ?? null,
             ]);
 
             if (!empty($data['gambars']) && is_array($data['gambars'])) {
@@ -35,8 +34,8 @@ class EjurnalService
 
                     GambarEjurnal::create([
                         'ejurnal_id' => $ejurnal->id,
-                        'user_id'    => $data['user_id'],
-                        'gambar'     => $path,
+                        'user_id' => $data['user_id'],
+                        'image' => $path,
                     ]);
                 }
             }
@@ -48,17 +47,16 @@ class EjurnalService
     public function updateEjurnal($id, array $data)
     {
         return DB::transaction(function () use ($id, $data) {
-
             $ejurnal = Ejurnal::findOrFail($id);
 
             $updateData = [];
 
-            if (isset($data['judul'])) {
-                $updateData['title'] = $data['judul'];       // ✅ FIX
+            if (isset($data['title'])) {
+                $updateData['title'] = $data['title'];
             }
 
-            if (isset($data['deskripsi'])) {
-                $updateData['description'] = $data['deskripsi']; // ✅ FIX
+            if (isset($data['description'])) {
+                $updateData['description'] = $data['description'];
             }
 
             $ejurnal->update($updateData);
@@ -68,9 +66,9 @@ class EjurnalService
                     $path = $gambar->store('ejurnals', 'public');
 
                     GambarEjurnal::create([
-                        'id_ejurnal' => $ejurnal->id,
-                        'user_id'    => $data['user_id'],
-                        'gambar'     => $path,
+                        'ejurnal_id' => $ejurnal->id,
+                        'user_id' => auth()->id(),
+                        'image' => $path,
                     ]);
                 }
             }
@@ -82,11 +80,10 @@ class EjurnalService
     public function deleteEjurnal($id)
     {
         return DB::transaction(function () use ($id) {
-
             $ejurnal = Ejurnal::with('gambars')->findOrFail($id);
 
             foreach ($ejurnal->gambars as $gambar) {
-                Storage::disk('public')->delete($gambar->gambar);
+                Storage::disk('public')->delete($gambar->image);
                 $gambar->delete();
             }
 
@@ -99,7 +96,7 @@ class EjurnalService
     public function deleteGambarEjurnal($id)
     {
         $gambar = GambarEjurnal::findOrFail($id);
-        Storage::disk('public')->delete($gambar->gambar);
+        Storage::disk('public')->delete($gambar->image);
         return $gambar->delete();
     }
 }

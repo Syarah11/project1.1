@@ -2,28 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-// ===== BERITA KATEGORI =====
 class BeritaKategori extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory;
 
-    protected $primaryKey = 'id_berita_kategori';
-    public $incrementing = false;
-    protected $keyType = 'string';
+    protected $table = 'berita_kategoris';
+    public $timestamps = false;
 
-    protected $fillable = ['id_berita', 'id_kategori'];
+    protected $fillable = ['berita_id', 'kategori_id'];
 
     public function berita()
     {
-        return $this->belongsTo(Berita::class, 'id_berita', 'id_berita');
+        return $this->belongsTo(Berita::class, 'berita_id');
     }
 
     public function kategori()
     {
-        return $this->belongsTo(Kategori::class, 'id_kategori', 'id_kategori');
+        return $this->belongsTo(Kategori::class, 'kategori_id');
     }
 }
