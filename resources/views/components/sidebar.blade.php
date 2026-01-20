@@ -199,7 +199,7 @@
 
                     <!-- Admin -->
                     <li>
-                        <a href="/admin" class="menu-item flex items-center px-6 py-2.5 text-sm text-gray-700 hover:text-gray-900">
+                        <a href="#admin" class="menu-item flex items-center px-6 py-2.5 text-sm text-gray-700 hover:text-gray-900">
                             <i class="fas fa-user-gear w-5 text-lg"></i>
                             <span class="ml-3 menu-text">Admin</span>
                         </a>

@@ -128,9 +128,9 @@
             <div id="beritaTerpopulerList">
                 <!-- Item 1 -->
                 <div style="padding: 12px; border-bottom: 1px solid #dee2e6; margin-bottom: 10px;">
-                    <span style="background-color: #e74c3c; color: white; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; display: inline-block; margin-bottom: 6px;">POLITIK</span>
                     <div style="color: #212529; font-weight: 600; font-size: 13px; line-height: 1.4; margin-bottom: 8px;">Bahlil Siap Perangi Mafia Migas, Minta Dukungan Ulama</div>
                     <div style="display: flex; justify-content: space-between;">
+                        <span style="color: #6c757d; font-size: 11px;">POLITIK</span>
                         <span style="color: #495057; font-size: 11px; font-weight: 500;">👁 15.3k</span>
                         <span style="color: #6c757d; font-size: 11px;">3 hari lalu</span>
                     </div>
@@ -138,9 +138,9 @@
                 
                 <!-- Item 2 -->
                 <div style="padding: 12px; border-bottom: 1px solid #dee2e6; margin-bottom: 10px;">
-                    <span style="background-color: #3498db; color: white; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; display: inline-block; margin-bottom: 6px;">TEKNOLOGI</span>
-                    <div style="color: #212529; font-weight: 600; font-size: 13px; line-height: 1.4; margin-bottom: 8px;">Berita Viral 2</div>
+                    <div style="color: #212529; font-weight: 600; font-size: 13px; line-height: 1.4; margin-bottom: 8px;">Indonesia Percepat Pembangunan Infrastruktur Digital Nasional Internet</div>
                     <div style="display: flex; justify-content: space-between;">
+                        <span style="color: #6c757d; font-size: 11px;">TEKNOLOGI</span>
                         <span style="color: #495057; font-size: 11px; font-weight: 500;">👁 12.8k</span>
                         <span style="color: #6c757d; font-size: 11px;">1 minggu lalu</span>
                     </div>
@@ -148,9 +148,9 @@
                 
                 <!-- Item 3 -->
                 <div style="padding: 12px;">
-                    <span style="background-color: #27ae60; color: white; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; display: inline-block; margin-bottom: 6px;">OLAHRAGA</span>
-                    <div style="color: #212529; font-weight: 600; font-size: 13px; line-height: 1.4; margin-bottom: 8px;">Berita Viral 3</div>
+                    <div style="color: #212529; font-weight: 600; font-size: 13px; line-height: 1.4; margin-bottom: 8px;">Erick Thohir Tancap Gas, Industri Olahraga Ditarget Jadi Mesin Ekonomi Baru Nasional</div>
                     <div style="display: flex; justify-content: space-between;">
+                        <span style="color: #6c757d; font-size: 11px;">OLAHRAGA</span>
                         <span style="color: #495057; font-size: 11px; font-weight: 500;">👁 10.5k</span>
                         <span style="color: #6c757d; font-size: 11px;">2 hari lalu</span>
                     </div>
