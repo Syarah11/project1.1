@@ -9,7 +9,7 @@ class BlogController extends Controller
 {
     public function index()
     {
-        return view('blog.list');
+        return view('layouts.blog.list');
     }
 
     

@@ -9,6 +9,6 @@ class IklanController extends Controller
 {
     public function index()
     {
-        return view('iklan');
+        return view('layouts.iklan');
     }
 }
