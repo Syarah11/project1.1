@@ -12,11 +12,16 @@ return [
     | as required, but they're a perfect start for most applications.
     |
     */
-
+   'defaults' => [
+    'guard' => 'sanctum',  // ✅ Hardcode 'sanctum'
+    'passwords' => 'users',
+],
+    /*
     'defaults' => [
         'guard' => env('AUTH_GUARD', 'web'),
         'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
     ],
+    */
 
     /*
     |--------------------------------------------------------------------------
@@ -35,13 +40,25 @@ return [
     |
     */
 
-   'guards' => [
+   /*'guards' => [
     'web' => [
         'driver' => 'session',
         'provider' => 'users',
     ],
 
     'api' => [
+        'driver' => 'sanctum',
+        'provider' => 'users',
+    ],
+],*/
+
+'guards' => [
+    'web' => [
+        'driver' => 'session',
+        'provider' => 'users',
+    ],
+    
+    'sanctum' => [                    // ✅ TAMBAHKAN INI
         'driver' => 'sanctum',
         'provider' => 'users',
     ],

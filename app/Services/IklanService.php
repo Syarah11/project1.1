@@ -32,6 +32,8 @@ class IklanService
         if (isset($data['thumbnail'])) {
             $data['thumbnail'] = $data['thumbnail']->store('iklans', 'public');
         }
+        // SET USER ID DARI USER LOGIN
+    //$data['user_id'] = Auth::id();
 
         return Iklan::create($data);
     }
@@ -46,6 +48,7 @@ class IklanService
             }
             $data['thumbnail'] = $data['thumbnail']->store('iklans', 'public');
         }
+        
 
         $iklan->update($data);
         return $iklan->fresh();

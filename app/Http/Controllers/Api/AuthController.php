@@ -111,10 +111,19 @@ class AuthController extends Controller
     // METHOD ME
     // ============================================
     public function me(Request $request)
-    {
+{
+    $user = auth('sanctum')->user();  // ✅ Pakai guard sanctum
+    
+    if (!$user) {
         return response()->json([
-            'success' => true,
-            'user' => $request->user()
-        ]);
+            'success' => false,
+            'message' => 'User not found'
+        ], 404);
     }
+    
+    return response()->json([
+        'success' => true,
+        'user' => $user
+    ]);
+}
 }
