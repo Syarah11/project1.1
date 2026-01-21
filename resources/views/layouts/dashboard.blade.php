@@ -31,17 +31,120 @@
     </div>
     
     <!-- Diagram Viewers -->
-    <div style="margin-bottom: 30px;">
-        <h2 style="font-size: 16px; margin-bottom: 15px; color: #333; font-weight: normal;">Diagram Viewers</h2>
-        <div class="diagram-box" style="width: 60%; 
-                                        height: 130px; 
-                                        background-color: #eddbdb; 
-                                        border-radius: 12px;
-                                        padding: 15px;
-                                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-            <canvas id="viewersChart"></canvas>
+    <!DOCTYPE html>
+    <html lang="id">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Diagram Garis Mingguan</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                margin: 0;
+                background-color: #f5f5f5;
+            }
+            .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 90%;
+        }
+        canvas {
+            max-height: 300px;
+        }
+            h2 {
+                text-align: center;
+                color: #333;
+                margin-bottom: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h2>Diagram Data Viewers Mingguan</h2>
+            <canvas id="myChart"></canvas>
         </div>
-    </div>
+
+        <script>
+            const ctx = document.getElementById('myChart').getContext('2d');
+            
+            const data = {
+                labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
+                datasets: [{
+                    label: 'Data',
+                    data: [879, 3595, 2569, 1995, 3678, 500, 799, 288, 949],
+                    borderColor: '#003d82',
+                    backgroundColor: '#003d82',
+                    borderWidth: 3,
+                    pointRadius: 6,
+                    pointBackgroundColor: '#003d82',
+                    pointBorderColor: '#003d82',
+                    pointHoverRadius: 8,
+                    tension: 0
+                }]
+            };
+
+            const config = {
+                type: 'line',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: true,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y.toLocaleString('id-ID');
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 4500,
+                            ticks: {
+                                stepSize: 0,
+                                callback: function(value) {
+                                    return value.toLocaleString('id-ID');
+                                },
+                                font: {
+                                    size: 12
+                                }
+                            },
+                            grid: {
+                                color: '#e0e0e0'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                font: {
+                                    size: 12
+                                }
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            };
+
+            const myChart = new Chart(ctx, config);
+        </script>
+    </body>
+    </html>
     
 <!-- Berita Section -->
 <div class="berita-section" style="display: grid; grid-template-columns: 75% 23%; gap: 2%;">
