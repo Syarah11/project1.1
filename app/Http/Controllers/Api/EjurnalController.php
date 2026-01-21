@@ -1,3 +1,5 @@
+<?php
+
 public function store(Request $request)
 {
     $validated = $request->validate([
