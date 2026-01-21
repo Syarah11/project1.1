@@ -9,6 +9,6 @@ class AuthController extends Controller
 {
     public function index()
     {
-        return view('SuperAdmin.index');
+        return view('layouts.SuperAdmin.index');
     }
 }

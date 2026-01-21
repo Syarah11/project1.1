@@ -1,3 +1,4 @@
+<!-- resources/views/components/sidebar.blade.php -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -445,13 +446,15 @@
             box-shadow: 0 4px 12px rgba(255, 71, 87, 0.4);
         }
 
+        /* PERBAIKAN UTAMA - Main Content */
         .main-content {
-    margin-left: 260px;
-    margin-top: 0;  /* Ubah jadi 0 */
-    padding: 30px;
-    padding-top: 94px;  /* Total: 64px navbar + 30px spacing */
-    transition: margin-left 0.3s ease;
-}
+            margin-left: 260px;
+            margin-top: 64px;
+            padding: 20px;
+            min-height: calc(100vh - 64px);
+            transition: margin-left 0.3s ease;
+            background-color: #f5f5f5;
+        }
 
         .main-content.expanded {
             margin-left: 0;
@@ -462,57 +465,6 @@
             border-radius: 12px;
             padding: 30px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-
-        .welcome-title {
-            font-size: 28px;
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        .welcome-subtitle {
-            color: #666;
-            margin-bottom: 30px;
-        }
-
-        .demo-cards {
-            display: grid;
-            gap: 20px;
-        }
-
-        .demo-card {
-            padding: 20px;
-            border-radius: 8px;
-            border-left: 4px solid;
-        }
-
-        .demo-card:nth-child(1) {
-            background: #e3f2fd;
-            border-color: #2196f3;
-        }
-
-        .demo-card:nth-child(2) {
-            background: #e8f5e9;
-            border-color: #4caf50;
-        }
-
-        .demo-card:nth-child(3) {
-            background: #f3e5f5;
-            border-color: #9c27b0;
-        }
-
-        .demo-card:nth-child(4) {
-            background: #fce4ec;
-            border-color: #e91e63;
-        }
-
-        .card-title {
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .card-content {
-            color: #666;
         }
 
         @media (min-width: 768px) {
@@ -963,10 +915,6 @@
         </button>
     </aside>
 
-    <!-- Main Content -->
-    <main class="main-content" id="mainContent">
-    </main>
-
     <script>
         let sidebarOpen = true;
         let logoTextVisible = false;
@@ -1034,7 +982,7 @@
             
             if (sidebarOpen) {
                 sidebar.classList.remove('collapsed');
-                mainContent.classList.remove('expanded');
+                if (mainContent) mainContent.classList.remove('expanded');
                 toggleIcon.classList.remove('fa-times');
                 toggleIcon.classList.add('fa-bars');
             const blogSubmenu = document.getElementById('blogSubmenu');
@@ -1070,7 +1018,7 @@
                 icon.classList.add('rotate-90');
             } else {
                 sidebar.classList.add('collapsed');
-                mainContent.classList.add('expanded');
+                if (mainContent) mainContent.classList.add('expanded');
                 toggleIcon.classList.remove('fa-bars');
                 toggleIcon.classList.add('fa-times');
             }
@@ -1104,7 +1052,7 @@
             const dropdown = document.getElementById('dropdownMenu');
             const profileTrigger = document.querySelector('.profile-trigger');
             
-            if (!profileTrigger.contains(event.target) && !dropdown.contains(event.target)) {
+            if (profileTrigger && !profileTrigger.contains(event.target) && !dropdown.contains(event.target)) {
                 dropdown.classList.remove('active');
             }
         });
@@ -1115,7 +1063,7 @@
             
             if (window.innerWidth <= 768) {
                 sidebar.classList.add('collapsed');
-                mainContent.classList.add('expanded');
+                if (mainContent) mainContent.classList.add('expanded');
                 sidebarOpen = false;
             }
         }

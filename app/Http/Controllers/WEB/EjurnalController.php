@@ -9,6 +9,6 @@ class EJurnalController extends Controller
 {
     public function index()
     {
-        return view('ejurnal');
+        return view('layouts.ejurnal');
     }
 }
