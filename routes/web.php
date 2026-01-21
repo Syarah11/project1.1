@@ -14,6 +14,7 @@ Route::get('/super-admin', [SuperAdminController::class, 'index'])->name('super.
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 Route::get('/blog/tambah', [BlogController::class, 'create'])->name('blog.tambah');
 Route::get('/blog/list', [BlogController::class, 'index'])->name('blog.list');
+Route::post('/blog', [BlogController::class, 'store'])->name('blog.store');
 Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori');
 Route::get('/iklan', [IklanController::class, 'index'])->name('iklan');
 Route::get('/ejurnal', [EJurnalController::class, 'index'])->name('ejurnal');

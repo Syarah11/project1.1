@@ -31,17 +31,120 @@
     </div>
     
     <!-- Diagram Viewers -->
-    <div style="margin-bottom: 30px;">
-        <h2 style="font-size: 16px; margin-bottom: 15px; color: #333; font-weight: normal;">Diagram Viewers</h2>
-        <div class="diagram-box" style="width: 60%; 
-                                        height: 130px; 
-                                        background-color: #eddbdb; 
-                                        border-radius: 12px;
-                                        padding: 15px;
-                                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-            <canvas id="viewersChart"></canvas>
+    <!DOCTYPE html>
+    <html lang="id">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Diagram Garis Mingguan</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                margin: 0;
+                background-color: #f5f5f5;
+            }
+            .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 90%;
+        }
+        canvas {
+            max-height: 300px;
+        }
+            h2 {
+                text-align: center;
+                color: #333;
+                margin-bottom: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h2>Diagram Data Viewers Mingguan</h2>
+            <canvas id="myChart"></canvas>
         </div>
-    </div>
+
+        <script>
+            const ctx = document.getElementById('myChart').getContext('2d');
+            
+            const data = {
+                labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
+                datasets: [{
+                    label: 'Data',
+                    data: [879, 3595, 2569, 1995, 3678, 500, 799, 288, 949],
+                    borderColor: '#003d82',
+                    backgroundColor: '#003d82',
+                    borderWidth: 3,
+                    pointRadius: 6,
+                    pointBackgroundColor: '#003d82',
+                    pointBorderColor: '#003d82',
+                    pointHoverRadius: 8,
+                    tension: 0
+                }]
+            };
+
+            const config = {
+                type: 'line',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: true,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y.toLocaleString('id-ID');
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 4500,
+                            ticks: {
+                                stepSize: 0,
+                                callback: function(value) {
+                                    return value.toLocaleString('id-ID');
+                                },
+                                font: {
+                                    size: 12
+                                }
+                            },
+                            grid: {
+                                color: '#e0e0e0'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                font: {
+                                    size: 12
+                                }
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            };
+
+            const myChart = new Chart(ctx, config);
+        </script>
+    </body>
+    </html>
     
 <!-- Berita Section -->
 <div class="berita-section" style="display: grid; grid-template-columns: 75% 23%; gap: 2%;">
@@ -128,9 +231,9 @@
             <div id="beritaTerpopulerList">
                 <!-- Item 1 -->
                 <div style="padding: 12px; border-bottom: 1px solid #dee2e6; margin-bottom: 10px;">
-                    <span style="background-color: #e74c3c; color: white; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; display: inline-block; margin-bottom: 6px;">POLITIK</span>
                     <div style="color: #212529; font-weight: 600; font-size: 13px; line-height: 1.4; margin-bottom: 8px;">Bahlil Siap Perangi Mafia Migas, Minta Dukungan Ulama</div>
                     <div style="display: flex; justify-content: space-between;">
+                        <span style="color: #6c757d; font-size: 11px;">POLITIK</span>
                         <span style="color: #495057; font-size: 11px; font-weight: 500;">👁 15.3k</span>
                         <span style="color: #6c757d; font-size: 11px;">3 hari lalu</span>
                     </div>
@@ -138,9 +241,9 @@
                 
                 <!-- Item 2 -->
                 <div style="padding: 12px; border-bottom: 1px solid #dee2e6; margin-bottom: 10px;">
-                    <span style="background-color: #3498db; color: white; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; display: inline-block; margin-bottom: 6px;">TEKNOLOGI</span>
-                    <div style="color: #212529; font-weight: 600; font-size: 13px; line-height: 1.4; margin-bottom: 8px;">Berita Viral 2</div>
+                    <div style="color: #212529; font-weight: 600; font-size: 13px; line-height: 1.4; margin-bottom: 8px;">Indonesia Percepat Pembangunan Infrastruktur Digital Nasional Internet</div>
                     <div style="display: flex; justify-content: space-between;">
+                        <span style="color: #6c757d; font-size: 11px;">TEKNOLOGI</span>
                         <span style="color: #495057; font-size: 11px; font-weight: 500;">👁 12.8k</span>
                         <span style="color: #6c757d; font-size: 11px;">1 minggu lalu</span>
                     </div>
@@ -148,9 +251,9 @@
                 
                 <!-- Item 3 -->
                 <div style="padding: 12px;">
-                    <span style="background-color: #27ae60; color: white; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; display: inline-block; margin-bottom: 6px;">OLAHRAGA</span>
-                    <div style="color: #212529; font-weight: 600; font-size: 13px; line-height: 1.4; margin-bottom: 8px;">Berita Viral 3</div>
+                    <div style="color: #212529; font-weight: 600; font-size: 13px; line-height: 1.4; margin-bottom: 8px;">Erick Thohir Tancap Gas, Industri Olahraga Ditarget Jadi Mesin Ekonomi Baru Nasional</div>
                     <div style="display: flex; justify-content: space-between;">
+                        <span style="color: #6c757d; font-size: 11px;">OLAHRAGA</span>
                         <span style="color: #495057; font-size: 11px; font-weight: 500;">👁 10.5k</span>
                         <span style="color: #6c757d; font-size: 11px;">2 hari lalu</span>
                     </div>
