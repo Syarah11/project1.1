@@ -6,18 +6,18 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateEjurnalRequest extends FormRequest
 {
-    public function authorize(): bool
+    public function authorize()
     {
         return true;
     }
 
-    public function rules(): array
+    public function rules()
     {
         return [
             'title' => 'sometimes|string|max:500',
-            'description' => 'nullable|string',
-            'gambars' => 'nullable|array',
-            'gambars.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'description' => 'sometimes|string',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'status' => 'sometimes|in:published,draft',
         ];
     }
 }

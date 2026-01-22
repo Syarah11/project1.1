@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Iklan;
+use App\Services\ImageService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class IklanController extends Controller
 {
@@ -21,7 +21,6 @@ class IklanController extends Controller
 
     public function store(Request $request)
     {
-        // Debug: Cek apakah user sudah login
         if (!auth()->check()) {
             return response()->json([
                 'success' => false,
@@ -31,17 +30,21 @@ class IklanController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string',
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'link' => 'nullable|url',
             'position' => 'required|in:top,bottom,sidebar',
             'priority' => 'required|integer',
             'status' => 'required|in:active,inactive',
         ]);
 
-        // Handle thumbnail upload
+        // Upload thumbnail dengan ImageService
         $thumbnailPath = null;
         if ($request->hasFile('thumbnail')) {
-            $thumbnailPath = $request->file('thumbnail')->store('iklans', 'public');
+            $thumbnailPath = ImageService::upload(
+                $request->file('thumbnail'),
+                'iklans',
+                300 // Max 300KB
+            );
         }
 
         $iklan = Iklan::create([
@@ -77,7 +80,7 @@ class IklanController extends Controller
 
         $validated = $request->validate([
             'name' => 'sometimes|string',
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'link' => 'nullable|url',
             'position' => 'sometimes|in:top,bottom,sidebar',
             'priority' => 'sometimes|integer',
@@ -86,11 +89,15 @@ class IklanController extends Controller
 
         // Handle thumbnail upload
         if ($request->hasFile('thumbnail')) {
-            // Delete old thumbnail if exists
-            if ($iklan->thumbnail) {
-                Storage::disk('public')->delete($iklan->thumbnail);
-            }
-            $validated['thumbnail'] = $request->file('thumbnail')->store('iklans', 'public');
+            // Hapus gambar lama
+            ImageService::delete($iklan->thumbnail);
+            
+            // Upload gambar baru
+            $validated['thumbnail'] = ImageService::upload(
+                $request->file('thumbnail'),
+                'iklans',
+                300
+            );
         }
 
         $iklan->update($validated);
@@ -106,10 +113,8 @@ class IklanController extends Controller
     {
         $iklan = Iklan::findOrFail($id);
         
-        // Delete thumbnail if exists
-        if ($iklan->thumbnail) {
-            Storage::disk('public')->delete($iklan->thumbnail);
-        }
+        // Hapus thumbnail
+        ImageService::delete($iklan->thumbnail);
         
         $iklan->delete();
 
