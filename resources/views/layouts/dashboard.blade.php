@@ -4,258 +4,282 @@
 @section('title', 'Dashboard - Portal Blog')
 
 @section('content')
-<div class="dashboard-container" style="padding: 20px; font-family: Arial, sans-serif;">
+<div class="dashboard-container" style="padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh;">
     
     <!-- Title -->
-    <h1 style="font-size: 24px; margin-bottom: 20px; color: #333; font-weight: normal;">Dashboard</h1>
+    <h1 style="font-size: 28px; margin-bottom: 25px; color: #2d3748; font-weight: 700; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Dashboard Portal Blog</h1>
     
-    <!-- Stats Cards -->
-    <div class="stats-cards" style="display: flex; gap: 15px; margin-bottom: 30px;">
-        <div class="stat-card" style="padding: 20px 30px; 
-                                      background-color: #d0d0d0; 
-                                      border-radius: 8px; 
-                                      flex: 1;
-                                      text-align: center;">
-            <div style="font-size: 14px; color: #666; margin-bottom: 8px;">Jumlah Berita</div>
-            <div style="font-size: 32px; font-weight: bold; color: #333;">{{ $jumlahBerita ?? 156 }}</div>
-        </div>
-        
-        <div class="stat-card" style="padding: 20px 30px; 
-                                      background-color: #d0d0d0; 
-                                      border-radius: 8px; 
-                                      flex: 1;
-                                      text-align: center;">
-            <div style="font-size: 14px; color: #666; margin-bottom: 8px;">Statistik</div>
-            <div style="font-size: 32px; font-weight: bold; color: #333;">{{ $totalViews ?? '12.5k' }}</div>
-        </div>
+<!-- Stats Cards -->
+<div class="stats-cards" style="display: flex; gap: 20px; margin-bottom: 35px; flex-wrap: wrap;">
+    <div class="stat-card" style="padding: 25px 35px; 
+                                  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                                  border-radius: 12px; 
+                                  flex: 1;
+                                  min-width: 200px;
+                                  text-align: center;
+                                  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+                                  transform: translateY(0);
+                                  transition: all 0.3s ease;">
+        <div style="font-size: 14px; color: rgba(255, 255, 255, 0.95); margin-bottom: 10px; font-weight: 500; letter-spacing: 0.5px;">📰 Jumlah Berita</div>
+        <div style="font-size: 36px; font-weight: bold; color: #fff;">{{ $jumlahBerita ?? 131 }}</div>
     </div>
     
+    <div class="stat-card" style="padding: 25px 35px; 
+                                  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); 
+                                  border-radius: 12px; 
+                                  flex: 1;
+                                  min-width: 200px;
+                                  text-align: center;
+                                  box-shadow: 0 8px 20px rgba(240, 147, 251, 0.3);
+                                  transform: translateY(0);
+                                  transition: all 0.3s ease;">
+        <div style="font-size: 14px; color: rgba(255, 255, 255, 0.95); margin-bottom: 10px; font-weight: 500; letter-spacing: 0.5px;">✅ Berita Published</div>
+        <div style="font-size: 36px; font-weight: bold; color: #fff;">{{ $beritaPublished ?? 98 }}</div>
+    </div>
+
+    <div class="stat-card" style="padding: 25px 35px; 
+                                  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); 
+                                  border-radius: 12px; 
+                                  flex: 1;
+                                  min-width: 200px;
+                                  text-align: center;
+                                  box-shadow: 0 8px 20px rgba(79, 172, 254, 0.3);
+                                  transform: translateY(0);
+                                  transition: all 0.3s ease;">
+        <div style="font-size: 14px; color: rgba(255, 255, 255, 0.95); margin-bottom: 10px; font-weight: 500; letter-spacing: 0.5px;">📝 Berita Draft</div>
+        <div style="font-size: 36px; font-weight: bold; color: #fff;">{{ $beritaDraft ?? 33 }}</div>
+    </div>
+</div>
+
+<style>
+    .stat-card:hover {
+        transform: translateY(-5px) !important;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2) !important;
+    }
+</style>
+    
     <!-- Diagram Viewers -->
-    <!DOCTYPE html>
-    <html lang="id">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Diagram Garis Mingguan</title>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                min-height: 100vh;
-                margin: 0;
-                background-color: #f5f5f5;
-            }
-            .container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            max-width: 600px;
-            width: 90%;
-        }
-        canvas {
-            max-height: 300px;
-        }
-            h2 {
-                text-align: center;
-                color: #333;
-                margin-bottom: 20px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <h2>Diagram Data Viewers Mingguan</h2>
-            <canvas id="myChart"></canvas>
-        </div>
+    <div class="diagram-container" style="background: white; padding: 30px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 35px; border: 2px solid transparent; background-clip: padding-box; position: relative;">
+        <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%); border-radius: 16px 16px 0 0;"></div>
+        <h2 style="font-size: 20px; margin-bottom: 25px; color: #2d3748; font-weight: 600; display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 24px;">📊</span>
+            Diagram Data Viewers 
+        </h2>
+        <canvas id="myChart" style="max-height: 350px;"></canvas>
+    </div>
 
-        <script>
-            const ctx = document.getElementById('myChart').getContext('2d');
-            
-            const data = {
-                labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
-                datasets: [{
-                    label: 'Data',
-                    data: [879, 3595, 2569, 1995, 3678, 500, 799, 288, 949],
-                    borderColor: '#003d82',
-                    backgroundColor: '#003d82',
-                    borderWidth: 3,
-                    pointRadius: 6,
-                    pointBackgroundColor: '#003d82',
-                    pointBorderColor: '#003d82',
-                    pointHoverRadius: 8,
-                    tension: 0
-                }]
-            };
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script>
+        const ctx = document.getElementById('myChart').getContext('2d');
+        
+        const data = {
+            labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
+            datasets: [{
+                label: 'Viewers',
+                data: [879, 3595, 2569, 1995, 3678, 500, 799],
+                borderColor: '#667eea',
+                backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                borderWidth: 3,
+                pointRadius: 6,
+                pointBackgroundColor: '#667eea',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                pointHoverRadius: 8,
+                tension: 0.4,
+                fill: true
+            }]
+        };
 
-            const config = {
-                type: 'line',
-                data: data,
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            enabled: true,
-                            callbacks: {
-                                label: function(context) {
-                                    return context.parsed.y.toLocaleString('id-ID');
-                                }
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        labels: {
+                            color: '#2d3748',
+                            font: {
+                                size: 13,
+                                weight: '600'
                             }
                         }
                     },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 4500,
-                            ticks: {
-                                stepSize: 0,
-                                callback: function(value) {
-                                    return value.toLocaleString('id-ID');
-                                },
-                                font: {
-                                    size: 12
-                                }
-                            },
-                            grid: {
-                                color: '#e0e0e0'
-                            }
-                        },
-                        x: {
-                            ticks: {
-                                font: {
-                                    size: 12
-                                }
-                            },
-                            grid: {
-                                display: false
+                    tooltip: {
+                        backgroundColor: 'rgba(45, 55, 72, 0.95)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        padding: 12,
+                        borderColor: '#667eea',
+                        borderWidth: 1,
+                        callbacks: {
+                            label: function(context) {
+                                return 'Viewers: ' + context.parsed.y.toLocaleString('id-ID');
                             }
                         }
                     }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 4500,
+                        ticks: {
+                            callback: function(value) {
+                                return value.toLocaleString('id-ID');
+                            },
+                            font: {
+                                size: 12
+                            },
+                            color: '#4a5568'
+                        },
+                        grid: {
+                            color: 'rgba(102, 126, 234, 0.1)',
+                            drawBorder: false
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            font: {
+                                size: 12,
+                                weight: '500'
+                            },
+                            color: '#4a5568'
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
                 }
-            };
+            }
+        };
 
-            const myChart = new Chart(ctx, config);
-        </script>
-    </body>
-    </html>
+        const myChart = new Chart(ctx, config);
+    </script>
     
 <!-- Berita Section -->
-<div class="berita-section" style="display: grid; grid-template-columns: 75% 23%; gap: 2%;">
+<div class="berita-section" style="display: grid; grid-template-columns: 73% 25%; gap: 2%; margin-bottom: 20px;">
     
-    <!-- Berita Terbaru (75%) -->
+    <!-- Berita Terbaru (73%) -->
     <div>
-        <h2 style="font-size: 16px; margin-bottom: 15px; color: #333; font-weight: normal;">Berita Terbaru</h2>
+        <h2 style="font-size: 20px; margin-bottom: 20px; color: #2d3748; font-weight: 600; display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 24px;">🔥</span>
+            Berita Terbaru
+        </h2>
         <div class="berita-box" style="width: 100%; 
-                                       background-color: #fff; 
-                                       border-radius: 12px;
+                                       background: white; 
+                                       border-radius: 16px;
                                        overflow: hidden;
-                                       box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                       box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                                       border: 2px solid transparent;
+                                       position: relative;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);"></div>
             <table style="width: 100%; border-collapse: collapse;">
                 <thead>
-                    <tr style="background-color: #f8f9fa; border-bottom: 2px solid #dee2e6;">
-                        <th style="padding: 12px; text-align: center; font-weight: 600; color: #495057; width: 5%;">No</th>
-                        <th style="padding: 12px; text-align: left; font-weight: 600; color: #495057; width: 12%;">Gambar</th>
-                        <th style="padding: 12px; text-align: left; font-weight: 600; color: #495057; width: 30%;">Judul</th>
-                        <th style="padding: 12px; text-align: center; font-weight: 600; color: #495057; width: 8%;">Foto Admin</th>
-                        <th style="padding: 12px; text-align: left; font-weight: 600; color: #495057; width: 15%;">Nama Admin</th>
-                        <th style="padding: 12px; text-align: center; font-weight: 600; color: #495057; width: 15%;">Status</th>
-                        <th style="padding: 12px; text-align: center; font-weight: 600; color: #495057; width: 15%;">Waktu</th>
+                    <tr style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-bottom: 2px solid #dee2e6;">
+                        <th style="padding: 16px; text-align: center; font-weight: 600; color: #2d3748; width: 5%; font-size: 13px;">No</th>
+                        <th style="padding: 16px; text-align: left; font-weight: 600; color: #2d3748; width: 12%; font-size: 13px;">Gambar</th>
+                        <th style="padding: 16px; text-align: left; font-weight: 600; color: #2d3748; width: 30%; font-size: 13px;">Judul</th>
+                        <th style="padding: 16px; text-align: center; font-weight: 600; color: #2d3748; width: 8%; font-size: 13px;">Admin</th>
+                        <th style="padding: 16px; text-align: left; font-weight: 600; color: #2d3748; width: 15%; font-size: 13px;">Nama</th>
+                        <th style="padding: 16px; text-align: center; font-weight: 600; color: #2d3748; width: 15%; font-size: 13px;">Status</th>
+                        <th style="padding: 16px; text-align: center; font-weight: 600; color: #2d3748; width: 15%; font-size: 13px;">Waktu</th>
                     </tr>
                 </thead>
                 <tbody id="beritaTerbaruList">
-                    <tr style="border-bottom: 1px solid #dee2e6;">
-                        <td style="padding: 12px; text-align: center; color: #495057;">1</td>
-                        <td style="padding: 12px;">
-                            <img src="https://via.placeholder.com/80x60" alt="Berita 1" style="width: 80px; height: 60px; border-radius: 6px; object-fit: cover;">
+                    <tr style="border-bottom: 1px solid #f0f0f0; transition: background 0.2s;">
+                        <td style="padding: 16px; text-align: center; color: #4a5568; font-weight: 600;">1</td>
+                        <td style="padding: 16px;">
+                            <img src="https://via.placeholder.com/80x60" alt="Berita 1" style="width: 80px; height: 60px; border-radius: 8px; object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                         </td>
-                        <td style="padding: 12px; color: #212529; font-weight: 500;">Efek Krisis RAM, Toko di Jepang Sampai “Ngebet” Beli PC Lama Pelanggan</td>
-                        <td style="padding: 12px; text-align: center;">
-                            <img src="https://via.placeholder.com/40" alt="Admin" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                        <td style="padding: 16px; color: #2d3748; font-weight: 500; line-height: 1.5;">Efek Krisis RAM, Toko di Jepang Sampai "Ngebet" Beli PC Lama Pelanggan</td>
+                        <td style="padding: 16px; text-align: center;">
+                            <img src="https://via.placeholder.com/40" alt="Admin" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #667eea;">
                         </td>
-                        <td style="padding: 12px; color: #495057;">Admin Satu</td>
-                        <td style="padding: 12px; text-align: center;">
-                            <span style="background-color: #28a745; color: white; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 500;">Published</span>
+                        <td style="padding: 16px; color: #4a5568; font-weight: 500;">Admin Satu</td>
+                        <td style="padding: 16px; text-align: center;">
+                            <span style="background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); color: white; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; box-shadow: 0 2px 8px rgba(72, 187, 120, 0.3);">Published</span>
                         </td>
-                        <td style="padding: 12px; text-align: center; color: #6c757d; font-size: 13px;">2 jam yang lalu</td>
+                        <td style="padding: 16px; text-align: center; color: #718096; font-size: 13px; font-weight: 500;">2 jam lalu</td>
                     </tr>
-                    <tr style="border-bottom: 1px solid #dee2e6;">
-                        <td style="padding: 12px; text-align: center; color: #495057;">2</td>
-                        <td style="padding: 12px;">
-                            <img src="https://via.placeholder.com/80x60" alt="Berita 2" style="width: 80px; height: 60px; border-radius: 6px; object-fit: cover;">
+                    <tr style="border-bottom: 1px solid #f0f0f0; transition: background 0.2s;">
+                        <td style="padding: 16px; text-align: center; color: #4a5568; font-weight: 600;">2</td>
+                        <td style="padding: 16px;">
+                            <img src="https://via.placeholder.com/80x60" alt="Berita 2" style="width: 80px; height: 60px; border-radius: 8px; object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                         </td>
-                        <td style="padding: 12px; color: #212529; font-weight: 500;">Judul Berita 2</td>
-                        <td style="padding: 12px; text-align: center;">
-                            <img src="https://via.placeholder.com/40" alt="Admin" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                        <td style="padding: 16px; color: #2d3748; font-weight: 500; line-height: 1.5;">Judul Berita 2</td>
+                        <td style="padding: 16px; text-align: center;">
+                            <img src="https://via.placeholder.com/40" alt="Admin" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #f093fb;">
                         </td>
-                        <td style="padding: 12px; color: #495057;">Admin Dua</td>
-                        <td style="padding: 12px; text-align: center;">
-                            <span style="background-color: #ffc107; color: #212529; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 500;">Draft</span>
+                        <td style="padding: 16px; color: #4a5568; font-weight: 500;">Admin Dua</td>
+                        <td style="padding: 16px; text-align: center;">
+                            <span style="background: linear-gradient(135deg, #ecc94b 0%, #d69e2e 100%); color: #2d3748; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; box-shadow: 0 2px 8px rgba(236, 201, 75, 0.3);">Draft</span>
                         </td>
-                        <td style="padding: 12px; text-align: center; color: #6c757d; font-size: 13px;">5 jam yang lalu</td>
+                        <td style="padding: 16px; text-align: center; color: #718096; font-size: 13px; font-weight: 500;">5 jam lalu</td>
                     </tr>
-                    <tr>
-                        <td style="padding: 12px; text-align: center; color: #495057;">3</td>
-                        <td style="padding: 12px;">
-                            <img src="https://via.placeholder.com/80x60" alt="Berita 3" style="width: 80px; height: 60px; border-radius: 6px; object-fit: cover;">
+                    <tr style="transition: background 0.2s;">
+                        <td style="padding: 16px; text-align: center; color: #4a5568; font-weight: 600;">3</td>
+                        <td style="padding: 16px;">
+                            <img src="https://via.placeholder.com/80x60" alt="Berita 3" style="width: 80px; height: 60px; border-radius: 8px; object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                         </td>
-                        <td style="padding: 12px; color: #212529; font-weight: 500;">Judul Berita 3</td>
-                        <td style="padding: 12px; text-align: center;">
-                            <img src="https://via.placeholder.com/40" alt="Admin" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                        <td style="padding: 16px; color: #2d3748; font-weight: 500; line-height: 1.5;">Judul Berita 3</td>
+                        <td style="padding: 16px; text-align: center;">
+                            <img src="https://via.placeholder.com/40" alt="Admin" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #4facfe;">
                         </td>
-                        <td style="padding: 12px; color: #495057;">Admin Tiga</td>
-                        <td style="padding: 12px; text-align: center;">
-                            <span style="background-color: #28a745; color: white; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 500;">Published</span>
+                        <td style="padding: 16px; color: #4a5568; font-weight: 500;">Admin Tiga</td>
+                        <td style="padding: 16px; text-align: center;">
+                            <span style="background: linear-gradient(135deg, #48bb78 0%, #38a169 100%); color: white; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; box-shadow: 0 2px 8px rgba(72, 187, 120, 0.3);">Published</span>
                         </td>
-                        <td style="padding: 12px; text-align: center; color: #6c757d; font-size: 13px;">1 hari yang lalu</td>
+                        <td style="padding: 16px; text-align: center; color: #718096; font-size: 13px; font-weight: 500;">1 hari lalu</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
     
-    <!-- Berita Terpopuler (23%) -->
+    <!-- Berita Terpopuler (25%) -->
     <div>
-        <h2 style="font-size: 16px; margin-bottom: 15px; color: #333; font-weight: normal;">Berita Terpopuler</h2>
+        <h2 style="font-size: 20px; margin-bottom: 20px; color: #2d3748; font-weight: 600; display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 24px;">⭐</span>
+            Berita Terpopuler
+        </h2>
         <div class="berita-box" style="width: 100%; 
-                                       background-color: #fff; 
-                                       border-radius: 12px;
-                                       padding: 15px;
-                                       box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                       background: white; 
+                                       border-radius: 16px;
+                                       padding: 20px;
+                                       box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                                       border: 2px solid transparent;
+                                       position: relative;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%); border-radius: 16px 16px 0 0;"></div>
             <div id="beritaTerpopulerList">
                 <!-- Item 1 -->
-                <div style="padding: 12px; border-bottom: 1px solid #dee2e6; margin-bottom: 10px;">
-                    <div style="color: #212529; font-weight: 600; font-size: 13px; line-height: 1.4; margin-bottom: 8px;">Bahlil Siap Perangi Mafia Migas, Minta Dukungan Ulama</div>
-                    <div style="display: flex; justify-content: space-between;">
-                        <span style="color: #6c757d; font-size: 11px;">POLITIK</span>
-                        <span style="color: #495057; font-size: 11px; font-weight: 500;">👁 15.3k</span>
-                        <span style="color: #6c757d; font-size: 11px;">3 hari lalu</span>
+                <div style="padding: 15px; border-radius: 12px; margin-bottom: 15px; background: linear-gradient(135deg, #fef5e7 0%, #fdebd0 100%); border-left: 4px solid #f59e0b; transition: all 0.3s;">
+                    <div style="color: #2d3748; font-weight: 600; font-size: 13px; line-height: 1.5; margin-bottom: 10px;">Bahlil Siap Perangi Mafia Migas, Minta Dukungan Ulama</div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                        <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4px 10px; border-radius: 12px; font-size: 10px; font-weight: 600;">POLITIK</span>
+                        <span style="color: #2d3748; font-size: 12px; font-weight: 600;">👁 15.3k</span>
+                        <span style="color: #718096; font-size: 11px;">3 hari lalu</span>
                     </div>
                 </div>
                 
                 <!-- Item 2 -->
-                <div style="padding: 12px; border-bottom: 1px solid #dee2e6; margin-bottom: 10px;">
-                    <div style="color: #212529; font-weight: 600; font-size: 13px; line-height: 1.4; margin-bottom: 8px;">Indonesia Percepat Pembangunan Infrastruktur Digital Nasional Internet</div>
-                    <div style="display: flex; justify-content: space-between;">
-                        <span style="color: #6c757d; font-size: 11px;">TEKNOLOGI</span>
-                        <span style="color: #495057; font-size: 11px; font-weight: 500;">👁 12.8k</span>
-                        <span style="color: #6c757d; font-size: 11px;">1 minggu lalu</span>
+                <div style="padding: 15px; border-radius: 12px; margin-bottom: 15px; background: linear-gradient(135deg, #e8f4f8 0%, #d4e9f2 100%); border-left: 4px solid #06b6d4; transition: all 0.3s;">
+                    <div style="color: #2d3748; font-weight: 600; font-size: 13px; line-height: 1.5; margin-bottom: 10px;">Indonesia Percepat Pembangunan Infrastruktur Digital Nasional Internet</div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                        <span style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 4px 10px; border-radius: 12px; font-size: 10px; font-weight: 600;">TEKNOLOGI</span>
+                        <span style="color: #2d3748; font-size: 12px; font-weight: 600;">👁 12.8k</span>
+                        <span style="color: #718096; font-size: 11px;">1 minggu lalu</span>
                     </div>
                 </div>
                 
                 <!-- Item 3 -->
-                <div style="padding: 12px;">
-                    <div style="color: #212529; font-weight: 600; font-size: 13px; line-height: 1.4; margin-bottom: 8px;">Erick Thohir Tancap Gas, Industri Olahraga Ditarget Jadi Mesin Ekonomi Baru Nasional</div>
-                    <div style="display: flex; justify-content: space-between;">
-                        <span style="color: #6c757d; font-size: 11px;">OLAHRAGA</span>
-                        <span style="color: #495057; font-size: 11px; font-weight: 500;">👁 10.5k</span>
-                        <span style="color: #6c757d; font-size: 11px;">2 hari lalu</span>
+                <div style="padding: 15px; border-radius: 12px; background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%); border-left: 4px solid #ec4899; transition: all 0.3s;">
+                    <div style="color: #2d3748; font-weight: 600; font-size: 13px; line-height: 1.5; margin-bottom: 10px;">Erick Thohir Tancap Gas, Industri Olahraga Ditarget Jadi Mesin Ekonomi Baru Nasional</div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                        <span style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 4px 10px; border-radius: 12px; font-size: 10px; font-weight: 600;">OLAHRAGA</span>
+                        <span style="color: #2d3748; font-size: 12px; font-weight: 600;">👁 10.5k</span>
+                        <span style="color: #718096; font-size: 11px;">2 hari lalu</span>
                     </div>
                 </div>
             </div>
@@ -266,98 +290,10 @@
 
 </div>
 
-<!-- Chart.js Library -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-
 <style>
-    /* Removed tab button styles */
+    tbody tr:hover {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%) !important;
+    }
 </style>
 
-<script>
-    // Data untuk chart
-    const viewersData = {
-        labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
-        datasets: [{
-            label: 'Jumlah Viewers',
-            data: [1200, 1900, 1500, 2100, 1800, 2400, 2800],
-            backgroundColor: 'rgba(212, 68, 68, 0.2)',
-            borderColor: 'rgba(212, 68, 68, 1)',
-            borderWidth: 2,
-            fill: true,
-            tension: 0.4,
-            pointRadius: 4,
-            pointHoverRadius: 6
-        }]
-    };
-
-    // Konfigurasi chart
-    const config = {
-        type: 'line',
-        data: viewersData,
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top',
-                    labels: {
-                        boxWidth: 12,
-                        padding: 10,
-                        font: {
-                            size: 11
-                        }
-                    }
-                },
-                tooltip: {
-                    mode: 'index',
-                    intersect: false,
-                }
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        font: {
-                            size: 11
-                        },
-                        maxRotation: 0,
-                        minRotation: 0
-                    },
-                    grid: {
-                        display: false
-                    }
-                },
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        font: {
-                            size: 10
-                        },
-                        callback: function(value) {
-                            return value.toLocaleString();
-                        }
-                    },
-                    grid: {
-                        color: 'rgba(0, 0, 0, 0.05)'
-                    }
-                }
-            },
-            layout: {
-                padding: {
-                    left: 5,
-                    right: 5,
-                    top: 5,
-                    bottom: 5
-                }
-            }
-        }
-    };
-
-    // Render chart
-    let viewersChart;
-    document.addEventListener('DOMContentLoaded', function() {
-        const ctx = document.getElementById('viewersChart').getContext('2d');
-        viewersChart = new Chart(ctx, config);
-    });
-</script>
 @endsection
