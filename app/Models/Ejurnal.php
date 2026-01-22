@@ -10,14 +10,14 @@ class Ejurnal extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $table = 'ejurnals';
-
     protected $fillable = [
         'id',
         'user_id',
         'title',
         'description',
     ];
+
+    protected $appends = ['thumbnail'];
 
     public function user()
     {
@@ -27,5 +27,12 @@ class Ejurnal extends Model
     public function gambars()
     {
         return $this->hasMany(GambarEjurnal::class, 'ejurnal_id');
+    }
+
+    public function getThumbnailAttribute()
+    {
+        return $this->gambars->first()
+            ? asset('storage/' . $this->gambars->first()->image)
+            : null;
     }
 }

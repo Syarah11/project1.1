@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Berita;
+use App\Services\ImageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
 
 class BeritaController extends Controller
 {
@@ -25,7 +25,7 @@ class BeritaController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:500',
             'description' => 'required|string',
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'status' => 'required|in:published,draft',
             'kategori_ids' => 'nullable|array',
             'kategori_ids.*' => 'exists:kategoris,id',
@@ -33,10 +33,14 @@ class BeritaController extends Controller
             'tag_ids.*' => 'exists:tags,id',
         ]);
 
-        // Handle thumbnail upload
+        // Upload thumbnail dengan ImageService
         $thumbnailPath = null;
         if ($request->hasFile('thumbnail')) {
-            $thumbnailPath = $request->file('thumbnail')->store('beritas', 'public');
+            $thumbnailPath = ImageService::upload(
+                $request->file('thumbnail'),
+                'beritas',
+                300
+            );
         }
 
         $berita = Berita::create([
@@ -48,12 +52,11 @@ class BeritaController extends Controller
             'status' => $validated['status'],
         ]);
 
-        // Attach kategoris
+        // Attach kategoris dan tags
         if (!empty($validated['kategori_ids'])) {
             $berita->kategoris()->attach($validated['kategori_ids']);
         }
 
-        // Attach tags
         if (!empty($validated['tag_ids'])) {
             $berita->tags()->attach($validated['tag_ids']);
         }
@@ -68,8 +71,6 @@ class BeritaController extends Controller
     public function show($id)
     {
         $berita = Berita::with(['user', 'kategoris', 'tags'])->findOrFail($id);
-        
-        // Increment view count
         $berita->increment('view_count');
 
         return response()->json([
@@ -85,7 +86,7 @@ class BeritaController extends Controller
         $validated = $request->validate([
             'title' => 'sometimes|string|max:500',
             'description' => 'sometimes|string',
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'status' => 'sometimes|in:published,draft',
             'kategori_ids' => 'nullable|array',
             'kategori_ids.*' => 'exists:kategoris,id',
@@ -97,22 +98,23 @@ class BeritaController extends Controller
             $validated['slug'] = Str::slug($validated['title']);
         }
 
+        // Handle thumbnail
         if ($request->hasFile('thumbnail')) {
-            // Delete old thumbnail
-            if ($berita->thumbnail) {
-                Storage::disk('public')->delete($berita->thumbnail);
-            }
-            $validated['thumbnail'] = $request->file('thumbnail')->store('beritas', 'public');
+            ImageService::delete($berita->thumbnail);
+            $validated['thumbnail'] = ImageService::upload(
+                $request->file('thumbnail'),
+                'beritas',
+                300
+            );
         }
 
         $berita->update($validated);
 
-        // Sync kategoris
+        // Sync relations
         if (isset($validated['kategori_ids'])) {
             $berita->kategoris()->sync($validated['kategori_ids']);
         }
 
-        // Sync tags
         if (isset($validated['tag_ids'])) {
             $berita->tags()->sync($validated['tag_ids']);
         }
@@ -128,11 +130,7 @@ class BeritaController extends Controller
     {
         $berita = Berita::findOrFail($id);
         
-        // Delete thumbnail
-        if ($berita->thumbnail) {
-            Storage::disk('public')->delete($berita->thumbnail);
-        }
-        
+        ImageService::delete($berita->thumbnail);
         $berita->delete();
 
         return response()->json([
