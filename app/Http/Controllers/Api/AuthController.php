@@ -10,19 +10,9 @@ use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
-    // ============================================
-    // METHOD REGISTER 
-    // ============================================
+    // ================= REGISTER =================
     public function register(Request $request)
     {
-        // Paksa hanya JSON
-        if (!$request->expectsJson()) {
-            return response()->json([
-                'message' => 'API only'
-            ], 406);
-        }
-
-        // Validasi input
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
@@ -30,44 +20,28 @@ class AuthController extends Controller
             'role' => 'nullable|in:admin,user',
         ]);
 
-        // Buat user baru
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => $request->password,
-            'role' => $request->role ?? 'user',
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'password' => Hash::make($request->password), // ✅ WAJIB
+            'role'     => $request->role ?? 'user',
         ]);
 
-        // Buat token
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'success' => true,
             'message' => 'User registered successfully',
             'token' => $token,
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'role' => $user->role,
-            ]
+            'user' => $user
         ], 201);
     }
 
-    // ============================================
-    // METHOD LOGIN 
-    // ============================================
+    // ================= LOGIN =================
     public function login(Request $request)
     {
-       if (!$request->is('api/*')) {
-    return response()->json([
-        'message' => 'API only'
-    ], 406);
-}
-
-
         $request->validate([
-            'email' => 'required|email',
+            'email'    => 'required|email',
             'password' => 'required',
         ]);
 
@@ -76,7 +50,7 @@ class AuthController extends Controller
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
                 'success' => false,
-                'message' => 'Login failed',
+                'message' => 'Login failed'
             ], 401);
         }
 
@@ -85,18 +59,11 @@ class AuthController extends Controller
         return response()->json([
             'success' => true,
             'token' => $token,
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'role' => $user->role,
-            ]
+            'user' => $user
         ]);
     }
 
-    // ============================================
-    // METHOD LOGOUT 
-    // ============================================
+    // ================= LOGOUT =================
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
@@ -107,23 +74,12 @@ class AuthController extends Controller
         ]);
     }
 
-    // ============================================
-    // METHOD ME
-    // ============================================
+    // ================= ME =================
     public function me(Request $request)
-{
-    $user = auth('sanctum')->user();  // ✅ Pakai guard sanctum
-    
-    if (!$user) {
+    {
         return response()->json([
-            'success' => false,
-            'message' => 'User not found'
-        ], 404);
+            'success' => true,
+            'user' => $request->user()
+        ]);
     }
-    
-    return response()->json([
-        'success' => true,
-        'user' => $user
-    ]);
-}
 }
