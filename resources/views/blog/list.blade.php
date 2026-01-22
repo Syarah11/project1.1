@@ -1,3 +1,9 @@
+@extends('layouts.app')
+
+@section('title', 'List Blog - Portal Blog')
+
+@section('content')
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -481,3 +487,5 @@
     </script>
 </body>
 </html>
+
+@endsection

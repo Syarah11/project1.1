@@ -208,7 +208,7 @@
                         <td style="padding: 16px;">
                             <img src="https://via.placeholder.com/80x60" alt="Berita 2" style="width: 80px; height: 60px; border-radius: 8px; object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                         </td>
-                        <td style="padding: 16px; color: #2d3748; font-weight: 500; line-height: 1.5;">Judul Berita 2</td>
+                        <td style="padding: 16px; color: #2d3748; font-weight: 500; line-height: 1.5;">Ribuan Warga Mojokerto Ikuti “Mlaku Bareng Gus Bupati” di Stadion Gajah Mada</td>
                         <td style="padding: 16px; text-align: center;">
                             <img src="https://via.placeholder.com/40" alt="Admin" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #f093fb;">
                         </td>
@@ -223,7 +223,7 @@
                         <td style="padding: 16px;">
                             <img src="https://via.placeholder.com/80x60" alt="Berita 3" style="width: 80px; height: 60px; border-radius: 8px; object-fit: cover; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                         </td>
-                        <td style="padding: 16px; color: #2d3748; font-weight: 500; line-height: 1.5;">Judul Berita 3</td>
+                        <td style="padding: 16px; color: #2d3748; font-weight: 500; line-height: 1.5;">Pihak Tergugat 1 (Bapenda Kab Sukabumi), Tidak Bisa Hadirkan Saksi Fakta Dan Alat Bukti Dalam Lanjutan Sidang Gugatan Bayar Pajak Waris Tanah Natadipura</td>
                         <td style="padding: 16px; text-align: center;">
                             <img src="https://via.placeholder.com/40" alt="Admin" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #4facfe;">
                         </td>
