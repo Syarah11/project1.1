@@ -29,4 +29,5 @@ class BeritaService
     {
         $berita->increment('view_count');
     }
+    
 }

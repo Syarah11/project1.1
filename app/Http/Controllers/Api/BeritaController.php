@@ -137,5 +137,6 @@ class BeritaController extends Controller
             'success' => true,
             'message' => 'Berita berhasil dihapus'
         ]);
+        
     }
 }

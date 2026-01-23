@@ -23,4 +23,5 @@ class BeritaTag extends Model
     {
         return $this->belongsTo(Tag::class, 'tag_id');
     }
+    
 }

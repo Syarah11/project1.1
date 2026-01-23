@@ -35,4 +35,5 @@ class Berita extends Model
     {
         return $this->belongsToMany(Tag::class, 'berita_tags');
     }
+    
 }

@@ -23,5 +23,6 @@ class UpdateBeritaRequest extends FormRequest
             'tag_ids' => 'nullable|array',
             'tag_ids.*' => 'exists:tags,id_tag',
         ];
+        
     }
 }
