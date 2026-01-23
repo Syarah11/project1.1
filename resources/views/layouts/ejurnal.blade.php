@@ -77,7 +77,7 @@
                     </div>
                     
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">User Name</label>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Pengguna</label>
                         <input 
                             type="text" 
                             id="inputUserName" 
@@ -129,7 +129,7 @@
                                 <th class="text-center py-3 px-2 font-semibold text-gray-700 w-12">No</th>
                                 <th class="text-left py-3 px-3 font-semibold text-gray-700 min-w-[120px]">Judul</th>
                                 <th class="text-left py-3 px-3 font-semibold text-gray-700 min-w-[160px]">Deskripsi</th>
-                                <th class="text-left py-3 px-3 font-semibold text-gray-700 min-w-[100px]">User Name</th>
+                                <th class="text-left py-3 px-3 font-semibold text-gray-700 min-w-[100px]">Nama Pengguna</th>
                                 <th class="text-center py-3 px-2 font-semibold text-gray-700 w-20">Gambar</th>
                                 <th class="text-center py-3 px-2 font-semibold text-gray-700 w-16">Edit</th>
                                 <th class="text-center py-3 px-2 font-semibold text-gray-700 w-16">Hapus</th>
@@ -183,7 +183,7 @@
                                 </td>
                                 <td class="py-3 px-3">
                                    <span class="text-gray-700 text-sm font-medium">
-                                       Bob Johnson 
+                                       Jane Smith 
                                    </span>
                                 </td>
                                 <td class="py-3 px-2 text-center">
@@ -217,7 +217,7 @@
                                 </td>
                                 <td class="py-3 px-3">
                                    <span class="text-gray-700 text-sm font-medium">
-                                       Alice Brown
+                                       Bob Johnson
                                    </span>
                                 </td>
                                 <td class="py-3 px-2 text-center">
@@ -253,7 +253,9 @@
                                     <div>• Keamanan data dalam cloud storage</div>
                                 </td>
                                 <td class="py-3 px-3">
-                                    <span class="bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 px-2 py-1 rounded-full text-xs font-semibold">Alice Brown</span>
+                                   <span class="text-gray-700 text-sm font-medium">
+                                        Alice Bown
+                                   </span>
                                 </td>
                                 <td class="py-3 px-2 text-center">
                                     <div class="flex gap-1 justify-center">
@@ -285,7 +287,9 @@
                                     <div>• Implementasi zero trust architecture</div>
                                 </td>
                                 <td class="py-3 px-3">
-                                    <span class="bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 px-2 py-1 rounded-full text-xs font-semibold">David Wilson</span>
+                                   <span class="text-gray-700 text-sm font-medium">
+                                        David Wilson
+                                   </span>
                                 </td>
                                 <td class="py-3 px-2 text-center">
                                     <div class="flex gap-1 justify-center">
@@ -320,7 +324,9 @@
                                     <div>• Industrial IoT untuk monitoring produksi</div>
                                 </td>
                                 <td class="py-3 px-3">
-                                    <span class="bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 px-2 py-1 rounded-full text-xs font-semibold">Sarah Lee</span>
+                                   <span class="text-gray-700 text-sm font-medium">
+                                        Sarah Lee
+                                   </span>
                                 </td>
                                 <td class="py-3 px-2 text-center">
                                     <div class="flex gap-1 justify-center">
@@ -352,7 +358,9 @@
                                     <div>• Cryptocurrency dan teknologi distributed ledger</div>
                                 </td>
                                 <td class="py-3 px-3">
-                                    <span class="bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 px-2 py-1 rounded-full text-xs font-semibold">Michael Chen</span>
+                                   <span class="text-gray-700 text-sm font-medium">
+                                        Michael Chen
+                                   </span>
                                 </td>
                                 <td class="py-3 px-2 text-center">
                                     <div class="flex gap-1 justify-center">
@@ -387,7 +395,9 @@
                                     <div>• Aplikasi quantum computing dalam kriptografi</div>
                                 </td>
                                 <td class="py-3 px-3">
-                                    <span class="bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 px-2 py-1 rounded-full text-xs font-semibold">Emma Davis</span>
+                                   <span class="text-gray-700 text-sm font-medium">
+                                        Emma Davis
+                                   </span>
                                 </td>
                                 <td class="py-3 px-2 text-center">
                                     <div class="flex gap-1 justify-center">
@@ -441,7 +451,7 @@
                 </div>
                 
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">User Name</label>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Pengguna</label>
                     <input type="text" id="editUserName" 
                         class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all text-sm">
                 </div>
@@ -524,9 +534,9 @@
         function tambahJurnal() {
             const judul = document.getElementById('inputJudul').value.trim();
             const deskripsi = document.getElementById('inputDeskripsi').value.trim();
-            const userName = document.getElementById('inputUserName').value.trim();
+            const userName = document.getElementById('inputNamaPengguna').value.trim();
             
-            if (judul === '' || deskripsi === '' || userName === '') {
+            if (judul === '' || deskripsi === '' || NamaPengguna === '') {
                 alert('Semua field harus diisi!');
                 return;
             }
@@ -545,7 +555,7 @@
                 <td class="py-3 px-3 font-medium text-gray-800">${judul}</td>
                 <td class="py-3 px-3 text-gray-600 text-xs">${deskripsi}</td>
                 <td class="py-3 px-3">
-                    <span class="bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 px-2 py-1 rounded-full text-xs font-semibold">${userName}</span>
+                    <span class="bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 px-2 py-1 rounded-full text-xs font-semibold">${NamaPengguna}</span>
                 </td>
                 <td class="py-3 px-2 text-center">
                     <button onclick="lihatGambar('${currentImage}')" class="text-indigo-600 hover:text-indigo-800 hover:bg-indigo-100 p-2 rounded-lg transition-all">
@@ -553,7 +563,7 @@
                     </button>
                 </td>
                 <td class="py-3 px-2 text-center">
-                    <button onclick="editJurnal(${jurnalCounter}, '${judul}', '${deskripsi}', '${userName}', '${currentImage}')" class="text-indigo-600 hover:text-indigo-800 hover:bg-indigo-100 p-2 rounded-lg transition-all">
+                    <button onclick="editJurnal(${jurnalCounter}, '${judul}', '${deskripsi}', '${namapengguna}', '${currentImage}')" class="text-indigo-600 hover:text-indigo-800 hover:bg-indigo-100 p-2 rounded-lg transition-all">
                         <i class="fas fa-edit"></i>
                     </button>
                 </td>
@@ -568,7 +578,7 @@
             // Reset form
             document.getElementById('inputJudul').value = '';
             document.getElementById('inputDeskripsi').value = '';
-            document.getElementById('inputUserName').value = '';
+            document.getElementById('inputNamaPengguna').value = '';
             document.getElementById('inputGambar').value = '';
             document.getElementById('namaFile').textContent = 'Pilih gambar';
             document.getElementById('previewContainer').classList.add('hidden');
@@ -576,12 +586,12 @@
             jurnalCounter++;
         }
 
-        function editJurnal(id, judul, deskripsi, userName, gambar) {
+        function editJurnal(id, judul, deskripsi, NamaPengguna, gambar) {
             currentEditId = id;
             document.getElementById('editIdJurnal').value = id;
             document.getElementById('editJudul').value = judul;
             document.getElementById('editDeskripsi').value = deskripsi;
-            document.getElementById('editUserName').value = userName;
+            document.getElementById('editNamaPengguna').value = NamaPengguna;
             document.getElementById('editPreviewImage').src = gambar;
             editImage = gambar;
             document.getElementById('modalEditJurnal').classList.remove('hidden');
@@ -596,9 +606,9 @@
         function simpanEditJurnal() {
             const judul = document.getElementById('editJudul').value.trim();
             const deskripsi = document.getElementById('editDeskripsi').value.trim();
-            const userName = document.getElementById('editUserName').value.trim();
+            const userName = document.getElementById('editNamaPengguna').value.trim();
             
-            if (judul === '' || deskripsi === '' || userName === '') {
+            if (judul === '' || deskripsi === '' || NamaPengguna === '') {
                 alert('Semua field harus diisi!');
                 return;
             }
@@ -609,8 +619,8 @@
                 row.cells[2].textContent = deskripsi;
                 row.cells[2].className = 'py-3 px-3 text-gray-600 text-xs';
                 row.cells[3].innerHTML = `<span class="bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 px-2 py-1 rounded-full text-xs font-semibold">${userName}</span>`;
-                row.cells[4].querySelector('button').onclick = () => lihatGambar(editImage);
-                row.cells[5].querySelector('button').onclick = () => editJurnal(currentEditId, judul, deskripsi, userName, editImage);
+                row.cells[4].querySelector('button').onclick = () => lihatGambar(editgambar);
+                row.cells[5].querySelector('button').onclick = () => editJurnal(currentEditId, judul, deskripsi, Namapengguna, editgambar);
             }
 
             tutupModalEditJurnal();
