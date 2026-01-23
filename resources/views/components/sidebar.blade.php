@@ -503,19 +503,11 @@
                     <div class="dropdown-body">
                         <a href="#" class="dropdown-item">
                             <i class="fas fa-user"></i>
-                            <span>Profil Admin</span>
+                            <span>Super Admin</span>
                         </a>
                         <a href="#" class="dropdown-item">
                             <i class="fas fa-edit"></i>
-                            <span>Edit Profil</span>
-                        </a>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-cog"></i>
-                            <span>Pengaturan</span>
-                        </a>
-                        <a href="#" class="dropdown-item" style="color: #ff4757;">
-                            <i class="fas fa-power-off"></i>
-                            <span>Logout</span>
+                            <span>Profil Admin</span>
                         </a>
                     </div>
                 </div>
