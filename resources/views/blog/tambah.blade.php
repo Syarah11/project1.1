@@ -6,7 +6,7 @@
 <div class="tambah-blog-container" style="padding: 30px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 1200px; margin: 0 auto; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh; border-radius: 16px;">
     
     <h1 style="font-size: 32px; margin-bottom: 30px; color: #2d3748; font-weight: 700; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: flex; align-items: center; gap: 12px;">
-        <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">✍️ Tambah Blog Baru</span>
+        <span style="background: linear-gradient(135deg, #2d3748 0%, #2d3748 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">✍️ Tambah Blog Baru</span>
     </h1>
     
     <form id="blogForm" action="{{ route('blog.store') }}" method="POST" enctype="multipart/form-data">

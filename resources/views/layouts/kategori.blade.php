@@ -1,113 +1,100 @@
 @extends('layouts.app')
 
-@section('title', 'Admin - Portal Blog')
+@section('title', 'Kategori - Portal Blog')
 
 @section('content')
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelola Kategori</title>
+    <title>Kelola Kategori & Tag</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: ( #fbfbfc  100%);
+            min-height: 100vh;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            border-radius: 16px 16px 0 0;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-slide { animation: slideIn 0.5s ease-out; }
+    </style>
 </head>
-<body class="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 min-h-screen p-6">
+<body class="p-6">
     <div class="max-w-7xl mx-auto">
-        <!-- Header -->
-        <div class="mb-8">
-            <h1 class="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent flex items-center gap-3">
-                <i class="fas fa-layer-group text-indigo-600"></i>
-                Kelola Kategori
+        <div class="mb-8 animate-slide">
+            <h1 class="text-5xl font-bold text-black flex items-center gap-4 drop-shadow-lg">
+                <div class="bg-white p-4 rounded-2xl shadow-2xl">
+                    <i class="fas fa-layer-group text-purple-600 text-4xl"></i>
+                </div>
+                Kelola Kategori & Tag
             </h1>
         </div>
 
-        <!-- Grid Layout -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             <!-- Tambah Kategori -->
-            <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 border border-gray-100">
-                <h2 class="text-xl font-bold text-gray-800 mb-5 pb-3 border-b-2 border-indigo-100">
-                    Tambah Kategori
+            <div class="bg-white rounded-2xl shadow-2xl card-hover p-6 relative gradient-border">
+                <h2 class="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-5 pb-3 border-b-2 border-purple-100">
+                    <i class="fas fa-plus-circle"></i> Tambah Kategori
                 </h2>
                 <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Kategori</label>
-                        <input 
-                            type="text" 
-                            id="inputKategori" 
-                            placeholder="Masukkan nama kategori" 
-                            class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all text-sm"
-                        >
-                    </div>
-                    <button 
-                        onclick="tambahKategori()" 
-                        class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-2.5 rounded-lg hover:from-indigo-700 hover:to-purple-700 transform hover:scale-[1.02] transition-all duration-200 shadow-md hover:shadow-lg text-sm"
-                    >
-                        <i class="fas fa-plus-circle mr-2"></i>Simpan
+                    <input type="text" id="inputKategori" placeholder="Masukkan nama kategori" 
+                        class="w-full px-4 py-3 border-2 border-purple-200 rounded-xl focus:border-purple-500 focus:ring-4 focus:ring-purple-200 outline-none">
+                    <button onclick="tambahKategori()" 
+                        class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold py-3 rounded-xl hover:shadow-2xl transform hover:scale-105 transition-all">
+                        <i class="fas fa-save mr-2"></i>Simpan Kategori
                     </button>
                 </div>
             </div>
 
             <!-- Tabel Kategori -->
-            <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 border border-gray-100">
-                <h2 class="text-xl font-bold text-gray-800 mb-5 pb-3 border-b-2 border-indigo-100">
-                    Tabel Kategori
+            <div class="bg-white rounded-2xl shadow-2xl card-hover p-6 relative gradient-border">
+                <h2 class="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-5 pb-3 border-b-2 border-purple-100">
+                    <i class="fas fa-list"></i> Daftar Kategori
                 </h2>
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
                         <thead>
-                            <tr class="border-b-2 border-gray-100">
-                                <th class="text-left py-3 px-3 font-semibold text-gray-700">Nama Kategori</th>
-                                <th class="text-center py-3 px-3 font-semibold text-gray-700">Jumlah</th>
-                                <th class="text-center py-3 px-3 font-semibold text-gray-700">Edit</th>
-                                <th class="text-center py-3 px-3 font-semibold text-gray-700">Hapus</th>
+                            <tr class="bg-gradient-to-r from-purple-100 to-pink-100">
+                                <th class="text-left py-4 px-4 font-bold text-purple-800 rounded-tl-xl">Nama</th>
+                                <th class="text-center py-4 px-3 font-bold text-purple-800">Jumlah</th>
+                                <th class="text-center py-4 px-3 font-bold text-purple-800">Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="tabelKategori">
-                            <tr class="border-b border-gray-50 hover:bg-indigo-50 transition-colors">
-                                <td class="py-3 px-3 font-medium text-gray-800">Teknologi</td>
-                                <td class="py-3 px-3 text-center">
-                                    <span class="bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-semibold">12</span>
+                            <tr class="border-b hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50">
+                                <td class="py-4 px-4 font-semibold flex items-center gap-2">
+                                    <i class="fas fa-folder text-purple-600"></i>Teknologi
                                 </td>
-                                <td class="py-3 px-3 text-center">
-                                    <button onclick="editKategori('Teknologi', 12)" class="text-indigo-600 hover:text-indigo-800 hover:bg-indigo-100 p-2 rounded-lg transition-all">
+                                <td class="py-4 px-3 text-center">
+                                    <span class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-1.5 rounded-full text-xs font-bold">12</span>
+                                </td>
+                                <td class="py-4 px-3 text-center">
+                                    <button onclick="editKategori(this, 'Teknologi', 12)" class="text-purple-600 hover:bg-purple-100 p-2 rounded-lg mr-2">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                </td>
-                                <td class="py-3 px-3 text-center">
-                                    <button onclick="hapusKategori('Teknologi')" class="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition-all">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="border-b border-gray-50 hover:bg-indigo-50 transition-colors">
-                                <td class="py-3 px-3 font-medium text-gray-800">Bisnis</td>
-                                <td class="py-3 px-3 text-center">
-                                    <span class="bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-semibold">8</span>
-                                </td>
-                                <td class="py-3 px-3 text-center">
-                                    <button onclick="editKategori('Bisnis', 8)" class="text-indigo-600 hover:text-indigo-800 hover:bg-indigo-100 p-2 rounded-lg transition-all">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </td>
-                                <td class="py-3 px-3 text-center">
-                                    <button onclick="hapusKategori('Bisnis')" class="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition-all">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-indigo-50 transition-colors">
-                                <td class="py-3 px-3 font-medium text-gray-800">Pendidikan</td>
-                                <td class="py-3 px-3 text-center">
-                                    <span class="bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-semibold">15</span>
-                                </td>
-                                <td class="py-3 px-3 text-center">
-                                    <button onclick="editKategori('Pendidikan', 15)" class="text-indigo-600 hover:text-indigo-800 hover:bg-indigo-100 p-2 rounded-lg transition-all">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </td>
-                                <td class="py-3 px-3 text-center">
-                                    <button onclick="hapusKategori('Pendidikan')" class="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition-all">
+                                    <button onclick="hapusKategori(this)" class="text-red-500 hover:bg-red-100 p-2 rounded-lg">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </td>
@@ -120,98 +107,47 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <!-- Tambah Tag -->
-            <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 border border-gray-100">
-                <h2 class="text-xl font-bold text-gray-800 mb-5 pb-3 border-b-2 border-indigo-100">
-                    Tambah Tag
+            <div class="bg-white rounded-2xl shadow-2xl card-hover p-6 relative gradient-border">
+                <h2 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent mb-5 pb-3 border-b-2 border-blue-100">
+                    <i class="fas fa-tags"></i> Tambah Tag
                 </h2>
                 <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Tag</label>
-                        <input 
-                            type="text" 
-                            id="inputTag" 
-                            placeholder="Masukkan nama tag" 
-                            class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all text-sm"
-                        >
-                    </div>
-                    <button 
-                        onclick="tambahTag()" 
-                        class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-2.5 rounded-lg hover:from-indigo-700 hover:to-purple-700 transform hover:scale-[1.02] transition-all duration-200 shadow-md hover:shadow-lg text-sm"
-                    >
-                        <i class="fas fa-plus-circle mr-2"></i>Simpan
+                    <input type="text" id="inputTag" placeholder="Masukkan nama tag" 
+                        class="w-full px-4 py-3 border-2 border-blue-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-200 outline-none">
+                    <button onclick="tambahTag()" 
+                        class="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold py-3 rounded-xl hover:shadow-2xl transform hover:scale-105 transition-all">
+                        <i class="fas fa-save mr-2"></i>Simpan Tag
                     </button>
                 </div>
             </div>
 
             <!-- Tabel Tag -->
-            <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-6 border border-gray-100">
-                <h2 class="text-xl font-bold text-gray-800 mb-5 pb-3 border-b-2 border-indigo-100">
-                    Tabel Tag
+            <div class="bg-white rounded-2xl shadow-2xl card-hover p-6 relative gradient-border">
+                <h2 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent mb-5 pb-3 border-b-2 border-blue-100">
+                    <i class="fas fa-bookmark"></i> Daftar Tag
                 </h2>
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
                         <thead>
-                            <tr class="border-b-2 border-gray-100">
-                                <th class="text-left py-3 px-3 font-semibold text-gray-700">Nama Tag</th>
-                                <th class="text-center py-3 px-3 font-semibold text-gray-700">Jumlah</th>
-                                <th class="text-center py-3 px-3 font-semibold text-gray-700">Edit</th>
-                                <th class="text-center py-3 px-3 font-semibold text-gray-700">Hapus</th>
+                            <tr class="bg-gradient-to-r from-blue-100 to-cyan-100">
+                                <th class="text-left py-4 px-4 font-bold text-blue-800 rounded-tl-xl">Nama</th>
+                                <th class="text-center py-4 px-3 font-bold text-blue-800">Jumlah</th>
+                                <th class="text-center py-4 px-3 font-bold text-blue-800">Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="tabelTag">
-                            <tr class="border-b border-gray-50 hover:bg-indigo-50 transition-colors">
-                                <td class="py-3 px-3 font-medium text-gray-800 flex items-center gap-2">
-                                    <i class="fas fa-tag text-indigo-600 text-xs"></i>
-                                    Programming
+                            <tr class="border-b hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50">
+                                <td class="py-4 px-4 font-semibold flex items-center gap-2">
+                                    <i class="fas fa-tag text-blue-600"></i>Programming
                                 </td>
-                                <td class="py-3 px-3 text-center">
-                                    <span class="bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-semibold">25</span>
+                                <td class="py-4 px-3 text-center">
+                                    <span class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-1.5 rounded-full text-xs font-bold">25</span>
                                 </td>
-                                <td class="py-3 px-3 text-center">
-                                    <button onclick="editTag('Programming', 25)" class="text-indigo-600 hover:text-indigo-800 hover:bg-indigo-100 p-2 rounded-lg transition-all">
+                                <td class="py-4 px-3 text-center">
+                                    <button onclick="editTag(this, 'Programming', 25)" class="text-blue-600 hover:bg-blue-100 p-2 rounded-lg mr-2">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                </td>
-                                <td class="py-3 px-3 text-center">
-                                    <button onclick="hapusTag('Programming')" class="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition-all">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="border-b border-gray-50 hover:bg-indigo-50 transition-colors">
-                                <td class="py-3 px-3 font-medium text-gray-800 flex items-center gap-2">
-                                    <i class="fas fa-tag text-indigo-600 text-xs"></i>
-                                    Design
-                                </td>
-                                <td class="py-3 px-3 text-center">
-                                    <span class="bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-semibold">18</span>
-                                </td>
-                                <td class="py-3 px-3 text-center">
-                                    <button onclick="editTag('Design', 18)" class="text-indigo-600 hover:text-indigo-800 hover:bg-indigo-100 p-2 rounded-lg transition-all">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </td>
-                                <td class="py-3 px-3 text-center">
-                                    <button onclick="hapusTag('Design')" class="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition-all">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-indigo-50 transition-colors">
-                                <td class="py-3 px-3 font-medium text-gray-800 flex items-center gap-2">
-                                    <i class="fas fa-tag text-indigo-600 text-xs"></i>
-                                    Tutorial
-                                </td>
-                                <td class="py-3 px-3 text-center">
-                                    <span class="bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-semibold">32</span>
-                                </td>
-                                <td class="py-3 px-3 text-center">
-                                    <button onclick="editTag('Tutorial', 32)" class="text-indigo-600 hover:text-indigo-800 hover:bg-indigo-100 p-2 rounded-lg transition-all">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </td>
-                                <td class="py-3 px-3 text-center">
-                                    <button onclick="hapusTag('Tutorial')" class="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition-all">
+                                    <button onclick="hapusTag(this)" class="text-red-500 hover:bg-red-100 p-2 rounded-lg">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </td>
@@ -224,32 +160,19 @@
     </div>
 
     <!-- Modal Edit Kategori -->
-    <div id="modalEditKategori" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full transform transition-all">
-            <div class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-5 rounded-t-2xl">
-                <h3 class="text-xl font-bold flex items-center gap-2">
-                    <i class="fas fa-edit"></i>
-                    Edit Kategori
-                </h3>
+    <div id="modalKategori" class="hidden fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full m-4">
+            <div class="bg-gradient-to-r from-purple-600 to-pink-600 text-white p-6 rounded-t-3xl">
+                <h3 class="text-2xl font-bold"><i class="fas fa-edit mr-2"></i>Edit Kategori</h3>
             </div>
             <div class="p-6 space-y-4">
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Kategori</label>
-                    <input type="text" id="editNamaKategori" 
-                        class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all text-sm">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Jumlah</label>
-                    <input type="number" id="editJumlahKategori" 
-                        class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all text-sm">
-                </div>
-                <div class="flex gap-3 pt-2">
-                    <button onclick="simpanEditKategori()" 
-                        class="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-2.5 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all shadow-md text-sm">
-                        <i class="fas fa-save mr-2"></i>Simpan
+                <input type="text" id="editNamaKategori" class="w-full px-4 py-3 border-2 rounded-xl outline-none">
+                <input type="number" id="editJumlahKategori" class="w-full px-4 py-3 border-2 rounded-xl outline-none">
+                <div class="flex gap-3">
+                    <button onclick="simpanKategori()" class="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white py-3 rounded-xl font-semibold">
+                        <i class="fas fa-check mr-2"></i>Simpan
                     </button>
-                    <button onclick="tutupModalEditKategori()" 
-                        class="flex-1 bg-gray-200 text-gray-700 font-semibold py-2.5 rounded-lg hover:bg-gray-300 transition-all text-sm">
+                    <button onclick="tutupModal('modalKategori')" class="flex-1 bg-gray-400 text-white py-3 rounded-xl font-semibold">
                         <i class="fas fa-times mr-2"></i>Batal
                     </button>
                 </div>
@@ -258,32 +181,19 @@
     </div>
 
     <!-- Modal Edit Tag -->
-    <div id="modalEditTag" class="hidden fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full transform transition-all">
-            <div class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-5 rounded-t-2xl">
-                <h3 class="text-xl font-bold flex items-center gap-2">
-                    <i class="fas fa-edit"></i>
-                    Edit Tag
-                </h3>
+    <div id="modalTag" class="hidden fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full m-4">
+            <div class="bg-gradient-to-r from-blue-600 to-cyan-600 text-white p-6 rounded-t-3xl">
+                <h3 class="text-2xl font-bold"><i class="fas fa-edit mr-2"></i>Edit Tag</h3>
             </div>
             <div class="p-6 space-y-4">
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Tag</label>
-                    <input type="text" id="editNamaTag" 
-                        class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all text-sm">
-                </div>
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Jumlah</label>
-                    <input type="number" id="editJumlahTag" 
-                        class="w-full px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all text-sm">
-                </div>
-                <div class="flex gap-3 pt-2">
-                    <button onclick="simpanEditTag()" 
-                        class="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-2.5 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all shadow-md text-sm">
-                        <i class="fas fa-save mr-2"></i>Simpan
+                <input type="text" id="editNamaTag" class="w-full px-4 py-3 border-2 rounded-xl outline-none">
+                <input type="number" id="editJumlahTag" class="w-full px-4 py-3 border-2 rounded-xl outline-none">
+                <div class="flex gap-3">
+                    <button onclick="simpanTag()" class="flex-1 bg-gradient-to-r from-blue-600 to-cyan-600 text-white py-3 rounded-xl font-semibold">
+                        <i class="fas fa-check mr-2"></i>Simpan
                     </button>
-                    <button onclick="tutupModalEditTag()" 
-                        class="flex-1 bg-gray-200 text-gray-700 font-semibold py-2.5 rounded-lg hover:bg-gray-300 transition-all text-sm">
+                    <button onclick="tutupModal('modalTag')" class="flex-1 bg-gray-400 text-white py-3 rounded-xl font-semibold">
                         <i class="fas fa-times mr-2"></i>Batal
                     </button>
                 </div>
@@ -291,193 +201,151 @@
         </div>
     </div>
 
+    <!-- Success Modal -->
+    <div id="successModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full m-4 text-center p-8">
+            <div class="text-6xl mb-4">✓</div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-2" id="successMessage">Berhasil!</h3>
+            <button onclick="tutupModal('successModal')" class="mt-4 bg-gradient-to-r from-green-500 to-teal-500 text-white px-8 py-3 rounded-xl font-semibold">
+                OK
+            </button>
+        </div>
+    </div>
+
     <script>
-        let kategoriEdit = null;
-        let tagEdit = null;
+        let currentRow = null;
+        const colors = ['from-purple-500 to-pink-500', 'from-blue-500 to-cyan-500', 'from-green-500 to-teal-500', 'from-orange-500 to-red-500', 'from-pink-500 to-rose-500', 'from-violet-500 to-purple-500'];
 
         function tambahKategori() {
             const input = document.getElementById('inputKategori');
             const nama = input.value.trim();
-            
-            if (nama === '') {
-                alert('Nama kategori tidak boleh kosong!');
-                return;
-            }
+            if (!nama) return alert('⚠️ Nama kategori tidak boleh kosong!');
 
-            const tabel = document.getElementById('tabelKategori');
-            const row = document.createElement('tr');
-            row.className = 'border-b border-gray-50 hover:bg-indigo-50 transition-colors';
-            row.innerHTML = `
-                <td class="py-3 px-3 font-medium text-gray-800">${nama}</td>
-                <td class="py-3 px-3 text-center">
-                    <span class="bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-semibold">0</span>
+            const tbody = document.getElementById('tabelKategori');
+            const tr = document.createElement('tr');
+            tr.className = 'border-b hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50';
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            tr.innerHTML = `
+                <td class="py-4 px-4 font-semibold flex items-center gap-2">
+                    <i class="fas fa-folder text-purple-600"></i>${nama}
                 </td>
-                <td class="py-3 px-3 text-center">
-                    <button onclick="editKategori('${nama}', 0)" class="text-indigo-600 hover:text-indigo-800 hover:bg-indigo-100 p-2 rounded-lg transition-all">
+                <td class="py-4 px-3 text-center">
+                    <span class="bg-gradient-to-r ${color} text-white px-4 py-1.5 rounded-full text-xs font-bold">0</span>
+                </td>
+                <td class="py-4 px-3 text-center">
+                    <button onclick="editKategori(this, '${nama}', 0)" class="text-purple-600 hover:bg-purple-100 p-2 rounded-lg mr-2">
                         <i class="fas fa-edit"></i>
                     </button>
-                </td>
-                <td class="py-3 px-3 text-center">
-                    <button onclick="hapusKategori('${nama}')" class="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition-all">
+                    <button onclick="hapusKategori(this)" class="text-red-500 hover:bg-red-100 p-2 rounded-lg">
                         <i class="fas fa-trash"></i>
                     </button>
                 </td>
             `;
-            tabel.appendChild(row);
+            tbody.appendChild(tr);
             input.value = '';
+            showSuccess('Kategori berhasil ditambahkan!');
         }
 
         function tambahTag() {
             const input = document.getElementById('inputTag');
             const nama = input.value.trim();
-            
-            if (nama === '') {
-                alert('Nama tag tidak boleh kosong!');
-                return;
-            }
+            if (!nama) return alert('⚠️ Nama tag tidak boleh kosong!');
 
-            const tabel = document.getElementById('tabelTag');
-            const row = document.createElement('tr');
-            row.className = 'border-b border-gray-50 hover:bg-indigo-50 transition-colors';
-            row.innerHTML = `
-                <td class="py-3 px-3 font-medium text-gray-800 flex items-center gap-2">
-                    <i class="fas fa-tag text-indigo-600 text-xs"></i>
-                    ${nama}
+            const tbody = document.getElementById('tabelTag');
+            const tr = document.createElement('tr');
+            tr.className = 'border-b hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50';
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            tr.innerHTML = `
+                <td class="py-4 px-4 font-semibold flex items-center gap-2">
+                    <i class="fas fa-tag text-blue-600"></i>${nama}
                 </td>
-                <td class="py-3 px-3 text-center">
-                    <span class="bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-semibold">0</span>
+                <td class="py-4 px-3 text-center">
+                    <span class="bg-gradient-to-r ${color} text-white px-4 py-1.5 rounded-full text-xs font-bold">0</span>
                 </td>
-                <td class="py-3 px-3 text-center">
-                    <button onclick="editTag('${nama}', 0)" class="text-indigo-600 hover:text-indigo-800 hover:bg-indigo-100 p-2 rounded-lg transition-all">
+                <td class="py-4 px-3 text-center">
+                    <button onclick="editTag(this, '${nama}', 0)" class="text-blue-600 hover:bg-blue-100 p-2 rounded-lg mr-2">
                         <i class="fas fa-edit"></i>
                     </button>
-                </td>
-                <td class="py-3 px-3 text-center">
-                    <button onclick="hapusTag('${nama}')" class="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition-all">
+                    <button onclick="hapusTag(this)" class="text-red-500 hover:bg-red-100 p-2 rounded-lg">
                         <i class="fas fa-trash"></i>
                     </button>
                 </td>
             `;
-            tabel.appendChild(row);
+            tbody.appendChild(tr);
             input.value = '';
+            showSuccess('Tag berhasil ditambahkan!');
         }
 
-        function editKategori(nama, jumlah) {
-            kategoriEdit = nama;
+        function editKategori(btn, nama, jumlah) {
+            currentRow = btn.closest('tr');
             document.getElementById('editNamaKategori').value = nama;
             document.getElementById('editJumlahKategori').value = jumlah;
-            document.getElementById('modalEditKategori').classList.remove('hidden');
+            document.getElementById('modalKategori').classList.remove('hidden');
         }
 
-        function tutupModalEditKategori() {
-            document.getElementById('modalEditKategori').classList.add('hidden');
-            kategoriEdit = null;
-        }
-
-        function simpanEditKategori() {
-            const namaBaru = document.getElementById('editNamaKategori').value.trim();
-            const jumlahBaru = document.getElementById('editJumlahKategori').value;
-            
-            if (namaBaru === '') {
-                alert('Nama kategori tidak boleh kosong!');
-                return;
-            }
-
-            const rows = document.querySelectorAll('#tabelKategori tr');
-            rows.forEach(row => {
-                const namaCell = row.cells[0];
-                if (namaCell && namaCell.textContent === kategoriEdit) {
-                    namaCell.textContent = namaBaru;
-                    row.cells[1].querySelector('span').textContent = jumlahBaru;
-                    row.cells[2].querySelector('button').onclick = () => editKategori(namaBaru, jumlahBaru);
-                    row.cells[3].querySelector('button').onclick = () => hapusKategori(namaBaru);
-                }
-            });
-
-            tutupModalEditKategori();
-        }
-
-        function editTag(nama, jumlah) {
-            tagEdit = nama;
+        function editTag(btn, nama, jumlah) {
+            currentRow = btn.closest('tr');
             document.getElementById('editNamaTag').value = nama;
             document.getElementById('editJumlahTag').value = jumlah;
-            document.getElementById('modalEditTag').classList.remove('hidden');
+            document.getElementById('modalTag').classList.remove('hidden');
         }
 
-        function tutupModalEditTag() {
-            document.getElementById('modalEditTag').classList.add('hidden');
-            tagEdit = null;
+        function simpanKategori() {
+            const nama = document.getElementById('editNamaKategori').value.trim();
+            const jumlah = document.getElementById('editJumlahKategori').value;
+            if (!nama) return alert('⚠️ Nama tidak boleh kosong!');
+
+            const cells = currentRow.cells;
+            cells[0].innerHTML = `<i class="fas fa-folder text-purple-600"></i>${nama}`;
+            cells[1].querySelector('span').textContent = jumlah;
+            tutupModal('modalKategori');
+            showSuccess('Kategori berhasil diupdate!');
         }
 
-        function simpanEditTag() {
-            const namaBaru = document.getElementById('editNamaTag').value.trim();
-            const jumlahBaru = document.getElementById('editJumlahTag').value;
-            
-            if (namaBaru === '') {
-                alert('Nama tag tidak boleh kosong!');
-                return;
+        function simpanTag() {
+            const nama = document.getElementById('editNamaTag').value.trim();
+            const jumlah = document.getElementById('editJumlahTag').value;
+            if (!nama) return alert('⚠️ Nama tidak boleh kosong!');
+
+            const cells = currentRow.cells;
+            cells[0].innerHTML = `<i class="fas fa-tag text-blue-600"></i>${nama}`;
+            cells[1].querySelector('span').textContent = jumlah;
+            tutupModal('modalTag');
+            showSuccess('Tag berhasil diupdate!');
+        }
+
+        function hapusKategori(btn) {
+            if (confirm('⚠️ Yakin ingin menghapus kategori ini?')) {
+                btn.closest('tr').remove();
+                showSuccess('Kategori berhasil dihapus!');
             }
+        }
 
-            const rows = document.querySelectorAll('#tabelTag tr');
-            rows.forEach(row => {
-                const namaCell = row.cells[0];
-                if (namaCell) {
-                    const textContent = namaCell.textContent.trim();
-                    if (textContent === tagEdit) {
-                        namaCell.innerHTML = `
-                            <i class="fas fa-tag text-indigo-600 text-xs"></i>
-                            ${namaBaru}
-                        `;
-                        row.cells[1].querySelector('span').textContent = jumlahBaru;
-                        row.cells[2].querySelector('button').onclick = () => editTag(namaBaru, jumlahBaru);
-                        row.cells[3].querySelector('button').onclick = () => hapusTag(namaBaru);
-                    }
-                }
+        function hapusTag(btn) {
+            if (confirm('⚠️ Yakin ingin menghapus tag ini?')) {
+                btn.closest('tr').remove();
+                showSuccess('Tag berhasil dihapus!');
+            }
+        }
+
+        function tutupModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        function showSuccess(msg) {
+            document.getElementById('successMessage').textContent = msg;
+            document.getElementById('successModal').classList.remove('hidden');
+            setTimeout(() => tutupModal('successModal'), 2000);
+        }
+
+        // Close modal on outside click
+        document.querySelectorAll('.fixed').forEach(modal => {
+            modal.addEventListener('click', e => {
+                if (e.target === modal) tutupModal(modal.id);
             });
-
-            tutupModalEditTag();
-        }
-
-        function hapusKategori(nama) {
-            if (confirm(`Apakah Anda yakin ingin menghapus kategori "${nama}"?`)) {
-                const rows = document.querySelectorAll('#tabelKategori tr');
-                rows.forEach(row => {
-                    const namaCell = row.cells[0];
-                    if (namaCell && namaCell.textContent === nama) {
-                        row.remove();
-                    }
-                });
-            }
-        }
-
-        function hapusTag(nama) {
-            if (confirm(`Apakah Anda yakin ingin menghapus tag "${nama}"?`)) {
-                const rows = document.querySelectorAll('#tabelTag tr');
-                rows.forEach(row => {
-                    const namaCell = row.cells[0];
-                    if (namaCell) {
-                        const textContent = namaCell.textContent.trim();
-                        if (textContent === nama) {
-                            row.remove();
-                        }
-                    }
-                });
-            }
-        }
-
-        // Tutup modal saat klik di luar
-        document.getElementById('modalEditKategori').addEventListener('click', function(e) {
-            if (e.target === this) {
-                tutupModalEditKategori();
-            }
-        });
-
-        document.getElementById('modalEditTag').addEventListener('click', function(e) {
-            if (e.target === this) {
-                tutupModalEditTag();
-            }
         });
     </script>
 </body>
 </html>
+
 @endsection

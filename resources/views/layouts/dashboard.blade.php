@@ -4,10 +4,10 @@
 @section('title', 'Dashboard - Portal Blog')
 
 @section('content')
-<div class="dashboard-container" style="padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh;">
+<div class="dashboard-container" style="padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:  #fbfbfc 100%; min-height: 100vh;">
     
     <!-- Title -->
-    <h1 style="font-size: 28px; margin-bottom: 25px; color: #2d3748; font-weight: 700; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Dashboard Portal Blog</h1>
+    <h1 style="font-size: 28px; margin-bottom: 25px; color: #2d3748; font-weight: 700; background: linear-gradient(135deg, #2d3748 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Dashboard Portal Blog</h1>
     
 <!-- Stats Cards -->
 <div class="stats-cards" style="display: flex; gap: 20px; margin-bottom: 35px; flex-wrap: wrap;">
@@ -76,7 +76,7 @@
             labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
             datasets: [{
                 label: 'Viewers',
-                data: [879, 3595, 2569, 1995, 3678, 500, 799],
+                data: [879, 3595, 2569, 1995, 3678, 500, 4278],
                 borderColor: '#667eea',
                 backgroundColor: 'rgba(102, 126, 234, 0.1)',
                 borderWidth: 3,
