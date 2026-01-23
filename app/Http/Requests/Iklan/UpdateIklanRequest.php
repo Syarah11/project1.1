@@ -22,5 +22,6 @@ class UpdateIklanRequest extends FormRequest
             'posisi' => 'nullable|in:top,sidebar,bottom,popup',
             'urutan' => 'sometimes|integer|min:0',
         ];
+        
     }
 }

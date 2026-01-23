@@ -122,5 +122,6 @@ class IklanController extends Controller
             'success' => true,
             'message' => 'Iklan berhasil dihapus'
         ]);
+        
     }
 }

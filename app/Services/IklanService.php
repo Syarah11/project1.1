@@ -75,4 +75,5 @@ class IklanService
 
         return $query->orderBy('priority', 'asc')->get();
     }
+    
 }

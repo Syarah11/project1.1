@@ -32,5 +32,6 @@ class StoreIklanRequest extends FormRequest
             'email.required' => 'Email wajib diisi',
             'link.url' => 'Link harus berupa URL yang valid',
         ];
+        
     }
 }
