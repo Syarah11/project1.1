@@ -3,70 +3,97 @@
 namespace App\Services;
 
 use App\Models\Ejurnal;
-use Illuminate\Support\Str;
+use App\Models\GambarEjurnal;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class EjurnalService
 {
-    public function getAllEjurnals($perPage = 10)
-    {
-        return Ejurnal::with('user','gambars')->paginate($perPage);
-    }
-
-    public function createEjurnal(array $data)
-    {
-        // Upload gambar jika ada
-        if (isset($data['gambar']) && $data['gambar']) {
-            $data['gambar'] = ImageService::upload(
-                $data['gambar'],
-                'ejurnals',
-                300
-            );
-        }
-
-        $data['user_id'] = auth()->id();
-        $data['slug'] = Str::slug($data['title'] ?? 'ejurnal');
-
-        return Ejurnal::create($data);
-    }
+   public function getAllEjurnals($perPage = 10)
+{
+    return Ejurnal::with(['user', 'thumbnail'])->paginate($perPage);
+}
 
     public function getEjurnalById($id)
-    {
-        return Ejurnal::with('user')->findOrFail($id);
-    }
+{
+    return Ejurnal::with(['user', 'thumbnail'])->findOrFail($id);
+}
 
-    public function updateEjurnal($id, array $data)
-    {
-        $ejurnal = Ejurnal::findOrFail($id);
+   public function createEjurnal(array $data)
+{
+    return DB::transaction(function () use ($data) {
 
-        // Handle gambar upload
-        if (isset($data['gambar']) && $data['gambar']) {
-            ImageService::delete($ejurnal->gambar);
-            $data['gambar'] = ImageService::upload(
-                $data['gambar'],
-                'ejurnals',
-                300
-            );
+        $ejurnal = Ejurnal::create([
+            'user_id' => auth()->id(),
+            'title' => $data['title'],
+            'description' => $data['description'] ?? null,
+        ]);
+
+        if (!empty($data['thumbnail']) && is_array($data['thumbnail'])) {
+            foreach ($data['thumbnail'] as $file) {
+                $path = $file->store('ejurnals', 'public');
+
+                GambarEjurnal::create([
+                    'ejurnal_id' => $ejurnal->id,
+                    'user_id' => auth()->id(),
+                    'image' => $path,
+                ]);
+            }
         }
 
-        if (isset($data['title'])) {
-            $data['slug'] = Str::slug($data['title']);
+        return $ejurnal->load(['user', 'thumbnail']);
+    });
+}
+
+   public function updateEjurnal($id, array $data)
+{
+    return DB::transaction(function () use ($id, $data) {
+
+        $ejurnal = Ejurnal::findOrFail($id);
+
+        $ejurnal->update(array_filter([
+            'title' => $data['title'] ?? null,
+            'description' => $data['description'] ?? null,
+        ]));
+
+        if (!empty($data['thumbnail']) && is_array($data['thumbnail'])) {
+            foreach ($data['thumbnail'] as $file) {
+                $path = $file->store('ejurnals', 'public');
+
+                GambarEjurnal::create([
+                    'ejurnal_id' => $ejurnal->id,
+                    'user_id' => auth()->id(),
+                    'image' => $path,
+                ]);
+            }
         }
 
-        $ejurnal->update($data);
-        return $ejurnal;
-    }
+        return $ejurnal->fresh(['user', 'thumbnail']);
+    });
+}
 
-    public function deleteEjurnal($id)
-    {
-        $ejurnal = Ejurnal::findOrFail($id);
-        ImageService::delete($ejurnal->gambar);
+   public function deleteEjurnal($id)
+{
+    return DB::transaction(function () use ($id) {
+
+        $ejurnal = Ejurnal::with('thumbnail')->findOrFail($id);
+
+        foreach ($ejurnal->thumbnail as $gambar) {
+            Storage::disk('public')->delete($gambar->image);
+            $gambar->delete();
+        }
+
         $ejurnal->delete();
-    }
+
+        return true;
+    });
+}
 
     public function deleteGambarEjurnal($id)
     {
-        $ejurnal = Ejurnal::findOrFail($id);
-        ImageService::delete($ejurnal->gambar);
-        $ejurnal->update(['gambar' => null]);
+        $gambar = GambarEjurnal::findOrFail($id);
+        Storage::disk('public')->delete($gambar->image);
+
+        return $gambar->delete();
     }
 }

@@ -16,7 +16,7 @@ class UpdateEjurnalRequest extends FormRequest
         return [
             'title' => 'sometimes|string|max:500',
             'description' => 'sometimes|string',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+           'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'status' => 'sometimes|in:published,draft',
         ];
     }

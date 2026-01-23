@@ -17,7 +17,7 @@ class Ejurnal extends Model
         'description',
     ];
 
-    protected $appends = ['thumbnail'];
+    protected $appends = ['thumbnail_url'];
 
     public function user()
     {
@@ -29,10 +29,19 @@ class Ejurnal extends Model
         return $this->hasMany(GambarEjurnal::class, 'ejurnal_id');
     }
 
-    public function getThumbnailAttribute()
+    // ✅ RELASI THUMBNAIL (INI YANG KAMU BUTUHKAN)
+    public function thumbnail()
     {
-        return $this->gambars->first()
-            ? asset('storage/' . $this->gambars->first()->image)
+        return $this->hasOne(GambarEjurnal::class, 'ejurnal_id')
+                    ->where('image', true);
+    }
+
+    // ✅ ACCESSOR URL
+    public function getThumbnailUrlAttribute()
+    {
+        return $this->thumbnail
+            ? asset('storage/' . $this->thumbnail->image)
             : null;
     }
 }
+
