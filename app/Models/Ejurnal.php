@@ -29,11 +29,11 @@ class Ejurnal extends Model
         return $this->hasMany(GambarEjurnal::class, 'ejurnal_id');
     }
 
-    // ✅ RELASI THUMBNAIL (INI YANG KAMU BUTUHKAN)
+    // ✅ PERBAIKAN - Ambil gambar pertama saja (tanpa where)
     public function thumbnail()
     {
         return $this->hasOne(GambarEjurnal::class, 'ejurnal_id')
-                    ->where('image', true);
+                    ->latest(); // Ambil yang terbaru
     }
 
     // ✅ ACCESSOR URL
@@ -44,4 +44,3 @@ class Ejurnal extends Model
             : null;
     }
 }
-

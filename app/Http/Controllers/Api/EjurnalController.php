@@ -64,30 +64,35 @@ class EjurnalController extends Controller
     // MENYIMPAN DATA EJURNAL BARU
     // ===============================
     public function store(StoreEjurnalRequest $request)
-    {
-        try {
-            // Mengambil data yang sudah lolos validasi
-            $validatedData = $request->validated();
+{
+    try {
+        // 1️⃣ data validasi (TEXT SAJA)
+        $validatedData = $request->validated();
 
-            // Memanggil service untuk menyimpan ejurnal
-            $ejurnal = $this->ejurnalService->createEjurnal($validatedData);
+        // 2️⃣ AMBIL FILE DARI REQUEST (INI PENTING)
+        $thumbnailFile = $request->file('thumbnail');
 
-            // Response berhasil dibuat
-            return response()->json([
-                'success' => true,
-                'message' => 'E-journal created successfully',
-                'data' => $ejurnal
-            ], 201);
+        // 3️⃣ KIRIM KE SERVICE
+        $ejurnal = $this->ejurnalService->createEjurnal(
+            $validatedData,
+            $thumbnailFile
+        );
 
-        } catch (\Exception $e) {
-            // Jika gagal menyimpan
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to create e-journal',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+        return response()->json([
+            'success' => true,
+            'message' => 'E-journal created successfully',
+            'data' => $ejurnal
+        ], 201);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to create e-journal',
+            'error' => $e->getMessage()
+        ], 500);
     }
+}
+
 
     // ===============================
     // MENAMPILKAN DETAIL EJURNAL
@@ -118,30 +123,34 @@ class EjurnalController extends Controller
     // MENGUPDATE DATA EJURNAL
     // ===============================
     public function update(UpdateEjurnalRequest $request, $id)
-    {
-        try {
-            // Mengambil data hasil validasi
-            $validatedData = $request->validated();
+{
+    try {
+        $validatedData = $request->validated();
+        
+        // ✅ AMBIL FILE dari request
+        $thumbnailFile = $request->file('thumbnail');
 
-            // Memanggil service untuk update ejurnal
-            $ejurnal = $this->ejurnalService->updateEjurnal($id, $validatedData);
+        // ✅ KIRIM KE SERVICE
+        $ejurnal = $this->ejurnalService->updateEjurnal(
+            $id, 
+            $validatedData, 
+            $thumbnailFile
+        );
 
-            // Response jika update berhasil
-            return response()->json([
-                'success' => true,
-                'message' => 'E-journal updated successfully',
-                'data' => $ejurnal
-            ], 200);
+        return response()->json([
+            'success' => true,
+            'message' => 'E-journal updated successfully',
+            'data' => $ejurnal
+        ], 200);
 
-        } catch (\Exception $e) {
-            // Jika update gagal
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to update e-journal',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to update e-journal',
+            'error' => $e->getMessage()
+        ], 500);
     }
+}
 
     // ===============================
     // MENGHAPUS DATA EJURNAL
