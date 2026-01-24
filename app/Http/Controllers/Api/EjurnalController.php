@@ -97,56 +97,32 @@ class EjurnalController extends Controller
     // ===============================
     // MENAMPILKAN DETAIL EJURNAL
     // ===============================
-    public function show($id)
-    {
-        try {
-            // Mengambil ejurnal berdasarkan ID
-            $ejurnal = $this->ejurnalService->getEjurnalById($id);
-
-            // Response jika data ditemukan
-            return response()->json([
-                'success' => true,
-                'data' => $ejurnal
-            ], 200);
-
-        } catch (\Exception $e) {
-            // Jika data tidak ditemukan
-            return response()->json([
-                'success' => false,
-                'message' => 'E-journal not found',
-                'error' => $e->getMessage()
-            ], 404);
-        }
-    }
-
-    // ===============================
-    // MENGUPDATE DATA EJURNAL
-    // ===============================
-    public function update(UpdateEjurnalRequest $request, $id)
+    public function show(StoreEjurnalRequest $request)
 {
     try {
+        // 1️⃣ data validasi (TEXT SAJA)
         $validatedData = $request->validated();
-        
-        // ✅ AMBIL FILE dari request
+
+        // 2️⃣ AMBIL FILE DARI REQUEST (INI PENTING)
         $thumbnailFile = $request->file('thumbnail');
 
-        // ✅ KIRIM KE SERVICE
-        $ejurnal = $this->ejurnalService->updateEjurnal(
-            $id, 
-            $validatedData, 
+        // 3️⃣ KIRIM KE SERVICE
+        $ejurnal = $this->ejurnalService->createEjurnal(
+            $validatedData,
             $thumbnailFile
         );
 
+        // ✅ TAMBAHKAN fresh() DI SINI!
         return response()->json([
             'success' => true,
-            'message' => 'E-journal updated successfully',
-            'data' => $ejurnal
-        ], 200);
+            'message' => 'E-journal created successfully',
+            'data' => $ejurnal->fresh(['user', 'thumbnail'])  // ✅ PERBAIKAN INI!
+        ], 201);
 
     } catch (\Exception $e) {
         return response()->json([
             'success' => false,
-            'message' => 'Failed to update e-journal',
+            'message' => 'Failed to create e-journal',
             'error' => $e->getMessage()
         ], 500);
     }
