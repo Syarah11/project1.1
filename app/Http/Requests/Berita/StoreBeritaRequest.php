@@ -34,6 +34,6 @@ class StoreBeritaRequest extends FormRequest
             'kategori_ids.*.exists' => 'Kategori tidak valid',
             'tag_ids.*.exists' => 'Tag tidak valid',
         ];
-        
+
     }
 }
