@@ -61,6 +61,10 @@
                 <div class="space-y-4">
                     <input type="text" id="inputKategori" placeholder="Masukkan nama kategori" 
                         class="w-full px-4 py-3 border-2 border-purple-200 rounded-xl focus:border-purple-500 focus:ring-4 focus:ring-purple-200 outline-none">
+                    <textarea id="newCategoryDesc"
+                                  placeholder="Deskripsi" 
+                                  rows="3" 
+                                  class="w-full px-4 py-2 bg-white border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-400 resize-none"></textarea>   
                     <button onclick="tambahKategori()" 
                         class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold py-3 rounded-xl hover:shadow-2xl transform hover:scale-105 transition-all">
                         <i class="fas fa-save mr-2"></i>Simpan Kategori
@@ -78,6 +82,7 @@
                         <thead>
                             <tr class="bg-gradient-to-r from-purple-100 to-pink-100">
                                 <th class="text-left py-4 px-4 font-bold text-purple-800 rounded-tl-xl">Nama</th>
+                                <th class="text-left py-4 px-4 font-bold text-purple-800">Deskripsi</th>
                                 <th class="text-center py-4 px-3 font-bold text-purple-800">Jumlah</th>
                                 <th class="text-center py-4 px-3 font-bold text-purple-800">Aksi</th>
                             </tr>
@@ -87,7 +92,11 @@
                                 <td class="py-4 px-4 font-semibold flex items-center gap-2">
                                     <i class="fas fa-folder text-purple-600"></i>Teknologi
                                 </td>
+                                <td class="py-4 px-4 text-gray-600">
+                                    Artikel seputar teknologi terbaru
+                                </td>
                                 <td class="py-4 px-3 text-center">
+
                                     <span class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-1.5 rounded-full text-xs font-bold">12</span>
                                 </td>
                                 <td class="py-4 px-3 text-center">
@@ -167,6 +176,11 @@
             </div>
             <div class="p-6 space-y-4">
                 <input type="text" id="editNamaKategori" class="w-full px-4 py-3 border-2 rounded-xl outline-none">
+                <textarea id="editDeskripsiKategori"
+                    rows="3"
+                    class="w-full px-4 py-3 border-2 rounded-xl outline-none resize-none"
+                    placeholder="Deskripsi kategori"></textarea>
+
                 <input type="number" id="editJumlahKategori" class="w-full px-4 py-3 border-2 rounded-xl outline-none">
                 <div class="flex gap-3">
                     <button onclick="simpanKategori()" class="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white py-3 rounded-xl font-semibold">
@@ -217,23 +231,32 @@
         const colors = ['from-purple-500 to-pink-500', 'from-blue-500 to-cyan-500', 'from-green-500 to-teal-500', 'from-orange-500 to-red-500', 'from-pink-500 to-rose-500', 'from-violet-500 to-purple-500'];
 
         function tambahKategori() {
-            const input = document.getElementById('inputKategori');
-            const nama = input.value.trim();
+            const namaInput = document.getElementById('inputKategori');
+            const descInput = document.getElementById('newCategoryDesc');
+
+            const nama = namaInput.value.trim();
+            const deskripsi = descInput.value.trim();
+
             if (!nama) return alert('⚠️ Nama kategori tidak boleh kosong!');
 
             const tbody = document.getElementById('tabelKategori');
             const tr = document.createElement('tr');
             tr.className = 'border-b hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50';
+
             const color = colors[Math.floor(Math.random() * colors.length)];
+
             tr.innerHTML = `
                 <td class="py-4 px-4 font-semibold flex items-center gap-2">
                     <i class="fas fa-folder text-purple-600"></i>${nama}
+                </td>
+                <td class="py-4 px-4 text-gray-600">
+                    ${deskripsi || '-'}
                 </td>
                 <td class="py-4 px-3 text-center">
                     <span class="bg-gradient-to-r ${color} text-white px-4 py-1.5 rounded-full text-xs font-bold">0</span>
                 </td>
                 <td class="py-4 px-3 text-center">
-                    <button onclick="editKategori(this, '${nama}', 0)" class="text-purple-600 hover:bg-purple-100 p-2 rounded-lg mr-2">
+                    <button onclick="editKategori(this)" class="text-purple-600 hover:bg-purple-100 p-2 rounded-lg mr-2">
                         <i class="fas fa-edit"></i>
                     </button>
                     <button onclick="hapusKategori(this)" class="text-red-500 hover:bg-red-100 p-2 rounded-lg">
@@ -242,9 +265,11 @@
                 </td>
             `;
             tbody.appendChild(tr);
-            input.value = '';
+            namaInput.value = '';
+            descInput.value = '';
             showSuccess('Kategori berhasil ditambahkan!');
         }
+
 
         function tambahTag() {
             const input = document.getElementById('inputTag');
