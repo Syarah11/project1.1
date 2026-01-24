@@ -25,6 +25,10 @@ class Berita extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function getThumbnailAttribute($value)
+    {
+        return $value ?? asset('images/default-thumbnail.jpg');
+    }
 
     public function kategoris()
     {

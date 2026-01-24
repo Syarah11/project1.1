@@ -24,5 +24,10 @@ class Iklan extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function getThumbnailAttribute($value)
+    {
+        return $value ?? asset('images/default-iklan-thumbnail.jpg');
+    }
     
 }
