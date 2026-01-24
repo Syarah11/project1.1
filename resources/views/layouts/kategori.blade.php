@@ -93,7 +93,7 @@
                                     <i class="fas fa-folder text-purple-600"></i>Teknologi
                                 </td>
                                 <td class="py-4 px-4 text-gray-600">
-                                    Artikel seputar teknologi terbaru
+                                    Artikel seputar teknologi terkini
                                 </td>
                                 <td class="py-4 px-3 text-center">
 
