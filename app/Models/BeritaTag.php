@@ -2,26 +2,48 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BeritaTag extends Model
+class Berita extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUuids;
 
-    protected $table = 'berita_tags';
-    public $timestamps = false;
+    protected $fillable = [
+        'user_id',
+        'title',
+        'slug',
+        'description',
+        'thumbnail',
+        'status',
+        'view_count',
+    ];
 
-    protected $fillable = ['berita_id', 'tag_id'];
+    // ✅ TAMBAHKAN APPENDS
+    protected $appends = ['thumbnail_url'];
 
-    public function berita()
+    // Relationships
+    public function user()
     {
-        return $this->belongsTo(Berita::class, 'berita_id');
+        return $this->belongsTo(User::class);
     }
 
-    public function tag()
+    // ✅ GANTI DENGAN INI - Accessor untuk URL saja
+    public function getThumbnailUrlAttribute()
     {
-        return $this->belongsTo(Tag::class, 'tag_id');
+        return $this->thumbnail
+            ? asset('storage/' . $this->thumbnail)
+            : asset('images/default-thumbnail.jpg');
     }
-    
+
+    public function kategoris()
+    {
+        return $this->belongsToMany(Kategori::class, 'berita_kategoris');
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'berita_tags');
+    }
 }

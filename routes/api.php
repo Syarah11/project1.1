@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\KategoriController;
 use App\Http\Controllers\Api\TagController;
 use App\Http\Controllers\Api\IklanController;
 use App\Http\Controllers\Api\EjurnalController;
+use App\Http\Controllers\Api\KategorisTagsController;
 use Illuminate\Support\Facades\Route;
 
 // ========================================
@@ -23,6 +24,9 @@ Route::get('/kategoris/{id}', [KategoriController::class, 'show']);
 
 Route::get('/tags', [TagController::class, 'index']);
 Route::get('/tags/{id}', [TagController::class, 'show']);
+
+// ⭐ ENDPOINT BARU - Get Categories & Tags sekaligus
+Route::get('/kategoris-tags', [KategorisTagsController::class, 'index']);
 
 // ========================================
 // PROTECTED ROUTES (Butuh Token)
