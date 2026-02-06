@@ -20,3 +20,6 @@ Route::get('/iklan', [IklanController::class, 'index'])->name('iklan');
 Route::get('/ejurnal', [EJurnalController::class, 'index'])->name('ejurnal');
 Route::get('/admin', [AdminController::class, 'index'])->name('admin');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/tes-web', function () {
+    return 'WEB OK';
+});

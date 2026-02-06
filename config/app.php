@@ -15,6 +15,8 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    'api_key' => env('BERITA_API_KEY_BACKEND'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

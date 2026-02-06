@@ -8,15 +8,22 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('gambar_ejurnals', function (Blueprint $table) {
-            $table->string('image')->nullable()->change();
-        });
+      Schema::create('gambar_ejurnals', function (Blueprint $table) {
+    $table->id();
+    $table->uuid('ejurnal_id'); // ⬅️ pakai uuid bukan foreignId
+    $table->string('image')->nullable();
+    $table->timestamps();
+
+    $table->foreign('ejurnal_id')
+        ->references('id')
+        ->on('ejurnals')
+        ->cascadeOnDelete();
+});
+
     }
 
     public function down(): void
     {
-        Schema::table('gambar_ejurnals', function (Blueprint $table) {
-            $table->string('image')->nullable(false)->change();
-        });
+        Schema::dropIfExists('gambar_ejurnals');
     }
 };
