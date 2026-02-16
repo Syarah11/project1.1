@@ -16,7 +16,7 @@ class StoreBeritaRequest extends FormRequest
         return [
             'title' => 'required|string|max:500',
             'description' => 'required|string',
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2000',
             'status' => 'required|in:published,draft',
             'kategori_ids' => 'nullable|array',
             'kategori_ids.*' => 'exists:kategoris,id',
@@ -33,7 +33,7 @@ class StoreBeritaRequest extends FormRequest
             'description.required' => 'Deskripsi berita wajib diisi',
             'thumbnail.image' => 'File harus berupa gambar',
             'thumbnail.mimes' => 'Format gambar harus: jpeg, png, jpg, gif, atau webp',
-            'thumbnail.max' => 'Ukuran gambar maksimal 5MB',
+            'thumbnail.max' => 'Ukuran gambar maksimal 2MB',
             'status.required' => 'Status berita wajib dipilih',
             'status.in' => 'Status harus published atau draft',
             'kategori_ids.array' => 'Kategori harus berupa array',

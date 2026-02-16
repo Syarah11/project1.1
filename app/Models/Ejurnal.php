@@ -11,36 +11,57 @@ class Ejurnal extends Model
     use HasFactory, HasUuids;
 
     protected $fillable = [
-        'id',
         'user_id',
         'title',
+        'slug',
         'description',
+        'thumbnail',
+        'status',
     ];
 
     protected $appends = ['thumbnail_url'];
 
+    /**
+     * Relasi ke User (pembuat ejurnal)
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function gambars()
+    /**
+     * Relasi ke GambarEjurnal (semua gambar ejurnal)
+     */
+    public function gambarEjurnals()
     {
         return $this->hasMany(GambarEjurnal::class, 'ejurnal_id');
     }
 
-    // ✅ PERBAIKAN - Ambil gambar pertama saja (tanpa where)
-    public function thumbnail()
+    /**
+     * Relasi ke GambarEjurnal (gambar pertama sebagai thumbnail fallback)
+     */
+    public function firstGambar()
     {
-        return $this->hasOne(GambarEjurnal::class, 'ejurnal_id')
-                    ->latest(); // Ambil yang terbaru
+        return $this->hasOne(GambarEjurnal::class, 'ejurnal_id')->oldest();
     }
 
-    // ✅ ACCESSOR URL
+    /**
+     * Accessor untuk thumbnail URL
+     * Priority: thumbnail terpisah > gambar pertama > null
+     */
     public function getThumbnailUrlAttribute()
     {
-        return $this->thumbnail
-            ? asset('storage/' . $this->thumbnail->image)
-            : null;
+        // Jika ada thumbnail terpisah, pakai itu
+        if ($this->thumbnail) {
+            return asset('storage/' . $this->thumbnail);
+        }
+        
+        // Jika tidak ada, pakai gambar pertama dari gambar_ejurnals
+        if ($this->firstGambar) {
+            return asset('storage/' . $this->firstGambar->image);
+        }
+        
+        // Jika tidak ada sama sekali
+        return null;
     }
 }

@@ -14,13 +14,24 @@ class UpdateTagRequest extends FormRequest
 
     public function rules(): array
     {
+        // Untuk UUID, gunakan route parameter 'id'
+        $tagId = $this->route('id');
+        
         return [
-            'nama_tag' => [
+            'name' => [
                 'sometimes',
                 'string',
-                'max:255',
-                Rule::unique('tags', 'nama_tag')->ignore($this->route('tag'))
+                'max:100',
+                Rule::unique('tags', 'name')->ignore($tagId) // UUID compatible
             ],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'name.unique' => 'Nama tag sudah digunakan',
+            'name.max' => 'Nama tag maksimal 100 karakter',
         ];
     }
 }

@@ -37,10 +37,12 @@ Route::get('/beritas/slug/{slug}', [BeritaController::class, 'showBySlug']);
 // Kategoris - Public Read
 Route::get('/kategoris', [KategoriController::class, 'index']);
 Route::get('/kategoris/{id}', [KategoriController::class, 'show']);
+Route::get('/kategoris/slug/{slug}', [KategoriController::class, 'showBySlug']);
 
 // Tags - Public Read
 Route::get('/tags', [TagController::class, 'index']);
 Route::get('/tags/{id}', [TagController::class, 'show']);
+Route::get('/tags/slug/{slug}', [TagController::class, 'showBySlug']);
 
 // Kategoris & Tags - Public Read
 Route::get('/kategoris-tags', [KategorisTagsController::class, 'index']);
@@ -54,12 +56,11 @@ Route::get('/iklans', [IklanController::class, 'index']);
 Route::get('/iklans/{id}', [IklanController::class, 'show']);
 
 // ========================================
-// 🔐 PROTECTED ENDPOINTS
+// 🔐 PROTECTED ENDPOINTSc
 // WAJIB: API Key + Sanctum Token + Role Check
 // ========================================
 
-Route::middleware('api.key')->group(function () {
-    
+Route::middleware('api.key')->group(function () {   
     // ========================================
     // AUTH ENDPOINTS (Public dalam api.key group)
     // ========================================
@@ -86,10 +87,7 @@ Route::middleware('api.key')->group(function () {
         // ✅ SEMUA ROLE bisa create berita (super_admin, admin, user)
         Route::post('/beritas', [BeritaController::class, 'store'])
             ->middleware('role:super_admin,admin,user');
-
-        Route::post('/beritas', [BeritaController::class, 'store'])
-            ->middleware('role:super_admin,admin,user');
-
+            
         // ✅ SEMUA ROLE bisa update
         // Controller akan cek: user hanya bisa edit miliknya sendiri
         Route::put('/beritas/{id}', [BeritaController::class, 'update'])

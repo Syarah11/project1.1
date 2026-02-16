@@ -14,14 +14,22 @@ class UpdateIklanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nama' => 'sometimes|string|max:255',
-            'email' => 'sometimes|email|max:255',
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'name' => 'sometimes|string|max:255',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:600',
             'link' => 'nullable|url|max:500',
-            'status' => 'sometimes|in:pending,active,inactive',
-            'posisi' => 'nullable|in:top,sidebar,bottom,popup',
-            'urutan' => 'sometimes|integer|min:0',
+            'position' => 'sometimes|in:top,bottom,sidebar',
+            'priority' => 'sometimes|integer|min:0',
+            'status' => 'sometimes|in:active,inactive',
         ];
-        
+    }
+
+    public function messages(): array
+    {
+        return [
+            'name.string' => 'Nama harus berupa text',
+            'thumbnail.image' => 'File harus berupa gambar',
+            'thumbnail.max' => 'Ukuran gambar maksimal 600',
+            'position.in' => 'Posisi harus: top, bottom, atau sidebar',
+        ];
     }
 }

@@ -9,7 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 class Berita extends Model
 {
     use HasFactory, HasUuids;
-
+     public $incrementing = false;
+    protected $keyType = 'string';
+    
     protected $fillable = [
         'user_id',       // ← Dari 'id_user'
         'title',         // ← Dari 'judul'

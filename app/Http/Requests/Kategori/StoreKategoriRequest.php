@@ -14,16 +14,18 @@ class StoreKategoriRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nama_kategori' => 'required|string|max:255|unique:kategoris,nama_kategori',
-            'deskripsi' => 'nullable|string',
+            'name' => 'required|string|max:255|unique:kategoris,name',
+            'description' => 'nullable|string|max:1000',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'nama_kategori.required' => 'Nama kategori wajib diisi',
-            'nama_kategori.unique' => 'Nama kategori sudah ada',
+            'name.required' => 'Nama kategori wajib diisi',
+            'name.unique' => 'Nama kategori sudah digunakan',
+            'name.max' => 'Nama kategori maksimal 255 karakter',
+            'description.max' => 'Deskripsi maksimal 1000 karakter',
         ];
     }
 }

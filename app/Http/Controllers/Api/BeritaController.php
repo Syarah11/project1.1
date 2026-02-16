@@ -25,7 +25,8 @@ class BeritaController extends Controller
         
         return response()->json([
             'success' => true,
-            'data' => $beritas
+            'data' => $beritas,
+            'media' => env('MEDIA')
         ]);
     }
 
@@ -191,7 +192,7 @@ class BeritaController extends Controller
     /**
      * Generate unique slug
      */
-    private function generateUniqueSlug(string $title, ?int $excludeId = null): string
+    private function generateUniqueSlug(string $title, ?string $excludeId = null): string
     {
         $slug = Str::slug($title);
         $originalSlug = $slug;

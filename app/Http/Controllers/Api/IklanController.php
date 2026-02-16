@@ -3,52 +3,64 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Iklan\StoreIklanRequest;
+use App\Http\Requests\Iklan\UpdateIklanRequest;
 use App\Models\Iklan;
 use App\Services\ImageService;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class IklanController extends Controller
 {
-    public function index()
+    /**
+     * Display a listing of iklans
+     * PUBLIC - Tanpa Auth (Tidak perlu API Key & Sanctum)
+     */
+    public function index(): JsonResponse
     {
-        $iklans = Iklan::with('user')->orderBy('priority')->get();
+        $iklans = Iklan::with('user')
+            ->where('status', 'active')
+            ->orderBy('priority', 'asc')
+            ->orderBy('created_at', 'desc')
+            ->get();
         
         return response()->json([
             'success' => true,
-            'data' => $iklans
+            'data' => $iklans,
+            'media' => env('MEDIA')
         ]);
     }
 
-    public function store(Request $request)
+    /**
+     * Display iklan by ID
+     * PUBLIC - Tanpa Auth (Tidak perlu API Key & Sanctum)
+     */
+    public function show($id): JsonResponse
     {
-        if (!auth()->check()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'User not authenticated. Please login first.'
-            ], 401);
-        }
-
-        $validated = $request->validate([
-            'name' => 'required|string',
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
-            'link' => 'nullable|url',
-            'position' => 'required|in:top,bottom,sidebar',
-            'priority' => 'required|integer',
-            'status' => 'required|in:active,inactive',
+        $iklan = Iklan::with('user')->findOrFail($id);
+        
+        return response()->json([
+            'success' => true,
+            'data' => $iklan
         ]);
+    }
 
-        // Upload thumbnail dengan ImageService
-        $thumbnailPath = null;
-        if ($request->hasFile('thumbnail')) {
-            $thumbnailPath = ImageService::upload(
-                $request->file('thumbnail'),
-                'iklans',
-                300 // Max 300KB
-            );
-        }
+    /**
+     * Store a new iklan
+     * PROTECTED - Perlu API Key & Sanctum Token
+     */
+    public function store(StoreIklanRequest $request): JsonResponse
+    {
+        $validated = $request->validated();
+
+        // Upload thumbnail (WAJIB untuk iklan)
+        $thumbnailPath = ImageService::upload(
+            $request->file('thumbnail'),
+            'iklans',
+            300
+        );
 
         $iklan = Iklan::create([
-            'user_id' => auth()->id(),
+            'user_id' => auth()->id(), // Pasti ada karena sudah auth
             'name' => $validated['name'],
             'thumbnail' => $thumbnailPath,
             'link' => $validated['link'] ?? null,
@@ -60,39 +72,33 @@ class IklanController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Iklan berhasil ditambahkan',
-            'data' => $iklan->load('user')
+            'data' => $iklan->fresh('user')
         ], 201);
     }
 
-    public function show($id)
-    {
-        $iklan = Iklan::with('user')->findOrFail($id);
-        
-        return response()->json([
-            'success' => true,
-            'data' => $iklan
-        ]);
-    }
-
-    public function update(Request $request, $id)
+    /**
+     * Update iklan
+     * PROTECTED - Perlu API Key & Sanctum Token
+     */
+    public function update(UpdateIklanRequest $request, $id): JsonResponse
     {
         $iklan = Iklan::findOrFail($id);
 
-        $validated = $request->validate([
-            'name' => 'sometimes|string',
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
-            'link' => 'nullable|url',
-            'position' => 'sometimes|in:top,bottom,sidebar',
-            'priority' => 'sometimes|integer',
-            'status' => 'sometimes|in:active,inactive',
-        ]);
+        // Authorization check (user harus login karena protected route)
+        if (!$this->canModifyIklan($iklan)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized. You can only edit your own ads.'
+            ], 403);
+        }
+
+        $validated = $request->validated();
 
         // Handle thumbnail upload
         if ($request->hasFile('thumbnail')) {
-            // Hapus gambar lama
+
             ImageService::delete($iklan->thumbnail);
-            
-            // Upload gambar baru
+    
             $validated['thumbnail'] = ImageService::upload(
                 $request->file('thumbnail'),
                 'iklans',
@@ -105,23 +111,50 @@ class IklanController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Iklan berhasil diupdate',
-            'data' => $iklan->load('user')
+            'data' => $iklan->fresh('user')
         ]);
     }
 
-    public function destroy($id)
+    /**
+     * Delete iklan
+     * PROTECTED - Perlu API Key & Sanctum Token
+     */
+    public function destroy($id): JsonResponse
     {
         $iklan = Iklan::findOrFail($id);
         
-        // Hapus thumbnail
-        ImageService::delete($iklan->thumbnail);
+        // Authorization check (user harus login karena protected route)
+        if (!$this->canModifyIklan($iklan)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized. You can only delete your own ads.'
+            ], 403);
+        }
         
+        ImageService::delete($iklan->thumbnail);
+
         $iklan->delete();
 
         return response()->json([
             'success' => true,
             'message' => 'Iklan berhasil dihapus'
         ]);
+    }
+
+    /**
+     * Check if user can modify iklan
+     * Hanya dipanggil di protected routes (store, update, destroy)
+     */
+    private function canModifyIklan(Iklan $iklan): bool
+    {
+        $user = auth()->user(); // Pasti ada karena route protected
         
+        // Super Admin & Admin bisa modify semua
+        if (in_array($user->role, ['super_admin', 'admin'])) {
+            return true;
+        }
+        
+        // User hanya bisa modify miliknya sendiri
+        return $iklan->user_id === $user->id;
     }
 }

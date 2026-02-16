@@ -14,24 +14,26 @@ class StoreIklanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id_user' => 'required|exists:users,id',
-            'nama' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'name' => 'required|string|max:255',
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2000',
             'link' => 'nullable|url|max:500',
-            'status' => 'sometimes|in:pending,active,inactive',
-            'posisi' => 'nullable|in:top,sidebar,bottom,popup',
-            'urutan' => 'sometimes|integer|min:0',
+            'position' => 'required|in:top,bottom,sidebar',
+            'priority' => 'required|integer|min:0',
+            'status' => 'required|in:active,inactive',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'nama.required' => 'Nama iklan wajib diisi',
-            'email.required' => 'Email wajib diisi',
-            'link.url' => 'Link harus berupa URL yang valid',
+            'name.required' => 'Nama iklan wajib diisi',
+            'thumbnail.required' => 'Thumbnail wajib diupload',
+            'thumbnail.image' => 'File harus berupa gambar',
+            'thumbnail.max' => 'Ukuran gambar maksimal 2mb',
+            'position.required' => 'Posisi iklan wajib dipilih',
+            'position.in' => 'Posisi harus: top, bottom, atau sidebar',
+            'priority.required' => 'Priority wajib diisi',
+            'status.required' => 'Status wajib dipilih',
         ];
-        
     }
 }

@@ -14,17 +14,16 @@ class StoreTagRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nama_tag' => 'required|string|max:255|unique:tags,nama_tag',
-            'created_by' => 'required|exists:users,id',
+            'name' => 'required|string|max:100|unique:tags,name',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'nama_tag.required' => 'Nama tag wajib diisi',
-            'nama_tag.unique' => 'Nama tag sudah ada',
-            'created_by.exists' => 'User tidak ditemukan',
+            'name.required' => 'Nama tag wajib diisi',
+            'name.unique' => 'Nama tag sudah digunakan',
+            'name.max' => 'Nama tag maksimal 100 karakter',
         ];
     }
 }

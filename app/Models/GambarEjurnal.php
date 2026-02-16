@@ -16,13 +16,31 @@ class GambarEjurnal extends Model
         'image',
     ];
 
+    protected $appends = ['image_url'];
+
+    /**
+     * Relasi ke Ejurnal
+     */
     public function ejurnal()
     {
         return $this->belongsTo(Ejurnal::class);
     }
 
+    /**
+     * Relasi ke User (yang upload gambar)
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Accessor untuk image URL
+     */
+    public function getImageUrlAttribute()
+    {
+        return $this->image 
+            ? asset('storage/' . $this->image) 
+            : null;
     }
 }

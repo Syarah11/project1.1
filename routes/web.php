@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+/*use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WEB\SuperAdminController;
 use App\Http\Controllers\WEB\DashboardController;
 use App\Http\Controllers\WEB\BlogController;
@@ -23,3 +23,4 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/tes-web', function () {
     return 'WEB OK';
 });
+*/

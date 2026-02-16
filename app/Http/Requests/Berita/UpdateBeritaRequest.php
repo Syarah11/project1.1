@@ -18,7 +18,7 @@ class UpdateBeritaRequest extends FormRequest
         return [
             'title' => 'sometimes|string|max:500',
             'description' => 'sometimes|string',
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:300',
             'status' => 'sometimes|in:published,draft',
             'kategori_ids' => 'nullable|array',
             'kategori_ids.*' => 'exists:kategoris,id',

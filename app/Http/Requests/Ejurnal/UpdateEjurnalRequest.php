@@ -6,18 +6,64 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateEjurnalRequest extends FormRequest
 {
-    public function authorize()
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
     {
-        return true;
+        return true; // Authorization handled by middleware
     }
 
-    public function rules()
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
     {
         return [
-            'title' => 'sometimes|string|max:500',
-            'description' => 'sometimes|string',
-           'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'title' => 'sometimes|required|string|max:500',
+            'description' => 'nullable|string',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:300',
             'status' => 'sometimes|in:published,draft',
+            
+            // ✅ Upload multiple gambar ejurnal (optional untuk update)
+            'gambar_ejurnals' => 'nullable|array',
+            'gambar_ejurnals.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:300',
         ];
+    }
+
+    /**
+     * Get custom error messages for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'title.required' => 'Judul e-jurnal wajib diisi.',
+            'title.max' => 'Judul e-jurnal maksimal 500 karakter.',
+            'thumbnail.image' => 'Thumbnail harus berupa gambar.',
+            'thumbnail.mimes' => 'Thumbnail harus berformat: jpeg, png, jpg, gif, atau webp.',
+            'thumbnail.max' => 'Ukuran thumbnail maksimal 5MB.',
+            'status.in' => 'Status harus published atau draft.',
+            'gambar_ejurnals.array' => 'Gambar ejurnal harus berupa array.',
+            'gambar_ejurnals.*.image' => 'Setiap file harus berupa gambar.',
+            'gambar_ejurnals.*.mimes' => 'Gambar harus berformat: jpeg, png, jpg, gif, atau webp.',
+            'gambar_ejurnals.*.max' => 'Ukuran setiap gambar maksimal 5MB.',
+        ];
+    }
+
+    /**
+     * Prepare data for validation
+     */
+    protected function prepareForValidation(): void
+    {
+        // Trim title jika ada
+        if ($this->has('title')) {
+            $this->merge([
+                'title' => trim($this->input('title'))
+            ]);
+        }
     }
 }

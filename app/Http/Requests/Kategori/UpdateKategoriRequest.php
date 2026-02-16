@@ -14,14 +14,25 @@ class UpdateKategoriRequest extends FormRequest
 
     public function rules(): array
     {
+        $kategoriId = $this->route('id'); // Ambil ID dari route parameter
+        
         return [
-            'nama_kategori' => [
+            'name' => [
                 'sometimes',
                 'string',
                 'max:255',
-                Rule::unique('kategoris', 'nama_kategori')->ignore($this->route('kategori'))
+                Rule::unique('kategoris', 'name')->ignore($kategoriId)
             ],
-            'deskripsi' => 'nullable|string',
+            'description' => 'nullable|string|max:1000',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'name.unique' => 'Nama kategori sudah digunakan',
+            'name.max' => 'Nama kategori maksimal 255 karakter',
+            'description.max' => 'Deskripsi maksimal 1000 karakter',
         ];
     }
 }
