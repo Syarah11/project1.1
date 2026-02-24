@@ -28,9 +28,12 @@ class Berita extends Model
         return $this->belongsTo(User::class);
     }
     public function getThumbnailAttribute($value)
-    {
-        return $value ?? asset('images/default-thumbnail.jpg');
+{
+    if ($value && \Illuminate\Support\Facades\Storage::disk('public')->exists($value)) {
+        return asset('storage/' . $value);
     }
+    return asset('images/default-thumbnail.jpg');
+}
 
     public function kategoris()
     {

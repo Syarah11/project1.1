@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('thumbnail')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->string('link')->nullable();
-            $table->enum('position', ['top', 'bottom', 'sidebar'])->default('top'); // ← Dari 'posisi'
+            $table->enum('position', ['slide_1x1','right_3x1','left_3x1'])->default('slide_1x1'); // ← Dari 'posisi'
             $table->integer('priority')->default(0);    // ← Dari 'urutan'
             $table->timestamps();
         });

@@ -17,7 +17,7 @@ class StoreIklanRequest extends FormRequest
             'name' => 'required|string|max:255',
             'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2000',
             'link' => 'nullable|url|max:500',
-            'position' => 'required|in:top,bottom,sidebar',
+            'position' => 'required|in:slide_1x1,right_3x1,left_3x1',
             'priority' => 'required|integer|min:0',
             'status' => 'required|in:active,inactive',
         ];

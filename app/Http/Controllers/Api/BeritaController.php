@@ -13,8 +13,7 @@ use Illuminate\Support\Str;
 class BeritaController extends Controller
 {
     /**
-     * Display a listing of beritas
-     * PUBLIC - Tanpa Auth
+     * PUBLIC: List berita published
      */
     public function index(): JsonResponse
     {
@@ -22,7 +21,7 @@ class BeritaController extends Controller
             ->where('status', 'published')
             ->orderBy('created_at', 'desc')
             ->get();
-        
+
         return response()->json([
             'success' => true,
             'data' => $beritas,
@@ -31,15 +30,14 @@ class BeritaController extends Controller
     }
 
     /**
-     * Display berita by ID
-     * PUBLIC - Tanpa Auth
+     * PUBLIC: Show berita by ID (published only)
      */
     public function show($id): JsonResponse
     {
         $berita = Berita::with(['user', 'kategoris', 'tags'])
             ->where('status', 'published')
             ->findOrFail($id);
-            
+
         $berita->increment('view_count');
 
         return response()->json([
@@ -49,8 +47,7 @@ class BeritaController extends Controller
     }
 
     /**
-     * Display berita by SLUG (SEO Friendly)
-     * PUBLIC - Tanpa Auth
+     * PUBLIC: Show berita by slug (SEO friendly)
      */
     public function showBySlug($slug): JsonResponse
     {
@@ -58,7 +55,7 @@ class BeritaController extends Controller
             ->where('slug', $slug)
             ->where('status', 'published')
             ->firstOrFail();
-            
+
         $berita->increment('view_count');
 
         return response()->json([
@@ -68,14 +65,28 @@ class BeritaController extends Controller
     }
 
     /**
-     * Store a new berita
-     * PROTECTED - API Key (Mode 1) atau API Key + Token (Mode 2)
+     * ADMIN: List semua berita (draft + published)
+     */
+    public function adminIndex(): JsonResponse
+    {
+        $beritas = Berita::with(['user', 'kategoris', 'tags'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $beritas,
+            'media' => env('MEDIA')
+        ]);
+    }
+
+    /**
+     * STORE: Tambah berita draft atau published
      */
     public function store(StoreBeritaRequest $request): JsonResponse
     {
         $validated = $request->validated();
 
-        // Upload thumbnail
         $thumbnailPath = null;
         if ($request->hasFile('thumbnail')) {
             $thumbnailPath = ImageService::upload(
@@ -85,7 +96,6 @@ class BeritaController extends Controller
             );
         }
 
-        // Generate unique slug
         $slug = $this->generateUniqueSlug($validated['title']);
 
         $berita = Berita::create([
@@ -94,10 +104,10 @@ class BeritaController extends Controller
             'slug' => $slug,
             'description' => $validated['description'],
             'thumbnail' => $thumbnailPath,
-            'status' => $validated['status'],
+            'status' => $validated['status'], // draft / published
+            'published_at' => $validated['status'] === 'published' ? now() : null
         ]);
 
-        // Attach kategoris dan tags
         if (!empty($validated['kategori_ids'])) {
             $berita->kategoris()->attach($validated['kategori_ids']);
         }
@@ -114,14 +124,12 @@ class BeritaController extends Controller
     }
 
     /**
-     * Update berita
-     * PROTECTED - API Key (Mode 1) atau API Key + Token (Mode 2)
+     * UPDATE: Edit berita + publish draft
      */
     public function update(UpdateBeritaRequest $request, $id): JsonResponse
     {
         $berita = Berita::findOrFail($id);
 
-        // Authorization check
         if (!$this->canModifyBerita($berita)) {
             return response()->json([
                 'success' => false,
@@ -131,12 +139,10 @@ class BeritaController extends Controller
 
         $validated = $request->validated();
 
-        // Update slug jika title berubah
         if (isset($validated['title']) && $validated['title'] !== $berita->title) {
             $validated['slug'] = $this->generateUniqueSlug($validated['title'], $id);
         }
 
-        // Handle thumbnail
         if ($request->hasFile('thumbnail')) {
             ImageService::delete($berita->thumbnail);
             $validated['thumbnail'] = ImageService::upload(
@@ -146,9 +152,12 @@ class BeritaController extends Controller
             );
         }
 
+        if (isset($validated['status']) && $validated['status'] === 'published' && !$berita->published_at) {
+            $validated['published_at'] = now();
+        }
+
         $berita->update($validated);
 
-        // Sync relations
         if (isset($validated['kategori_ids'])) {
             $berita->kategoris()->sync($validated['kategori_ids']);
         }
@@ -165,21 +174,19 @@ class BeritaController extends Controller
     }
 
     /**
-     * Delete berita
-     * PROTECTED - API Key (Mode 1) atau API Key + Token (Mode 2)
+     * DELETE berita
      */
     public function destroy($id): JsonResponse
     {
         $berita = Berita::findOrFail($id);
-        
-        // Authorization check
+
         if (!$this->canModifyBerita($berita)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Unauthorized. You can only delete your own articles.'
             ], 403);
         }
-        
+
         ImageService::delete($berita->thumbnail);
         $berita->delete();
 
@@ -197,23 +204,17 @@ class BeritaController extends Controller
         $slug = Str::slug($title);
         $originalSlug = $slug;
         $counter = 1;
-        
+
         $query = Berita::where('slug', $slug);
-        
-        if ($excludeId) {
-            $query->where('id', '!=', $excludeId);
-        }
-        
+        if ($excludeId) $query->where('id', '!=', $excludeId);
+
         while ($query->exists()) {
             $slug = $originalSlug . '-' . $counter;
             $counter++;
-            
             $query = Berita::where('slug', $slug);
-            if ($excludeId) {
-                $query->where('id', '!=', $excludeId);
-            }
+            if ($excludeId) $query->where('id', '!=', $excludeId);
         }
-        
+
         return $slug;
     }
 
@@ -222,19 +223,11 @@ class BeritaController extends Controller
      */
     private function canModifyBerita(Berita $berita): bool
     {
-        // Mode 1: Tidak ada auth, izinkan semua
-        if (!auth()->check()) {
-            return true;
-        }
+        if (!auth()->check()) return true;
 
         $user = auth()->user();
-        
-        // Super Admin & Admin bisa modify semua
-        if (in_array($user->role, ['super_admin', 'admin'])) {
-            return true;
-        }
-        
-        // User hanya bisa modify miliknya sendiri
+        if (in_array($user->role, ['super_admin', 'admin'])) return true;
+
         return $berita->user_id === $user->id;
     }
 }
