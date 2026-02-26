@@ -32,7 +32,7 @@ class RoleMiddleware
         }
 
         // Parse roles yang diizinkan
-        $allowedRoles = explode(',', $roles);
+        $allowedRoles = explode('|', $roles);
         $userRole = auth()->user()->role;
 
         // Cek apakah user memiliki role yang diizinkan

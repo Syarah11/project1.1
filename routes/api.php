@@ -49,8 +49,8 @@ Route::middleware('api.key')->group(function () {
 
         Route::post('/logout',        [AuthController::class, 'logout']);
         Route::get('/me',             [AuthController::class, 'me']);
-        Route::put('/profile',        [AuthController::class, 'updateProfile']);      // update name, email, password
-        Route::post('/profile/photo', [AuthController::class, 'updatePhoto']);        // ← BARU: upload foto profil
+        Route::put('/profile',        [AuthController::class, 'updateProfile']);
+        Route::post('/profile/photo', [AuthController::class, 'updatePhoto']);
 
         // USER MANAGEMENT — hanya super_admin
         Route::post('/users',        [UserController::class, 'store'])->middleware('role:super_admin');
@@ -59,25 +59,25 @@ Route::middleware('api.key')->group(function () {
         Route::put('/users/{id}',    [UserController::class, 'update'])->middleware('role:super_admin');
         Route::delete('/users/{id}', [UserController::class, 'destroy'])->middleware('role:super_admin');
 
-        Route::post('/beritas',        [BeritaController::class, 'store'])->middleware('role:super_admin,admin,user');
-        Route::put('/beritas/{id}',    [BeritaController::class, 'update'])->middleware('role:super_admin,admin,user');
-        Route::delete('/beritas/{id}', [BeritaController::class, 'destroy'])->middleware('role:super_admin,admin,user');
+        Route::post('/beritas',        [BeritaController::class, 'store'])->middleware('role:super_admin|admin|user');
+        Route::put('/beritas/{id}',    [BeritaController::class, 'update'])->middleware('role:super_admin|admin|user');
+        Route::delete('/beritas/{id}', [BeritaController::class, 'destroy'])->middleware('role:super_admin|admin|user');
 
-        Route::post('/kategoris',        [KategoriController::class, 'store'])->middleware('role:super_admin,admin');
-        Route::put('/kategoris/{id}',    [KategoriController::class, 'update'])->middleware('role:super_admin,admin');
-        Route::delete('/kategoris/{id}', [KategoriController::class, 'destroy'])->middleware('role:super_admin,admin');
+        Route::post('/kategoris',        [KategoriController::class, 'store'])->middleware('role:super_admin|admin');
+        Route::put('/kategoris/{id}',    [KategoriController::class, 'update'])->middleware('role:super_admin|admin');
+        Route::delete('/kategoris/{id}', [KategoriController::class, 'destroy'])->middleware('role:super_admin|admin');
 
-        Route::post('/tags',        [TagController::class, 'store'])->middleware('role:super_admin,admin');
-        Route::put('/tags/{id}',    [TagController::class, 'update'])->middleware('role:super_admin,admin');
-        Route::delete('/tags/{id}', [TagController::class, 'destroy'])->middleware('role:super_admin,admin');
+        Route::post('/tags',        [TagController::class, 'store'])->middleware('role:super_admin|admin');
+        Route::put('/tags/{id}',    [TagController::class, 'update'])->middleware('role:super_admin|admin');
+        Route::delete('/tags/{id}', [TagController::class, 'destroy'])->middleware('role:super_admin|admin');
 
-        Route::post('/iklans',        [IklanController::class, 'store'])->middleware('role:super_admin,admin');
-        Route::put('/iklans/{id}',    [IklanController::class, 'update'])->middleware('role:super_admin,admin');
-        Route::delete('/iklans/{id}', [IklanController::class, 'destroy'])->middleware('role:super_admin,admin');
+        Route::post('/iklans',        [IklanController::class, 'store'])->middleware('role:super_admin|admin');
+        Route::put('/iklans/{id}',    [IklanController::class, 'update'])->middleware('role:super_admin|admin');
+        Route::delete('/iklans/{id}', [IklanController::class, 'destroy'])->middleware('role:super_admin|admin');
 
-        Route::post('/ejurnals',               [EjurnalController::class, 'store'])->middleware('role:super_admin,admin');
-        Route::put('/ejurnals/{id}',           [EjurnalController::class, 'update'])->middleware('role:super_admin,admin');
-        Route::delete('/ejurnals/{id}',        [EjurnalController::class, 'destroy'])->middleware('role:super_admin,admin');
-        Route::delete('/ejurnals/gambar/{id}', [EjurnalController::class, 'deleteGambar'])->middleware('role:super_admin,admin');
+        Route::post('/ejurnals',               [EjurnalController::class, 'store'])->middleware('role:super_admin|admin');
+        Route::put('/ejurnals/{id}',           [EjurnalController::class, 'update'])->middleware('role:super_admin|admin');
+        Route::delete('/ejurnals/{id}',        [EjurnalController::class, 'destroy'])->middleware('role:super_admin|admin');
+        Route::delete('/ejurnals/gambar/{id}', [EjurnalController::class, 'deleteGambar'])->middleware('role:super_admin|admin');
     });
 });
