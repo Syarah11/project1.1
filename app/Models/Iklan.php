@@ -12,12 +12,12 @@ class Iklan extends Model
 
     protected $fillable = [
         'user_id',
-        'name',          // ← Dari 'nama'
+        'name',
         'thumbnail',
         'status',
         'link',
-        'position',      // ← Dari 'posisi'
-        'priority',      // ← Dari 'urutan'
+        'position',
+        'priority',
     ];
 
     public function user()
@@ -25,9 +25,27 @@ class Iklan extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function getThumbnailAttribute($value)
+    // HAPUS getThumbnailAttribute() dari sini.
+    // Accessor itu mengubah nilai 'thumbnail' saat diserialisasi ke JSON,
+    // sehingga API mengembalikan full URL asset() bukan path asli dari storage.
+    // Akibatnya di blade, logic penggabungan MEDIA + /storage/ + path jadi salah.
+    //
+    // Gunakan helper method terpisah jika butuh URL lengkap di Blade/API:
+
+    /**
+     * Kembalikan URL thumbnail lengkap untuk ditampilkan.
+     * Gunakan ini di resource/API response jika perlu, bukan sebagai accessor.
+     */
+    public function getThumbnailUrl(): string
     {
-        return $value ?? asset('images/default-iklan-thumbnail.jpg');
+        if (empty($this->thumbnail)) {
+            return asset('images/default-iklan-thumbnail.jpg');
+        }
+
+        if (str_starts_with($this->thumbnail, 'http')) {
+            return $this->thumbnail;
+        }
+
+        return asset('storage/' . ltrim($this->thumbnail, '/'));
     }
-    
 }

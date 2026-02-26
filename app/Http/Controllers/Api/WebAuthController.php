@@ -21,8 +21,10 @@ class WebAuthController extends Controller
         ]);
 
         session([
-            'api_token' => $request->token,
-            'auth_user' => $request->user,
+            'api_token'  => $request->token,
+            'auth_user'  => $request->user,
+            'user'       => $request->user,          // agar session('user.name') tetap jalan di Navbar
+            'role'       => $request->user['role'] ?? 'user', // ← ini yang kurang!
         ]);
 
         return response()->json(['success' => true]);
@@ -36,12 +38,10 @@ class WebAuthController extends Controller
     public function logout(Request $request)
     {
         $token  = session('api_token');
-        $apiKey = config('app.api_key'); // dari BERITA_API_KEY_BACKEND di .env
+        $apiKey = config('app.api_key');
 
         if ($token) {
             try {
-                // Hit /api/logout di server yang sama (relatif, bukan ngrok)
-                // sehingga tidak terpengaruh perubahan URL ngrok
                 Http::withHeaders([
                     'X-API-KEY'     => $apiKey,
                     'Authorization' => 'Bearer ' . $token,
@@ -52,7 +52,7 @@ class WebAuthController extends Controller
             }
         }
 
-        $request->session()->forget(['api_token', 'auth_user']);
+        $request->session()->forget(['api_token', 'auth_user', 'user', 'role']);
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 

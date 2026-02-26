@@ -10,23 +10,21 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
     /**
      * Register new user (publik).
      * Role dikunci 'user' — tidak bisa dimanipulasi dari request.
-     *
-     * Jika ingin buat admin, super_admin harus lewat endpoint terpisah
-     * yang dilindungi middleware role.
      */
     public function register(RegisterRequest $request): JsonResponse
     {
         $user = User::create([
             'name'     => $request->name,
             'email'    => $request->email,
-            'password' => $request->password, // Model sudah cast 'hashed', JANGAN Hash::make lagi
-            'role'     => 'user',             // ← hardcoded, aman dari manipulasi
+            'password' => $request->password, // Model sudah cast 'hashed'
+            'role'     => 'user',
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
@@ -46,7 +44,6 @@ class AuthController extends Controller
     {
         $user = User::where('email', $request->email)->first();
 
-        // Hash::check tetap valid meski model pakai cast 'hashed'
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
                 'success' => false,
@@ -89,7 +86,8 @@ class AuthController extends Controller
     }
 
     /**
-     * Update profile user yang sedang login.
+     * Update profile user (nama, email, password).
+     * BE endpoint: PUT /api/profile
      */
     public function updateProfile(UpdateProfileRequest $request): JsonResponse
     {
@@ -115,7 +113,6 @@ class AuthController extends Controller
         }
 
         if ($request->filled('password')) {
-            // Cast 'hashed' di model handle hashing otomatis
             $dataToUpdate['password'] = $request->password;
         }
 
@@ -125,6 +122,42 @@ class AuthController extends Controller
             'success' => true,
             'message' => 'Profile berhasil diupdate',
             'user'    => $user->fresh(),
+        ]);
+    }
+
+    /**
+     * Upload / ganti foto profil (thumbnail).
+     * BE endpoint: POST /api/profile/photo
+     * Field: thumbnail (file: jpg/png/webp, max 2MB)
+     */
+    public function updatePhoto(Request $request): JsonResponse
+    {
+        $request->validate([
+            'thumbnail' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ], [
+            'thumbnail.required' => 'File foto wajib dipilih.',
+            'thumbnail.image'    => 'File harus berupa gambar.',
+            'thumbnail.mimes'    => 'Format foto harus jpg, jpeg, png, atau webp.',
+            'thumbnail.max'      => 'Ukuran foto maksimal 2MB.',
+        ]);
+
+        $user = $request->user();
+
+        // Hapus foto lama jika bukan default
+        if ($user->getRawOriginal('thumbnail') && Storage::disk('public')->exists($user->getRawOriginal('thumbnail'))) {
+            Storage::disk('public')->delete($user->getRawOriginal('thumbnail'));
+        }
+
+        // Simpan foto baru ke storage/app/public/thumbnails/
+        $path = $request->file('thumbnail')->store('thumbnails', 'public');
+
+        $user->update(['thumbnail' => $path]);
+
+        return response()->json([
+            'success'   => true,
+            'message'   => 'Foto profil berhasil diperbarui',
+            'thumbnail' => asset('storage/' . $path),
+            'user'      => $user->fresh(),
         ]);
     }
 }

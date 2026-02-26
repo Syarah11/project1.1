@@ -11,15 +11,16 @@ use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
 // ========================================
-// 📖 PUBLIC ENDPOINTS - TANPA API KEY & TANPA LOGIN
+// 📖 PUBLIC ENDPOINTS
 // ========================================
-
 Route::get('/beritas',             [BeritaController::class, 'index']);
-Route::get('/beritas/admin',       [BeritaController::class, 'adminIndex']); // ← TAMBAH (harus sebelum {id})
+Route::get('/beritas/admin',       [BeritaController::class, 'adminIndex']);
+Route::get('/beritas/populer',     [BeritaController::class, 'populer']);
+Route::get('/beritas/statistik',   [BeritaController::class, 'statistik']);
 Route::get('/beritas/slug/{slug}', [BeritaController::class, 'showBySlug']);
 Route::get('/beritas/{id}',        [BeritaController::class, 'show']);
 
-Route::get('/all_kategori',             [KategoriController::class, 'index']);
+Route::get('/all_kategori',          [KategoriController::class, 'index']);
 Route::get('/kategoris/{id}',        [KategoriController::class, 'show']);
 Route::get('/kategoris/slug/{slug}', [KategoriController::class, 'showBySlug']);
 
@@ -38,22 +39,25 @@ Route::get('/iklans/{id}',      [IklanController::class, 'show']);
 // ========================================
 // 🔐 PROTECTED ENDPOINTS
 // ========================================
-
 Route::middleware('api.key')->group(function () {
 
+    // Register publik — role selalu dikunci 'user' di controller
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login',    [AuthController::class, 'login']);
 
     Route::middleware('auth:sanctum')->group(function () {
 
-        Route::post('/logout',      [AuthController::class, 'logout']);
-        Route::get('/me',           [AuthController::class, 'me']);
-        Route::put('/profile',      [AuthController::class, 'updateProfile']);
+        Route::post('/logout',        [AuthController::class, 'logout']);
+        Route::get('/me',             [AuthController::class, 'me']);
+        Route::put('/profile',        [AuthController::class, 'updateProfile']);      // update name, email, password
+        Route::post('/profile/photo', [AuthController::class, 'updatePhoto']);        // ← BARU: upload foto profil
 
-        Route::get('/users',        [UserController::class, 'index'])->middleware('role:super_admin');
-        Route::get('/users/{id}',   [UserController::class, 'show'])->middleware('role:super_admin');
-        Route::put('/users/{id}',   [UserController::class, 'update'])->middleware('role:super_admin');
-        Route::delete('/users/{id}',[UserController::class, 'destroy'])->middleware('role:super_admin');
+        // USER MANAGEMENT — hanya super_admin
+        Route::post('/users',        [UserController::class, 'store'])->middleware('role:super_admin');
+        Route::get('/users',         [UserController::class, 'index'])->middleware('role:super_admin');
+        Route::get('/users/{id}',    [UserController::class, 'show'])->middleware('role:super_admin');
+        Route::put('/users/{id}',    [UserController::class, 'update'])->middleware('role:super_admin');
+        Route::delete('/users/{id}', [UserController::class, 'destroy'])->middleware('role:super_admin');
 
         Route::post('/beritas',        [BeritaController::class, 'store'])->middleware('role:super_admin,admin,user');
         Route::put('/beritas/{id}',    [BeritaController::class, 'update'])->middleware('role:super_admin,admin,user');
